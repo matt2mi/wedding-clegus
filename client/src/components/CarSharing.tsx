@@ -1,22 +1,19 @@
 import * as React from 'react';
+import { SyntheticEvent } from 'react';
 import Card from 'reactstrap/lib/Card';
 import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
 import { Journey } from '../helpers/interfaces';
 import Button from 'reactstrap/lib/Button';
-import { default as RouterButton } from './RouterButton';
-import { SyntheticEvent } from 'react';
-import { History } from 'history';
+import { Redirect } from 'react-router';
 
 interface Props {
-  match: {
-    params: Object
-  };
 }
 
 interface State {
   readonly journeys: Journey[];
-  currentJourneyId: number;
+  readonly goJourneyDetails: boolean;
+  readonly journeyId: string;
 }
 
 export default class CarSharing extends React.Component <Props, State> {
@@ -24,10 +21,11 @@ export default class CarSharing extends React.Component <Props, State> {
     super(props);
 
     this.goEditJourney = this.goEditJourney.bind(this);
-    console.warn(props.match.params[`id`]);
+    // console.warn(props.match.params[`id`]);
     this.state = {
       journeys: [],
-      currentJourneyId: props.match.params[`id`]
+      goJourneyDetails: false,
+      journeyId: ''
     };
   }
 
@@ -37,19 +35,31 @@ export default class CarSharing extends React.Component <Props, State> {
         return result.json();
       })
       .then((journeys: Journey[]) => {
-        console.warn(journeys);
-        this.setState({journeys});
+        const trueJourneys: Journey[] = journeys.map((journey, id) => ({
+          id: id + '',
+          name: journey.name,
+          fromCity: journey.fromCity,
+          toCity: journey.toCity,
+          freeSeats: journey.freeSeats,
+          totalSeats: journey.totalSeats,
+          price: journey.price,
+          driverPhoneNumber: journey.driverPhoneNumber
+        }));
+        console.warn(trueJourneys);
+        this.setState({journeys: trueJourneys});
       })
       .catch();
   }
 
-  goEditJourney(event: SyntheticEvent<HTMLButtonElement>, history: History) {
-    history.push('/covoiturages/details/');
+  goEditJourney(event: SyntheticEvent<HTMLButtonElement>, journeyId: string) {
+    event.preventDefault();
+    this.setState({journeyId, goJourneyDetails: true});
   }
 
   render() {
     return (
       <div>
+        {this.state.goJourneyDetails && <Redirect to={'/covoiturages/details/' + this.state.journeyId}/>}
         <Row>
           <Col sm="12">
             <Card body={true}>
@@ -75,7 +85,14 @@ export default class CarSharing extends React.Component <Props, State> {
                       <td>{journey.price}</td>
                       <td>{journey.driverPhoneNumber}</td>
                       <td>
-                        <RouterButton cb={this.goEditJourney} type={''}>Modifier</RouterButton>
+                        <Button
+                          color="primary"
+                          onClick={(e) => {
+                            this.goEditJourney(e, journey.id);
+                          }}
+                        >
+                          Modifier
+                        </Button>
                       </td>
                       <td>
                         <Button color="danger">Supprimer</Button>
