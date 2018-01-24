@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from 'reactstrap/lib/Button';
 import CardText from 'reactstrap/lib/CardText';
 import CardTitle from 'reactstrap/lib/CardTitle';
 import Card from 'reactstrap/lib/Card';
@@ -22,9 +21,9 @@ export default class JourneyDetails extends React.Component {
         <Row>
           <Col sm="12">
             <Card body={true}>
-              <CardTitle>Invitation Page</CardTitle>
-              <CardText>Invitation page text.</CardText>
-              <Button color="info">Go somewhere</Button>
+              <CardTitle>JourneyDetails Page</CardTitle>
+              <CardText>JourneyDetails page text.</CardText>
+              <a href="/covoiturages">Go back</a>
             </Card>
           </Col>
         </Row>

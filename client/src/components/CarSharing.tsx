@@ -57,9 +57,11 @@ export default class CarSharing extends React.Component <Props, State> {
   }
 
   render() {
+    if (this.state.goJourneyDetails) {
+      return (<Redirect to={'/covoiturages/details/' + this.state.journeyId}/>);
+    }
     return (
       <div>
-        {this.state.goJourneyDetails && <Redirect to={'/covoiturages/details/' + this.state.journeyId}/>}
         <Row>
           <Col sm="12">
             <Card body={true}>
