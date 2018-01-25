@@ -1,5 +1,5 @@
 export interface Journey {
-  id: string;
+  id: number;
   name: string;
   fromCity: string;
   toCity: string;

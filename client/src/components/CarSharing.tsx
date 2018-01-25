@@ -13,7 +13,7 @@ interface Props {
 interface State {
   readonly journeys: Journey[];
   readonly goJourneyDetails: boolean;
-  readonly journeyId: string;
+  readonly journeyId: number;
 }
 
 export default class CarSharing extends React.Component <Props, State> {
@@ -25,7 +25,7 @@ export default class CarSharing extends React.Component <Props, State> {
     this.state = {
       journeys: [],
       goJourneyDetails: false,
-      journeyId: ''
+      journeyId: 0
     };
   }
 
@@ -36,7 +36,7 @@ export default class CarSharing extends React.Component <Props, State> {
       })
       .then((journeys: Journey[]) => {
         const trueJourneys: Journey[] = journeys.map((journey, id) => ({
-          id: id + '',
+          id: id,
           name: journey.name,
           fromCity: journey.fromCity,
           toCity: journey.toCity,
@@ -51,7 +51,7 @@ export default class CarSharing extends React.Component <Props, State> {
       .catch();
   }
 
-  goEditJourney(event: SyntheticEvent<HTMLButtonElement>, journeyId: string) {
+  goEditJourney(event: SyntheticEvent<HTMLButtonElement>, journeyId: number) {
     event.preventDefault();
     this.setState({journeyId, goJourneyDetails: true});
   }

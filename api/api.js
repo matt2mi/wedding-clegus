@@ -8,6 +8,10 @@ module.exports = function (app, indexFilePath) {
         res.json(JOURNEYS);
         console.log('journeys sent');
     });
+    app.get('/api/journey/:id', (req, res) => {
+        res.json(JOURNEYS[req.params.id]);
+        console.log('journey sent');
+    });
 
     // send React's index.html file.
     app.get('*', (req, res) => {
