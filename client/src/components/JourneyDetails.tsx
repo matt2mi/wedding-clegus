@@ -8,6 +8,8 @@ import Label from 'reactstrap/lib/Label';
 import Form from 'reactstrap/lib/Form';
 import { Journey } from '../helpers/interfaces';
 import Button from 'reactstrap/lib/Button';
+import { withRouter } from 'react-router';
+import * as H from 'history';
 
 interface Props {
     match: { params: { id?: number } };
@@ -26,12 +28,39 @@ interface State {
 }
 
 export default class JourneyDetails extends React.Component<Props, State> {
+
+    CreateButton: React.ComponentClass;
+    UpdateButton: React.ComponentClass;
+    GoBackButton: React.ComponentClass;
+
     constructor(props: Props) {
         super(props);
 
         this.handleChangeForm = this.handleChangeForm.bind(this);
         this.createJourney = this.createJourney.bind(this);
         this.updateJourney = this.updateJourney.bind(this);
+
+        this.CreateButton = withRouter(({history}) => (
+            <Button color="primary" onClick={(e) => this.createJourney(e, history)}>
+                Créer
+            </Button>
+        ));
+        this.UpdateButton = withRouter(({history}) => (
+            <Button color="primary" onClick={(e) => this.updateJourney(e, history)}>
+                MAJ
+            </Button>
+        ));
+        this.GoBackButton = withRouter(({history}) => (
+            <Button
+                color="primary"
+                onClick={(e) => {
+                    e.preventDefault();
+                    history.push('/covoiturages');
+                }}
+            >
+                cancel
+            </Button>
+        ));
 
         this.state = {
             createMode: true,
@@ -50,6 +79,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                 .then(result => result.json())
                 .then((journey: Journey) => {
                     this.setState({
+                        createMode: false,
                         id: journey.id,
                         name: journey.name,
                         fromCity: journey.fromCity,
@@ -73,14 +103,14 @@ export default class JourneyDetails extends React.Component<Props, State> {
     }
     /* tslint:enable */
 
-    createJourney(event: React.FormEvent<HTMLInputElement>) {
+    createJourney(event: React.SyntheticEvent<HTMLButtonElement>, history: H.History) {
         event.preventDefault();
-        this.createOrUpdateJourney('post', (result: Object) => console.warn(result));
+        this.createOrUpdateJourney('post', (result: Object) => history.push('/covoiturages'));
     }
 
-    updateJourney(event: React.FormEvent<HTMLInputElement>) {
+    updateJourney(event: React.SyntheticEvent<HTMLButtonElement>, history: H.History) {
         event.preventDefault();
-        this.createOrUpdateJourney('put', (result: Object) => console.warn(result));
+        this.createOrUpdateJourney('put', (result: Object) => history.push('/covoiturages'));
     }
 
     render() {
@@ -175,13 +205,11 @@ export default class JourneyDetails extends React.Component<Props, State> {
                             </Col>
                         </Row>
                         <Row className="justify-content-end mt-2">
-                            <Col sm="2"><a href="#/covoiturages">Cancel</a></Col>
                             <Col sm="2">
-                                {
-                                    this.state.createMode ?
-                                        <Button color="primary" onClick={(e) => this.createJourney(e)}>Créer</Button> :
-                                        <Button color="primary" onClick={(e) => this.updateJourney(e)}>MAJ</Button>
-                                }
+                                <this.GoBackButton/>
+                            </Col>
+                            <Col sm="2">
+                                {this.state.createMode ? <this.CreateButton/> : <this.UpdateButton/>}
                             </Col>
                         </Row>
                     </Form>
@@ -193,6 +221,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
     private createOrUpdateJourney(method: string, cb: (result: Object) => void) {
         fetch('/api/journey', {
             method: method,
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 id: this.state.id,
                 name: this.state.fromCity + ' - ' + this.state.toCity,
