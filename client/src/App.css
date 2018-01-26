@@ -14,3 +14,11 @@
 .navbar-default {
     background-color: #17A2B8;
 }
+
+label {
+    height: 22px !important;
+}
+
+table th {
+    border-top: none !important;
+}

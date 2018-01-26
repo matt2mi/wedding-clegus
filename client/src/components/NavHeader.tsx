@@ -36,15 +36,15 @@ export default class App extends React.Component<Props, State> {
     return (
       <div>
         <Navbar color="faded" light={true} expand="md">
-          <NavbarBrand href="/">Mariage CleGus</NavbarBrand>
+          <NavbarBrand href="#/">Mariage CleGus</NavbarBrand>
           <NavbarToggler onClick={this.toggle}/>
           <Collapse isOpen={this.state.isOpen} navbar={true}>
             <Nav navbar={true}>
               <NavItem>
-                <NavLink href="/covoiturages">Covoiturage</NavLink>
+                <NavLink href="#/covoiturages">Covoiturage</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/faire-part/">Faire-Part</NavLink>
+                <NavLink href="#/faire-part/">Faire-Part</NavLink>
               </NavItem>
             </Nav>
           </Collapse>
