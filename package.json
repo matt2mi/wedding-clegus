@@ -27,6 +27,13 @@
   },
   "license": "ISC",
   "dependencies": {
+    "@types/jest": "^22.0.1",
+    "@types/react": "^16.0.34",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-redux": "^5.0.14",
+    "@types/react-router-dom": "^4.2.3",
+    "@types/reactstrap": "^5.0.10",
+    "@types/redux": "^3.6.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.0.0-alpha.6",
     "cookie-parser": "^1.4.3",
