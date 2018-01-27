@@ -3,6 +3,8 @@
 # dependencies
 node_modules
 clegus-wedding-db-credentials.json
+build
+package-lock.json
 
 # testing
 /coverage

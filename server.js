@@ -1,10 +1,10 @@
+import path from "path";
+
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
-
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'client/build'))); // Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'build'))); // Serve static files from the React app
 app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // to support URL-encoded bodies
 

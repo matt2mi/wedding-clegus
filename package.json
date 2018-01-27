@@ -10,25 +10,48 @@
   "engines": {
     "node": "8.9.3"
   },
-  "scripts": {
-    "start": "npm i && node server.js",
-    "server": "node server.js",
-    "build:client": "cd client && npm run build",
-    "test": "mocha */**.spec.js",
-    "postinstall": "cd client && npm i"
-  },
   "keywords": [],
   "author": "",
+  "scripts": {
+    "start": "npm i && node server.js",
+    "start:client": "react-scripts-ts start",
+    "start:server": "npm i && node server.js",
+    "build": "react-scripts-ts build",
+    "server": "node server.js",
+    "test:client": "react-scripts-ts test --env=jsdom",
+    "test:server": "mocha */**.spec.js",
+    "deploy": "npm run deploy:git && npm run deploy:heroku",
+    "deploy:git": "git push origin master",
+    "deploy:heroku": "git push heroku master",
+    "postinstall": "react-scripts-ts build"
+  },
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "chai": "^4.1.2",
+    "bootstrap": "^4.0.0-alpha.6",
     "cookie-parser": "^1.4.3",
-    "errorhandler": "^1.5.0",
     "express": "^4.16.2",
-    "method-override": "^2.3.10",
+    "firebase-admin": "^5.5.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-scripts-ts": "2.13.0",
+    "reactstrap": "^5.0.0-alpha.4",
+    "redux": "^3.7.2",
+    "typescript": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.0.1",
+    "@types/react": "^16.0.34",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-redux": "^5.0.14",
+    "@types/react-router-dom": "^4.2.3",
+    "@types/reactstrap": "^5.0.10",
+    "@types/redux": "^3.6.0",
+    "chai": "^4.1.2",
+    "errorhandler": "^1.5.0",
     "mocha": "^4.1.0",
-    "morgan": "^1.9.0",
-    "firebase-admin": "^5.5.1"
+    "method-override": "^2.3.10"
   }
 }
