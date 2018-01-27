@@ -2,10 +2,10 @@
   "name": "react-express",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "cd client && npm run build && cd .. && nodemon index.js",
-    "server": "node index.js",
+    "start": "cd client && npm run build && cd .. && nodemon server.js",
+    "server": "node server.js",
     "build:client": "cd client && npm run build",
     "test": "mocha */**.spec.js"
   },
@@ -16,9 +16,9 @@
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "errorhandler": "^1.5.0",
-    "express": "^4.16.2",
     "method-override": "^2.3.10",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "firebase-admin": "^5.5.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",

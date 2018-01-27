@@ -17,7 +17,7 @@ interface Props {
 
 interface State {
     readonly createMode: boolean;
-    readonly id: number | null;
+    readonly id: string | null;
     readonly name: string;
     readonly fromCity: string;
     readonly toCity: string;
@@ -105,12 +105,12 @@ export default class JourneyDetails extends React.Component<Props, State> {
 
     createJourney(event: React.SyntheticEvent<HTMLButtonElement>, history: H.History) {
         event.preventDefault();
-        this.createOrUpdateJourney('post', (result: Object) => history.push('/covoiturages'));
+        this.createOrUpdateJourney('post', () => history.push('/covoiturages'));
     }
 
     updateJourney(event: React.SyntheticEvent<HTMLButtonElement>, history: H.History) {
         event.preventDefault();
-        this.createOrUpdateJourney('put', (result: Object) => history.push('/covoiturages'));
+        this.createOrUpdateJourney('put', () => history.push('/covoiturages'));
     }
 
     render() {
@@ -218,7 +218,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
         );
     }
 
-    private createOrUpdateJourney(method: string, cb: (result: Object) => void) {
+    private createOrUpdateJourney(method: string, cb: () => void) {
         fetch('/api/journey', {
             method: method,
             headers: {'Content-Type': 'application/json'},
@@ -234,7 +234,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
             })
         })
             .then(result => result.json())
-            .then((result: Object) => cb(result))
+            .then(() => cb())
             .catch(e => console.warn(e));
     }
 }
