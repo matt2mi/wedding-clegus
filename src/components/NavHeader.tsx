@@ -33,22 +33,22 @@ export default class App extends React.Component<Props, State> {
           <Collapse isOpen={this.state.isOpen} navbar={true}>
             <Nav navbar={true}>
               <NavItem>
-                <NavLink href="#/covoiturages">Covoiturage</NavLink>
-              </NavItem>
-              <NavItem>
-                  <NavLink href="#/faire-part">Faire-Part</NavLink>
+                  <NavLink href="#/covoiturages" onClick={this.toggle}>Covoiturage</NavLink>
               </NavItem>
                 <NavItem>
-                    <NavLink href="#/gites">Gîtes</NavLink>
+                    <NavLink href="#/faire-part" onClick={this.toggle}>Faire-Part</NavLink>
+              </NavItem>
+                <NavItem>
+                    <NavLink href="#/gites" onClick={this.toggle}>Gîtes</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink href="#/buffet">Buffet</NavLink>
+                    <NavLink href="#/buffet" onClick={this.toggle}>Buffet</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink href="#/presence">Réponse</NavLink>
+                    <NavLink href="#/presence" onClick={this.toggle}>Réponse</NavLink>
               </NavItem>
                 <NavItem>
-                    <NavLink href="#/contacts">Contacts</NavLink>
+                    <NavLink href="#/contacts" onClick={this.toggle}>Contacts</NavLink>
                 </NavItem>
             </Nav>
           </Collapse>
