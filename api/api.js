@@ -100,9 +100,14 @@ module.exports = function (app, indexFilePath) {
                 firstname: req.body.firstname,
                 phoneNumber: req.body.phoneNumber,
                 nbPersons: req.body.nbPersons
-            }, () => {
-                res.json({});
-                console.log('presence answer created', req.body);
+            }, (error) => {
+                if (error) {
+                    res.json({saved: false, message: error});
+                    console.log('error saving presence ', error);
+                } else {
+                    res.json({saved: true, message: 'Réponse envoyée, à bientôt ' + req.body.firstname + ' !'});
+                    console.log('presence answer created', req.body);
+                }
             });
     });
 
