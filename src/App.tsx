@@ -6,6 +6,10 @@ import Main from './components/Main';
 import CarSharing from './components/CarSharing';
 import Invitation from './components/Invitation';
 import JourneyDetails from './components/JourneyDetails';
+import HotelsNearby from './components/HotelsNearby';
+import SundayFood from './components/SundayFood';
+import InvitationResponse from './components/InvitationResponse';
+import Contacts from './components/Contacts';
 
 class App extends React.Component {
   render() {
@@ -20,6 +24,10 @@ class App extends React.Component {
               <Route path="/covoiturages/edit/:id" component={JourneyDetails}/>
               <Route path="/covoiturages/new" component={JourneyDetails}/>
               <Route path="/faire-part" component={Invitation}/>
+                <Route path="/gites" component={HotelsNearby}/>
+                <Route path="/buffet" component={SundayFood}/>
+                <Route path="/presence" component={InvitationResponse}/>
+                <Route path="/contacts" component={Contacts}/>
             </div>
           </Switch>
         </div>

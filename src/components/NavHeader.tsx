@@ -36,8 +36,20 @@ export default class App extends React.Component<Props, State> {
                 <NavLink href="#/covoiturages">Covoiturage</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="#/faire-part/">Faire-Part</NavLink>
+                  <NavLink href="#/faire-part">Faire-Part</NavLink>
               </NavItem>
+                <NavItem>
+                    <NavLink href="#/gites">Gîtes</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink href="#/buffet">Buffet</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink href="#/presence">Réponse</NavLink>
+              </NavItem>
+                <NavItem>
+                    <NavLink href="#/contacts">Contacts</NavLink>
+                </NavItem>
             </Nav>
           </Collapse>
         </Navbar>

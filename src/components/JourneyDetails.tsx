@@ -101,6 +101,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
         change[fieldName] = event.target.value;
         this.setState(change);
     }
+
     /* tslint:enable */
 
     createJourney(event: React.SyntheticEvent<HTMLButtonElement>, history: H.History) {
@@ -117,7 +118,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
         return (
             <div>
                 <Card body={true}>
-                    <CardTitle>JourneyDetails Page</CardTitle>
+                    <CardTitle>Détails du trajet</CardTitle>
 
                     <Form>
                         <Row className="justify-content-center">
