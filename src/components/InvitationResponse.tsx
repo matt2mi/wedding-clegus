@@ -42,7 +42,7 @@ export default class InvitationResponse extends React.Component<Props, State> {
 
     createAnswer(event: React.SyntheticEvent<HTMLButtonElement>) {
         event.preventDefault();
-        fetch('/api/answer', {
+        fetch('/api/presence', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -65,61 +65,61 @@ export default class InvitationResponse extends React.Component<Props, State> {
 
                     <Form>
                         <Row className="justify-content-center">
-                            <Col sm="3">
-                                <Row className="justify-content-end mt-2">
-                                    <Label className="mt-2" for="name">Nom</Label>
-                                </Row>
-                                <Row className="justify-content-end mt-2">
-                                    <Label className="mt-2" for="name">Prénom</Label>
-                                </Row>
-                                <Row className="justify-content-end mt-2">
-                                    <Label className="mt-2" for="name">Nous serons</Label>
-                                </Row>
-                                <Row className="justify-content-end mt-2">
-                                    <Label className="mt-2" for="name">Numéro</Label>
-                                </Row>
+                            <Col sm="2" className="text-right">
+                                <Label for="name">Nom</Label>
                             </Col>
-                            <Col sm="1"/>
                             <Col sm="4">
-                                <Row className="justify-content-start mt-2">
-                                    <Input
-                                        type="text"
-                                        name="name"
-                                        id="name"
-                                        value={this.state.name}
-                                        onChange={(e) => this.handleChangeForm(e, 'name')}
-                                    />
-                                </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Input
-                                        type="text"
-                                        name="firstname"
-                                        id="firstname"
-                                        value={this.state.firstname}
-                                        onChange={(e) => this.handleChangeForm(e, 'firstname')}
-                                    />
-                                </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Input
-                                        type="number"
-                                        className="col-sm-2"
-                                        name="nbPersons"
-                                        id="nbPersons"
-                                        value={this.state.nbPersons + ''}
-                                        onChange={(e) => this.handleChangeForm(e, 'nbPersons')}
-                                    />
-                                    personne(s)
-                                </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Input
-                                        type="text"
-                                        className="col-sm-8"
-                                        name="phoneNumber"
-                                        id="phoneNumber"
-                                        value={this.state.phoneNumber + ''}
-                                        onChange={(e) => this.handleChangeForm(e, 'phoneNumber')}
-                                    />
-                                </Row>
+                                <Input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    value={this.state.name}
+                                    onChange={(e) => this.handleChangeForm(e, 'name')}
+                                />
+                            </Col>
+                        </Row>
+                        <Row className="justify-content-center">
+                            <Col sm="2" className="text-right">
+                                <Label for="firstname">Prénom</Label>
+                            </Col>
+                            <Col sm="4">
+                                <Input
+                                    type="text"
+                                    name="firstname"
+                                    id="firstname"
+                                    value={this.state.firstname}
+                                    onChange={(e) => this.handleChangeForm(e, 'firstname')}
+                                />
+                            </Col>
+                        </Row>
+                        <Row className="justify-content-center">
+                            <Col sm="2" className="text-right">
+                                <Label for="nbPersons">Nous serons</Label>
+                            </Col>
+                            <Col sm="2">
+                                <Input
+                                    type="number"
+                                    name="nbPersons"
+                                    id="nbPersons"
+                                    value={this.state.nbPersons}
+                                    onChange={(e) => this.handleChangeForm(e, 'nbPersons')}
+                                />
+                            </Col>
+                            <Col sm="2">personnes</Col>
+                        </Row>
+                        <Row className="justify-content-center">
+                            <Col sm="2" className="text-right">
+                                <Label for="phoneNumber">Numéro</Label>
+                            </Col>
+                            <Col sm="4">
+                                <Input
+                                    type="text"
+                                    className="col-sm-8"
+                                    name="phoneNumber"
+                                    id="phoneNumber"
+                                    value={this.state.phoneNumber + ''}
+                                    onChange={(e) => this.handleChangeForm(e, 'phoneNumber')}
+                                />
                             </Col>
                         </Row>
                         <Row className="justify-content-end mt-2">

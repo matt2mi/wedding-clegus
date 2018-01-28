@@ -92,6 +92,20 @@ module.exports = function (app, indexFilePath) {
             });
     });
 
+    app.post('/api/presence', (req, res) => {
+        db.ref("presences")
+            .child("answers")
+            .push({
+                name: req.body.name,
+                firstname: req.body.firstname,
+                phoneNumber: req.body.phoneNumber,
+                nbPersons: req.body.nbPersons
+            }, () => {
+                res.json({});
+                console.log('presence answer created', req.body);
+            });
+    });
+
     // send React's index.html file.
     app.get('*', (req, res) => {
         res.sendFile(path.join(indexFilePath));
