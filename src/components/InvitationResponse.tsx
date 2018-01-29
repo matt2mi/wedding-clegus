@@ -15,6 +15,7 @@ interface State {
     readonly nbVeganPersons: number;
     readonly phoneNumber: string;
     readonly email: string;
+    readonly comment: string;
     readonly displayForm: boolean;
     readonly notificationVisible: boolean;
     readonly notificationMessage: string;
@@ -35,6 +36,7 @@ export default class InvitationResponse extends React.Component<Props, State> {
             nbVeganPersons: 0,
             phoneNumber: '',
             email: '',
+            comment: '',
             displayForm: true,
             notificationVisible: false,
             notificationMessage: ''
@@ -62,7 +64,8 @@ export default class InvitationResponse extends React.Component<Props, State> {
                 nbPersons: this.state.nbPersons,
                 nbVeganPersons: this.state.nbVeganPersons,
                 phoneNumber: this.state.phoneNumber,
-                email: this.state.email
+                email: this.state.email,
+                comment: this.state.comment
             })
         })
             .then(result => result.json())
@@ -177,6 +180,21 @@ export default class InvitationResponse extends React.Component<Props, State> {
                                         />
                                     </Col>
                                     <Col sm="2">végétariennes</Col>
+                                </Row>
+                                <Row className="justify-content-center">
+                                    <Col sm="2" className="text-right">
+                                        <Label for="comment">Commentaire</Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Input
+                                            type="text"
+                                            className="col-sm-8"
+                                            name="comment"
+                                            id="comment"
+                                            value={this.state.comment}
+                                            onChange={(e) => this.handleChangeForm(e, 'comment')}
+                                        />
+                                    </Col>
                                 </Row>
                                 <Row className="justify-content-end mt-2">
                                     <Col sm="2">

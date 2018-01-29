@@ -111,7 +111,8 @@ module.exports = function (app, indexFilePath) {
                     phoneNumber: dbPresences[key].phoneNumber,
                     email: dbPresences[key].email,
                     nbPersons: dbPresences[key].nbPersons,
-                    nbVeganPersons: dbPresences[key].nbVeganPersons
+                    nbVeganPersons: dbPresences[key].nbVeganPersons,
+                    comment: dbPresences[key].comment
                 }));
             res.json(result);
             console.log('presences sent', result);
@@ -127,7 +128,8 @@ module.exports = function (app, indexFilePath) {
                 phoneNumber: req.body.phoneNumber,
                 email: req.body.email,
                 nbPersons: req.body.nbPersons,
-                nbVeganPersons: req.body.nbVeganPersons
+                nbVeganPersons: req.body.nbVeganPersons,
+                comment: req.body.comment
             }, (error) => {
                 if (error) {
                     res.json({saved: false, message: error});
