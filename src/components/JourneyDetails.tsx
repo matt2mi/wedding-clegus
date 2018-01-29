@@ -127,7 +127,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                         <Row className="justify-content-start mt-2">
                             <Col sm="3" xs="12">
                                 <Row className="justify-content-sm-end">
-                                    <Label className="mt-2 pr-3" for="name">Prénom</Label>
+                                    <Label className="mt-2 pr-3" for="driverFirstName">Prénom</Label>
                                 </Row>
                             </Col>
                             <Col sm="6" xs="12">
@@ -146,7 +146,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                         <Row className="justify-content-start mt-2">
                             <Col sm="3" xs="12">
                                 <Row className="justify-content-sm-end">
-                                    <Label className="mt-2 pr-3" for="name">Nom</Label>
+                                    <Label className="mt-2 pr-3" for="driverName">Nom</Label>
                                 </Row>
                             </Col>
                             <Col sm="6" xs="12">
@@ -165,7 +165,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                         <Row className="justify-content-start mt-2">
                             <Col sm="3" xs="12">
                                 <Row className="justify-content-sm-end">
-                                    <Label className="mt-2 pr-3" for="name">Téléphone</Label>
+                                    <Label className="mt-2 pr-3" for="driverPhoneNumber">Téléphone</Label>
                                 </Row>
                             </Col>
                             <Col sm="6" xs="12">
@@ -185,13 +185,13 @@ export default class JourneyDetails extends React.Component<Props, State> {
                         <Row className="justify-content-start mt-2">
                             <Col sm="3" xs="12">
                                 <Row className="justify-content-sm-end">
-                                    <Label className="mt-2 pr-3" for="name">Email</Label>
+                                    <Label className="mt-2 pr-3" for="driverEmail">Email</Label>
                                 </Row>
                             </Col>
                             <Col sm="6" xs="12">
                                 <Row className="justify-content-sm-start">
                                     <Input
-                                        type="text"
+                                        type="email"
                                         className="col-sm-8"
                                         name="driverEmail"
                                         id="driverEmail"
@@ -205,7 +205,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                         <Row className="justify-content-start mt-2">
                             <Col sm="3" xs="12">
                                 <Row className="justify-content-sm-end">
-                                    <Label className="mt-2 pr-3" for="name">Départ</Label>
+                                    <Label className="mt-2 pr-3" for="fromCity">Départ</Label>
                                 </Row>
                             </Col>
                             <Col sm="6" xs="12">
@@ -224,7 +224,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                         <Row className="justify-content-start mt-2">
                             <Col sm="3" xs="12">
                                 <Row className="justify-content-sm-end">
-                                    <Label className="mt-2 pr-3" for="name">Arrivée</Label>
+                                    <Label className="mt-2 pr-3" for="toCity">Arrivée</Label>
                                 </Row>
                             </Col>
                             <Col sm="6" xs="12">
@@ -243,7 +243,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                         <Row className="justify-content-start mt-2">
                             <Col sm="3" xs="12">
                                 <Row className="justify-content-sm-end">
-                                    <Label className="mt-2 pr-3" for="name">Sièges libres</Label>
+                                    <Label className="mt-2 pr-3" for="freeSeats">Sièges libres</Label>
                                 </Row>
                             </Col>
                             <Col sm="6" xs="12">
@@ -263,7 +263,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                         <Row className="justify-content-start mt-2">
                             <Col sm="3" xs="12">
                                 <Row className="justify-content-sm-end">
-                                    <Label className="mt-2 pr-3" for="name">Commentaire</Label>
+                                    <Label className="mt-2 pr-3" for="comment">Commentaire</Label>
                                 </Row>
                             </Col>
                             <Col sm="6" xs="12">

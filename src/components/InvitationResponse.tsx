@@ -92,117 +92,157 @@ export default class InvitationResponse extends React.Component<Props, State> {
                     {
                         this.state.displayForm ?
                             <Form>
-                                <Row className="justify-content-center">
-                                    <Col sm="2" className="text-right">
-                                        <Label for="firstname">Prénom</Label>
+                                <Row className="justify-content-start mt-2">
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-end">
+                                            <Label className="mt-2 pr-3" for="firstname">Prénom</Label>
+                                        </Row>
                                     </Col>
-                                    <Col sm="4">
-                                        <Input
-                                            type="text"
-                                            name="firstname"
-                                            id="firstname"
-                                            value={this.state.firstname}
-                                            onChange={(e) => this.handleChangeForm(e, 'firstname')}
-                                        />
-                                    </Col>
-                                </Row>
-                                <Row className="justify-content-center">
-                                    <Col sm="2" className="text-right">
-                                        <Label for="name">Nom</Label>
-                                    </Col>
-                                    <Col sm="4">
-                                        <Input
-                                            type="text"
-                                            name="name"
-                                            id="name"
-                                            value={this.state.name}
-                                            onChange={(e) => this.handleChangeForm(e, 'name')}
-                                        />
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-start">
+                                            <Input
+                                                type="text"
+                                                name="firstname"
+                                                id="firstname"
+                                                value={this.state.firstname}
+                                                onChange={(e) => this.handleChangeForm(e, 'firstname')}
+                                            />
+                                        </Row>
                                     </Col>
                                 </Row>
-                                <Row className="justify-content-center">
-                                    <Col sm="2" className="text-right">
-                                        <Label for="phoneNumber">Numéro</Label>
+
+                                <Row className="justify-content-start mt-2">
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-end">
+                                            <Label className="mt-2 pr-3" for="name">Nom</Label>
+                                        </Row>
                                     </Col>
-                                    <Col sm="4">
-                                        <Input
-                                            type="text"
-                                            className="col-sm-8"
-                                            name="phoneNumber"
-                                            id="phoneNumber"
-                                            value={this.state.phoneNumber + ''}
-                                            onChange={(e) => this.handleChangeForm(e, 'phoneNumber')}
-                                        />
-                                    </Col>
-                                </Row>
-                                <Row className="justify-content-center">
-                                    <Col sm="2" className="text-right">
-                                        <Label for="email">Email</Label>
-                                    </Col>
-                                    <Col sm="4">
-                                        <Input
-                                            type="text"
-                                            className="col-sm-8"
-                                            name="email"
-                                            id="email"
-                                            value={this.state.email}
-                                            onChange={(e) => this.handleChangeForm(e, 'email')}
-                                        />
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-start">
+                                            <Input
+                                                type="text"
+                                                name="name"
+                                                id="name"
+                                                value={this.state.name}
+                                                onChange={(e) => this.handleChangeForm(e, 'name')}
+                                            />
+                                        </Row>
                                     </Col>
                                 </Row>
-                                <Row className="justify-content-center">
-                                    <Col sm="2" className="text-right">
-                                        <Label for="nbPersons">Nous serons</Label>
+
+                                <Row className="justify-content-start mt-2">
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-end">
+                                            <Label className="mt-2 pr-3" for="phoneNumber">Téléphone</Label>
+                                        </Row>
                                     </Col>
-                                    <Col sm="2">
-                                        <Input
-                                            type="number"
-                                            name="nbPersons"
-                                            id="nbPersons"
-                                            value={this.state.nbPersons}
-                                            onChange={(e) => this.handleChangeForm(e, 'nbPersons')}
-                                        />
-                                    </Col>
-                                    <Col sm="2">personnes</Col>
-                                </Row>
-                                <Row className="justify-content-center">
-                                    <Col sm="2" className="text-right">
-                                        <Label for="nbVeganPersons">Dont</Label>
-                                    </Col>
-                                    <Col sm="2">
-                                        <Input
-                                            type="number"
-                                            name="nbVeganPersons"
-                                            id="nbVeganPersons"
-                                            max={this.state.nbPersons}
-                                            value={this.state.nbVeganPersons}
-                                            onChange={(e) => this.handleChangeForm(e, 'nbVeganPersons')}
-                                        />
-                                    </Col>
-                                    <Col sm="2">végétariennes</Col>
-                                </Row>
-                                <Row className="justify-content-center">
-                                    <Col sm="2" className="text-right">
-                                        <Label for="comment">Commentaire</Label>
-                                    </Col>
-                                    <Col sm="4">
-                                        <Input
-                                            type="text"
-                                            className="col-sm-8"
-                                            name="comment"
-                                            id="comment"
-                                            value={this.state.comment}
-                                            onChange={(e) => this.handleChangeForm(e, 'comment')}
-                                        />
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-start">
+                                            <Input
+                                                type="text"
+                                                name="phoneNumber"
+                                                id="phoneNumber"
+                                                value={this.state.phoneNumber}
+                                                onChange={(e) => this.handleChangeForm(e, 'phoneNumber')}
+                                            />
+                                        </Row>
                                     </Col>
                                 </Row>
-                                <Row className="justify-content-end mt-2">
-                                    <Col sm="2">
+
+                                <Row className="justify-content-start mt-2">
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-end">
+                                            <Label className="mt-2 pr-3" for="email">Email</Label>
+                                        </Row>
+                                    </Col>
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-start">
+                                            <Input
+                                                type="email"
+                                                name="email"
+                                                id="email"
+                                                value={this.state.email}
+                                                onChange={(e) => this.handleChangeForm(e, 'email')}
+                                            />
+                                        </Row>
+                                    </Col>
+                                </Row>
+
+                                <Row className="justify-content-start mt-2">
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-end">
+                                            <Label className="mt-2 pr-3" for="nbPersons">Nous serons</Label>
+                                        </Row>
+                                    </Col>
+                                    <Col sm="2" xs="12">
+                                        <Row className="justify-content-sm-start">
+                                            <Input
+                                                type="number"
+                                                name="nbPersons"
+                                                id="nbPersons"
+                                                min="0"
+                                                value={this.state.nbPersons}
+                                                onChange={(e) => this.handleChangeForm(e, 'nbPersons')}
+                                            />
+                                        </Row>
+                                    </Col>
+                                    <Col sm="2" xs="12">
+                                        <Row className="justify-content-sm-start">
+                                            <Label className="mt-2 pl-3" for="nbPersons2">personnes</Label>
+                                        </Row>
+                                    </Col>
+                                </Row>
+
+                                <Row className="justify-content-start mt-2">
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-end">
+                                            <Label className="mt-2 pr-3" for="nbVeganPersons">Dont</Label>
+                                        </Row>
+                                    </Col>
+                                    <Col sm="2" xs="12">
+                                        <Row className="justify-content-sm-start">
+                                            <Input
+                                                type="number"
+                                                name="nbVeganPersons"
+                                                id="nbVeganPersons"
+                                                max={this.state.nbPersons}
+                                                min="0"
+                                                value={this.state.nbVeganPersons}
+                                                onChange={(e) => this.handleChangeForm(e, 'nbVeganPersons')}
+                                            />
+                                        </Row>
+                                    </Col>
+                                    <Col sm="2" xs="12">
+                                        <Row className="justify-content-sm-start">
+                                            <Label className="mt-2 pl-3" for="nbVeganPersons2">végétariennes</Label>
+                                        </Row>
+                                    </Col>
+                                </Row>
+
+                                <Row className="justify-content-start mt-2">
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-end">
+                                            <Label className="mt-2 pr-3" for="comment">Commentaire</Label>
+                                        </Row>
+                                    </Col>
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-start">
+                                            <Input
+                                                type="textarea"
+                                                name="comment"
+                                                id="comment"
+                                                value={this.state.comment}
+                                                onChange={(e) => this.handleChangeForm(e, 'comment')}
+                                            />
+                                        </Row>
+                                    </Col>
+                                </Row>
+                                <Row className="mt-2 justify-content-center">
+                                    <Col sm="2" xs="12">
                                         <Button color="primary" onClick={this.createAnswer}>
                                             Envoyer la réponse
                                         </Button>
                                     </Col>
-                                    <Col sm="1"/>
                                 </Row>
                             </Form> :
                             null
