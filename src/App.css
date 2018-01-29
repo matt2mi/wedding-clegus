@@ -22,3 +22,7 @@ label {
 table th {
     border-top: none !important;
 }
+
+textarea {
+    height: 120px;
+}

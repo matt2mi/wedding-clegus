@@ -1,16 +1,15 @@
+import * as H from 'history';
 import * as React from 'react';
-import CardTitle from 'reactstrap/lib/CardTitle';
+import { withRouter } from 'react-router';
+import Button from 'reactstrap/lib/Button';
 import Card from 'reactstrap/lib/Card';
+import CardTitle from 'reactstrap/lib/CardTitle';
 import Col from 'reactstrap/lib/Col';
-import Row from 'reactstrap/lib/Row';
+import Form from 'reactstrap/lib/Form';
 import Input from 'reactstrap/lib/Input';
 import Label from 'reactstrap/lib/Label';
-import Form from 'reactstrap/lib/Form';
-import { City, Journey } from '../helpers/interfaces';
-import Button from 'reactstrap/lib/Button';
-import { withRouter } from 'react-router';
-import * as H from 'history';
-import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
+import Row from 'reactstrap/lib/Row';
+import { Journey } from '../helpers/interfaces';
 
 interface Props {
     match: { params: { id?: number } };
@@ -18,16 +17,15 @@ interface Props {
 
 interface State {
     readonly createMode: boolean;
-    readonly dropdownOpen: boolean;
-    readonly cityList: City[];
     readonly id: string | null;
-    readonly name: string;
+    readonly driverFirstName: string;
+    readonly driverName: string;
+    readonly driverPhoneNumber: string;
+    readonly driverEmail: string;
     readonly fromCity: string;
     readonly toCity: string;
     readonly freeSeats: number;
-    readonly totalSeats: number;
-    readonly price: number;
-    readonly driverPhoneNumber: string;
+    readonly comment: string;
 }
 
 export default class JourneyDetails extends React.Component<Props, State> {
@@ -40,22 +38,20 @@ export default class JourneyDetails extends React.Component<Props, State> {
         super(props);
 
         this.handleChangeForm = this.handleChangeForm.bind(this);
-        this.handleChangeCity = this.handleChangeCity.bind(this);
         this.createJourney = this.createJourney.bind(this);
         this.updateJourney = this.updateJourney.bind(this);
-        this.toggle = this.toggle.bind(this);
 
-        this.CreateButton = withRouter(({history}) => (
+        this.CreateButton = withRouter(({ history }) => (
             <Button color="primary" onClick={(e) => this.createJourney(e, history)}>
                 Créer
             </Button>
         ));
-        this.UpdateButton = withRouter(({history}) => (
+        this.UpdateButton = withRouter(({ history }) => (
             <Button color="primary" onClick={(e) => this.updateJourney(e, history)}>
                 MAJ
             </Button>
         ));
-        this.GoBackButton = withRouter(({history}) => (
+        this.GoBackButton = withRouter(({ history }) => (
             <Button
                 color="primary"
                 onClick={(e) => {
@@ -69,16 +65,15 @@ export default class JourneyDetails extends React.Component<Props, State> {
 
         this.state = {
             createMode: true,
-            dropdownOpen: false,
-            cityList: [],
             id: null,
-            name: '',
+            driverFirstName: '',
+            driverName: '',
+            driverPhoneNumber: '',
+            driverEmail: '',
             fromCity: '',
             toCity: '',
             freeSeats: 0,
-            totalSeats: 0,
-            price: 0,
-            driverPhoneNumber: ''
+            comment: ''
         };
 
         if (this.props.match.params.id) {
@@ -88,13 +83,14 @@ export default class JourneyDetails extends React.Component<Props, State> {
                     this.setState({
                         createMode: false,
                         id: journey.id,
-                        name: journey.name,
+                        driverFirstName: journey.driverFirstName,
+                        driverName: journey.driverName,
+                        driverPhoneNumber: journey.driverPhoneNumber,
+                        driverEmail: journey.driverEmail,
                         fromCity: journey.fromCity,
                         toCity: journey.toCity,
                         freeSeats: journey.freeSeats,
-                        totalSeats: journey.totalSeats,
-                        price: journey.price,
-                        driverPhoneNumber: journey.driverPhoneNumber
+                        comment: journey.comment
                     });
                 })
                 .catch(e => console.warn(e));
@@ -109,32 +105,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
         this.setState(change);
     }
 
-    handleChangeCity(event: any) {
-        const value = event.target.value;
-        event.preventDefault();
-        if (value.length > 2) {
-            fetch('https://geo.api.gouv.fr/communes?nom=' + value)
-                .then(res => res.json())
-                .then((res: City[]) => {
-                    this.setState({
-                        fromCity: value,
-                        cityList: res
-                    });
-                    this.toggle();
-                })
-                .catch(e => console.warn(e));
-        } else {
-            this.setState({fromCity: value});
-        }
-    }
-
     /* tslint:enable */
-
-    toggle() {
-        this.setState({
-            dropdownOpen: !this.state.dropdownOpen
-        });
-    }
 
     createJourney(event: React.SyntheticEvent<HTMLButtonElement>, history: H.History) {
         event.preventDefault();
@@ -153,54 +124,111 @@ export default class JourneyDetails extends React.Component<Props, State> {
                     <CardTitle>Détails du trajet</CardTitle>
 
                     <Form>
-                        <Row className="justify-content-center">
-                            <Col sm="3">
-                                <Row className="justify-content-end mt-2">
-                                    <Label className="mt-2" for="name">Départ</Label>
-                                </Row>
-                                <Row className="justify-content-end mt-2">
-                                    <Label className="mt-2" for="name">Arrivée</Label>
-                                </Row>
-                                <Row className="justify-content-end mt-2">
-                                    <Label className="mt-2" for="name">Sièges libres</Label>
-                                </Row>
-                                <Row className="justify-content-end mt-2">
-                                    <Label className="mt-2" for="name">Sièges totaux</Label>
-                                </Row>
-                                <Row className="justify-content-end mt-2">
-                                    <Label className="mt-2" for="name">Prix</Label>
-                                </Row>
-                                <Row className="justify-content-end mt-2">
-                                    <Label className="mt-2" for="name">Numéro</Label>
+                        <Row className="justify-content-start mt-2">
+                            <Col sm="3" xs="12">
+                                <Row className="justify-content-sm-end">
+                                    <Label className="mt-2 pr-3" for="name">Prénom</Label>
                                 </Row>
                             </Col>
-                            <Col sm="1"/>
-                            <Col sm="4">
-                                <Row className="justify-content-start mt-2">
+                            <Col sm="6" xs="12">
+                                <Row className="justify-content-sm-start">
+                                    <Input
+                                        type="text"
+                                        name="driverFirstName"
+                                        id="driverFirstName"
+                                        value={this.state.driverFirstName}
+                                        onChange={(e) => this.handleChangeForm(e, 'driverFirstName')}
+                                    />
+                                </Row>
+                            </Col>
+                        </Row>
+
+                        <Row className="justify-content-start mt-2">
+                            <Col sm="3" xs="12">
+                                <Row className="justify-content-sm-end">
+                                    <Label className="mt-2 pr-3" for="name">Nom</Label>
+                                </Row>
+                            </Col>
+                            <Col sm="6" xs="12">
+                                <Row className="justify-content-sm-start">
+                                    <Input
+                                        type="text"
+                                        name="driverName"
+                                        id="driverName"
+                                        value={this.state.driverName}
+                                        onChange={(e) => this.handleChangeForm(e, 'driverName')}
+                                    />
+                                </Row>
+                            </Col>
+                        </Row>
+
+                        <Row className="justify-content-start mt-2">
+                            <Col sm="3" xs="12">
+                                <Row className="justify-content-sm-end">
+                                    <Label className="mt-2 pr-3" for="name">Téléphone</Label>
+                                </Row>
+                            </Col>
+                            <Col sm="6" xs="12">
+                                <Row className="justify-content-sm-start">
+                                    <Input
+                                        type="number"
+                                        className="col-sm-8"
+                                        name="driverPhoneNumber"
+                                        id="driverPhoneNumber"
+                                        value={this.state.driverPhoneNumber}
+                                        onChange={(e) => this.handleChangeForm(e, 'driverPhoneNumber')}
+                                    />
+                                </Row>
+                            </Col>
+                        </Row>
+
+                        <Row className="justify-content-start mt-2">
+                            <Col sm="3" xs="12">
+                                <Row className="justify-content-sm-end">
+                                    <Label className="mt-2 pr-3" for="name">Email</Label>
+                                </Row>
+                            </Col>
+                            <Col sm="6" xs="12">
+                                <Row className="justify-content-sm-start">
+                                    <Input
+                                        type="text"
+                                        className="col-sm-8"
+                                        name="driverEmail"
+                                        id="driverEmail"
+                                        value={this.state.driverEmail}
+                                        onChange={(e) => this.handleChangeForm(e, 'driverEmail')}
+                                    />
+                                </Row>
+                            </Col>
+                        </Row>
+
+                        <Row className="justify-content-start mt-2">
+                            <Col sm="3" xs="12">
+                                <Row className="justify-content-sm-end">
+                                    <Label className="mt-2 pr-3" for="name">Départ</Label>
+                                </Row>
+                            </Col>
+                            <Col sm="6" xs="12">
+                                <Row className="justify-content-sm-start">
                                     <Input
                                         type="text"
                                         name="fromCity"
                                         id="fromCity"
                                         value={this.state.fromCity}
-                                        onChange={(e) => this.handleChangeCity(e)}
+                                        onChange={(e) => this.handleChangeForm(e, 'fromCity')}
                                     />
-
-                                    <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                                        <DropdownToggle caret={true}>
-                                            Button Dropdown
-                                        </DropdownToggle>
-                                        {
-                                            this.state.cityList.map((city: City, id: number) => {
-                                                return id < 6 ?
-                                                    <DropdownMenu>
-                                                        <DropdownItem>{city.nom}</DropdownItem>
-                                                    </DropdownMenu> :
-                                                    null;
-                                            })
-                                        }
-                                    </ButtonDropdown>
                                 </Row>
-                                <Row className="justify-content-start mt-2">
+                            </Col>
+                        </Row>
+
+                        <Row className="justify-content-start mt-2">
+                            <Col sm="3" xs="12">
+                                <Row className="justify-content-sm-end">
+                                    <Label className="mt-2 pr-3" for="name">Arrivée</Label>
+                                </Row>
+                            </Col>
+                            <Col sm="6" xs="12">
+                                <Row className="justify-content-sm-start">
                                     <Input
                                         type="text"
                                         name="toCity"
@@ -209,7 +237,17 @@ export default class JourneyDetails extends React.Component<Props, State> {
                                         onChange={(e) => this.handleChangeForm(e, 'toCity')}
                                     />
                                 </Row>
-                                <Row className="justify-content-start mt-2">
+                            </Col>
+                        </Row>
+
+                        <Row className="justify-content-start mt-2">
+                            <Col sm="3" xs="12">
+                                <Row className="justify-content-sm-end">
+                                    <Label className="mt-2 pr-3" for="name">Sièges libres</Label>
+                                </Row>
+                            </Col>
+                            <Col sm="6" xs="12">
+                                <Row className="justify-content-sm-start">
                                     <Input
                                         type="number"
                                         className="col-sm-3"
@@ -219,44 +257,35 @@ export default class JourneyDetails extends React.Component<Props, State> {
                                         onChange={(e) => this.handleChangeForm(e, 'freeSeats')}
                                     />
                                 </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Input
-                                        type="number"
-                                        className="col-sm-3"
-                                        name="totalSeats"
-                                        id="totalSeats"
-                                        value={this.state.totalSeats + ''}
-                                        onChange={(e) => this.handleChangeForm(e, 'totalSeats')}
-                                    />
+                            </Col>
+                        </Row>
+
+                        <Row className="justify-content-start mt-2">
+                            <Col sm="3" xs="12">
+                                <Row className="justify-content-sm-end">
+                                    <Label className="mt-2 pr-3" for="name">Commentaire</Label>
                                 </Row>
-                                <Row className="justify-content-start mt-2">
+                            </Col>
+                            <Col sm="6" xs="12">
+                                <Row className="justify-content-sm-start">
                                     <Input
-                                        type="number"
-                                        className="col-sm-4"
-                                        name="price"
-                                        id="price"
-                                        value={this.state.price + ''}
-                                        onChange={(e) => this.handleChangeForm(e, 'price')}
-                                    />
-                                    €
-                                </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Input
-                                        type="text"
-                                        className="col-sm-8"
-                                        name="driverPhoneNumber"
-                                        id="driverPhoneNumber"
-                                        value={this.state.driverPhoneNumber + ''}
-                                        onChange={(e) => this.handleChangeForm(e, 'driverPhoneNumber')}
+                                        type="textarea"
+                                        className="col-sm-12"
+                                        name="comment"
+                                        id="comment"
+                                        value={this.state.comment}
+                                        onChange={(e) => this.handleChangeForm(e, 'comment')}
                                     />
                                 </Row>
                             </Col>
                         </Row>
-                        <Row className="justify-content-end mt-2">
-                            <Col sm="2">
+
+                        <Row className="mt-2">
+                            <Col lg="4"/>
+                            <Col lg="2">
                                 <this.GoBackButton/>
                             </Col>
-                            <Col sm="2">
+                            <Col lg="2">
                                 {this.state.createMode ? <this.CreateButton/> : <this.UpdateButton/>}
                             </Col>
                         </Row>
@@ -269,16 +298,17 @@ export default class JourneyDetails extends React.Component<Props, State> {
     private createOrUpdateJourney(method: string, cb: () => void) {
         fetch('/api/journey', {
             method: method,
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 id: this.state.id,
-                name: this.state.fromCity + ' - ' + this.state.toCity,
+                driverFirstName: this.state.driverFirstName,
+                driverName: this.state.driverName,
+                driverPhoneNumber: this.state.driverPhoneNumber,
+                driverEmail: this.state.driverEmail,
                 fromCity: this.state.fromCity,
                 toCity: this.state.toCity,
                 freeSeats: this.state.freeSeats,
-                totalSeats: this.state.totalSeats,
-                price: this.state.price,
-                driverPhoneNumber: this.state.driverPhoneNumber
+                comment: this.state.comment
             })
         })
             .then(result => result.json())

@@ -19,13 +19,14 @@ module.exports = function (app, indexFilePath) {
                 .keys(dbJourneys)
                 .map(key => ({
                     id: key,
-                    name: dbJourneys[key].name,
+                    driverFirstName: dbJourneys[key].driverFirstName,
+                    driverName: dbJourneys[key].driverName,
+                    driverPhoneNumber: dbJourneys[key].driverPhoneNumber,
+                    driverEmail: dbJourneys[key].driverEmail,
                     fromCity: dbJourneys[key].fromCity,
                     toCity: dbJourneys[key].toCity,
                     freeSeats: dbJourneys[key].freeSeats,
-                    totalSeats: dbJourneys[key].totalSeats,
-                    price: dbJourneys[key].price,
-                    driverPhoneNumber: dbJourneys[key].driverPhoneNumber
+                    comment: dbJourneys[key].comment
                 }));
             res.json(result);
             console.log('journeys sent', result);
@@ -37,12 +38,14 @@ module.exports = function (app, indexFilePath) {
             const journey = snapshot.val()[req.params.id];
             const result = {
                 id: req.params.id,
+                driverFirstName: journey.driverFirstName,
+                driverName: journey.driverName,
+                driverPhoneNumber: journey.driverPhoneNumber,
+                driverEmail: journey.driverEmail,
                 fromCity: journey.fromCity,
                 toCity: journey.toCity,
                 freeSeats: journey.freeSeats,
-                totalSeats: journey.totalSeats,
-                price: journey.price,
-                driverPhoneNumber: journey.driverPhoneNumber
+                comment: journey.comment
             };
             console.log(result);
 
@@ -55,12 +58,14 @@ module.exports = function (app, indexFilePath) {
         db.ref("journeys")
             .child("details")
             .push({
-                toCity: req.body.toCity,
-                fromCity: req.body.fromCity,
+                driverFirstName: req.body.driverFirstName,
+                driverName: req.body.driverName,
                 driverPhoneNumber: req.body.driverPhoneNumber,
+                driverEmail: req.body.driverEmail,
+                fromCity: req.body.fromCity,
+                toCity: req.body.toCity,
                 freeSeats: req.body.freeSeats,
-                totalSeats: req.body.totalSeats,
-                price: req.body.price
+                comment: req.body.comment
             }, () => {
                 res.json({});
                 console.log('journey created', req.body);
@@ -80,12 +85,14 @@ module.exports = function (app, indexFilePath) {
         db.ref("journeys")
             .child("details/" + req.body.id)
             .set({
-                toCity: req.body.toCity,
-                fromCity: req.body.fromCity,
+                driverFirstName: req.body.driverFirstName,
+                driverName: req.body.driverName,
                 driverPhoneNumber: req.body.driverPhoneNumber,
+                driverEmail: req.body.driverEmail,
+                fromCity: req.body.fromCity,
+                toCity: req.body.toCity,
                 freeSeats: req.body.freeSeats,
-                totalSeats: req.body.totalSeats,
-                price: req.body.price
+                comment: req.body.comment
             }, () => {
                 res.status(200).json({});
                 console.log('journey updated');
