@@ -2,6 +2,10 @@
     text-align: center;
 }
 
+.base-div-content {
+    margin-top: 60px;
+}
+
 .navbar a {
     color: white !important;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;

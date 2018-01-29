@@ -34,7 +34,7 @@ const items = [
 export default class HotelsNearby extends React.Component<Props, State> {
     render() {
         return (
-            <div>
+            <div className="base-div-content">
                 <Row>
                     <Col sm="12">
                         <Card body={true}>
@@ -43,23 +43,25 @@ export default class HotelsNearby extends React.Component<Props, State> {
                             <Row>
                                 {
                                     items.map((item, id) => {
-                                        return (<Col sm="3" key={id}>
-                                            <Card>
-                                                <CardImg
-                                                    top={true}
-                                                    width="100%"
-                                                    src={item.src}
-                                                    alt={item.captionHeader}
-                                                />
-                                                <CardBody>
-                                                    <CardTitle>{item.captionHeader}</CardTitle>
-                                                    <CardText>{item.captionText}</CardText>
-                                                    <CardText>
-                                                        <a target="_blank" href={item.href}>lien annonce</a>
-                                                    </CardText>
-                                                </CardBody>
-                                            </Card>
-                                        </Col>);
+                                        return (
+                                            <Col xs="12" sm="6" md="6" lg="4" className="mb-3" key={id}>
+                                                <Card>
+                                                    <CardImg
+                                                        top={true}
+                                                        width="100%"
+                                                        src={item.src}
+                                                        alt={item.captionHeader}
+                                                    />
+                                                    <CardBody>
+                                                        <CardTitle>{item.captionHeader}</CardTitle>
+                                                        <CardText>{item.captionText}</CardText>
+                                                        <CardText>
+                                                            <a target="_blank" href={item.href}>lien annonce</a>
+                                                        </CardText>
+                                                    </CardBody>
+                                                </Card>
+                                            </Col>
+                                        );
                                     })
                                 }
                             </Row>

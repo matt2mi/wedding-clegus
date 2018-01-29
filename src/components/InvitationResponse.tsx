@@ -86,7 +86,7 @@ export default class InvitationResponse extends React.Component<Props, State> {
 
     render() {
         return (
-            <div>
+            <div className="base-div-content">
                 <Card body={true}>
                     <CardTitle>Formulaire de présence</CardTitle>
                     {

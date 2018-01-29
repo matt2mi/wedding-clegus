@@ -119,7 +119,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
 
     render() {
         return (
-            <div>
+            <div className="base-div-content">
                 <Card body={true}>
                     <CardTitle>Détails du trajet</CardTitle>
 

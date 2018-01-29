@@ -84,7 +84,7 @@ export default class CarSharing extends React.Component <Props, State> {
             return (<Redirect to={'/covoiturages/new'}/>);
         }
         return (
-            <div>
+            <div className="base-div-content">
                 <Row>
                     <Col sm="12">
                         <table className="table">

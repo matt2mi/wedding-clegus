@@ -8,7 +8,7 @@ import Row from 'reactstrap/lib/Row';
 export default class SundayFood extends React.Component {
     render() {
         return (
-            <div>
+            <div className="base-div-content">
                 <Row>
                     <Col sm="12">
                         <Card body={true}>

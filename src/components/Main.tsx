@@ -8,7 +8,7 @@ import Row from 'reactstrap/lib/Row';
 export default class Main extends React.Component {
     render() {
         return (
-            <div>
+            <div className="base-div-content">
                 <Row>
                     <Col sm="12">
                         <Card body={true}>

@@ -53,7 +53,7 @@ export default class PresenceList extends React.Component <Props, State> {
 
     render() {
         return (
-            <div>
+            <div className="base-div-content">
                 <Row>
                     <Col>
                         <p>Total : {this.state.nbParticipants} participants,

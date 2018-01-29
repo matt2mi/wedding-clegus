@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
 import './App.css';
+import 'font-awesome/css/font-awesome.min.css';
 import CarSharing from './components/CarSharing';
 import Contacts from './components/Contacts';
 import HotelsNearby from './components/HotelsNearby';

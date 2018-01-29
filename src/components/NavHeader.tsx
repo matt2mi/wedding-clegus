@@ -27,7 +27,7 @@ export default class App extends React.Component<Props, State> {
   render() {
     return (
       <div>
-        <Navbar color="faded" light={true} expand="md">
+          <Navbar color="faded" light={true} expand="md" fixed="top">
           <NavbarBrand href="#/">Mariage CleGus</NavbarBrand>
           <NavbarToggler onClick={this.toggle}/>
           <Collapse isOpen={this.state.isOpen} navbar={true}>
