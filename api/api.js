@@ -10,7 +10,7 @@ const db = admin.database();
 
 module.exports = function (app, indexFilePath) {
     // TODO faire un retour propre avec juste statut
-    
+
     // Put all API endpoints under '/api'
     app.get('/api/journeys', (req, res) => {
         db.ref("journeys/details").once("value", function (snapshot) {
@@ -90,6 +90,23 @@ module.exports = function (app, indexFilePath) {
                 res.status(200).json({});
                 console.log('journey updated');
             });
+    });
+
+    app.get('/api/presences', (req, res) => {
+        db.ref("presences/answers").once("value", function (snapshot) {
+            const dbPresences = snapshot.val();
+            const result = Object
+                .keys(dbPresences)
+                .map(key => ({
+                    id: key,
+                    name: dbPresences[key].name,
+                    firstname: dbPresences[key].firstname,
+                    nbPersons: dbPresences[key].nbPersons,
+                    phoneNumber: dbPresences[key].phoneNumber
+                }));
+            res.json(result);
+            console.log('presences sent', result);
+        });
     });
 
     app.post('/api/presence', (req, res) => {

@@ -18,3 +18,11 @@ export interface City {
     population: number;
     _score: number;
 }
+
+export interface PresenceResponse {
+    id: string;
+    name: string;
+    firstname: string;
+    nbPersons: number;
+    phoneNumber: string;
+}
