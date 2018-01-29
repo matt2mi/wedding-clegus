@@ -6,10 +6,11 @@ import Row from 'reactstrap/lib/Row';
 import Input from 'reactstrap/lib/Input';
 import Label from 'reactstrap/lib/Label';
 import Form from 'reactstrap/lib/Form';
-import { Journey } from '../helpers/interfaces';
+import { City, Journey } from '../helpers/interfaces';
 import Button from 'reactstrap/lib/Button';
 import { withRouter } from 'react-router';
 import * as H from 'history';
+import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 
 interface Props {
     match: { params: { id?: number } };
@@ -17,6 +18,8 @@ interface Props {
 
 interface State {
     readonly createMode: boolean;
+    readonly dropdownOpen: boolean;
+    readonly cityList: City[];
     readonly id: string | null;
     readonly name: string;
     readonly fromCity: string;
@@ -37,8 +40,10 @@ export default class JourneyDetails extends React.Component<Props, State> {
         super(props);
 
         this.handleChangeForm = this.handleChangeForm.bind(this);
+        this.handleChangeCity = this.handleChangeCity.bind(this);
         this.createJourney = this.createJourney.bind(this);
         this.updateJourney = this.updateJourney.bind(this);
+        this.toggle = this.toggle.bind(this);
 
         this.CreateButton = withRouter(({history}) => (
             <Button color="primary" onClick={(e) => this.createJourney(e, history)}>
@@ -64,6 +69,8 @@ export default class JourneyDetails extends React.Component<Props, State> {
 
         this.state = {
             createMode: true,
+            dropdownOpen: false,
+            cityList: [],
             id: null,
             name: '',
             fromCity: '',
@@ -102,7 +109,32 @@ export default class JourneyDetails extends React.Component<Props, State> {
         this.setState(change);
     }
 
+    handleChangeCity(event: any) {
+        const value = event.target.value;
+        event.preventDefault();
+        if (value.length > 2) {
+            fetch('https://geo.api.gouv.fr/communes?nom=' + value)
+                .then(res => res.json())
+                .then((res: City[]) => {
+                    this.setState({
+                        fromCity: value,
+                        cityList: res
+                    });
+                    this.toggle();
+                })
+                .catch(e => console.warn(e));
+        } else {
+            this.setState({fromCity: value});
+        }
+    }
+
     /* tslint:enable */
+
+    toggle() {
+        this.setState({
+            dropdownOpen: !this.state.dropdownOpen
+        });
+    }
 
     createJourney(event: React.SyntheticEvent<HTMLButtonElement>, history: H.History) {
         event.preventDefault();
@@ -150,8 +182,23 @@ export default class JourneyDetails extends React.Component<Props, State> {
                                         name="fromCity"
                                         id="fromCity"
                                         value={this.state.fromCity}
-                                        onChange={(e) => this.handleChangeForm(e, 'fromCity')}
+                                        onChange={(e) => this.handleChangeCity(e)}
                                     />
+
+                                    <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                                        <DropdownToggle caret={true}>
+                                            Button Dropdown
+                                        </DropdownToggle>
+                                        {
+                                            this.state.cityList.map((city: City, id: number) => {
+                                                return id < 6 ?
+                                                    <DropdownMenu>
+                                                        <DropdownItem>{city.nom}</DropdownItem>
+                                                    </DropdownMenu> :
+                                                    null;
+                                            })
+                                        }
+                                    </ButtonDropdown>
                                 </Row>
                                 <Row className="justify-content-start mt-2">
                                     <Input
