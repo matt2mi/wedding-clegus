@@ -1,9 +1,9 @@
 import * as React from 'react';
-import CardTitle from 'reactstrap/lib/CardTitle';
+import { Alert, Button, Form, Input, Label } from 'reactstrap';
 import Card from 'reactstrap/lib/Card';
+import CardTitle from 'reactstrap/lib/CardTitle';
 import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
-import { Alert, Button, Form, Input, Label } from 'reactstrap';
 
 interface Props {
 }
@@ -12,7 +12,9 @@ interface State {
     readonly name: string;
     readonly firstname: string;
     readonly nbPersons: number;
+    readonly nbVeganPersons: number;
     readonly phoneNumber: string;
+    readonly email: string;
     readonly displayForm: boolean;
     readonly notificationVisible: boolean;
     readonly notificationMessage: string;
@@ -30,7 +32,9 @@ export default class InvitationResponse extends React.Component<Props, State> {
             name: '',
             firstname: '',
             nbPersons: 0,
+            nbVeganPersons: 0,
             phoneNumber: '',
+            email: '',
             displayForm: true,
             notificationVisible: false,
             notificationMessage: ''
@@ -56,7 +60,9 @@ export default class InvitationResponse extends React.Component<Props, State> {
                 name: this.state.name,
                 firstname: this.state.firstname,
                 nbPersons: this.state.nbPersons,
-                phoneNumber: this.state.phoneNumber
+                nbVeganPersons: this.state.nbVeganPersons,
+                phoneNumber: this.state.phoneNumber,
+                email: this.state.email
             })
         })
             .then(result => result.json())
@@ -81,7 +87,22 @@ export default class InvitationResponse extends React.Component<Props, State> {
                 <Card body={true}>
                     <CardTitle>Formulaire de présence</CardTitle>
                     {
-                        this.state.displayForm ? <Form>
+                        this.state.displayForm ?
+                            <Form>
+                                <Row className="justify-content-center">
+                                    <Col sm="2" className="text-right">
+                                        <Label for="firstname">Prénom</Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Input
+                                            type="text"
+                                            name="firstname"
+                                            id="firstname"
+                                            value={this.state.firstname}
+                                            onChange={(e) => this.handleChangeForm(e, 'firstname')}
+                                        />
+                                    </Col>
+                                </Row>
                                 <Row className="justify-content-center">
                                     <Col sm="2" className="text-right">
                                         <Label for="name">Nom</Label>
@@ -98,15 +119,31 @@ export default class InvitationResponse extends React.Component<Props, State> {
                                 </Row>
                                 <Row className="justify-content-center">
                                     <Col sm="2" className="text-right">
-                                        <Label for="firstname">Prénom</Label>
+                                        <Label for="phoneNumber">Numéro</Label>
                                     </Col>
                                     <Col sm="4">
                                         <Input
                                             type="text"
-                                            name="firstname"
-                                            id="firstname"
-                                            value={this.state.firstname}
-                                            onChange={(e) => this.handleChangeForm(e, 'firstname')}
+                                            className="col-sm-8"
+                                            name="phoneNumber"
+                                            id="phoneNumber"
+                                            value={this.state.phoneNumber + ''}
+                                            onChange={(e) => this.handleChangeForm(e, 'phoneNumber')}
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row className="justify-content-center">
+                                    <Col sm="2" className="text-right">
+                                        <Label for="email">Email</Label>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Input
+                                            type="text"
+                                            className="col-sm-8"
+                                            name="email"
+                                            id="email"
+                                            value={this.state.email}
+                                            onChange={(e) => this.handleChangeForm(e, 'email')}
                                         />
                                     </Col>
                                 </Row>
@@ -127,18 +164,19 @@ export default class InvitationResponse extends React.Component<Props, State> {
                                 </Row>
                                 <Row className="justify-content-center">
                                     <Col sm="2" className="text-right">
-                                        <Label for="phoneNumber">Numéro</Label>
+                                        <Label for="nbVeganPersons">Dont</Label>
                                     </Col>
-                                    <Col sm="4">
+                                    <Col sm="2">
                                         <Input
-                                            type="text"
-                                            className="col-sm-8"
-                                            name="phoneNumber"
-                                            id="phoneNumber"
-                                            value={this.state.phoneNumber + ''}
-                                            onChange={(e) => this.handleChangeForm(e, 'phoneNumber')}
+                                            type="number"
+                                            name="nbVeganPersons"
+                                            id="nbVeganPersons"
+                                            max={this.state.nbPersons}
+                                            value={this.state.nbVeganPersons}
+                                            onChange={(e) => this.handleChangeForm(e, 'nbVeganPersons')}
                                         />
                                     </Col>
+                                    <Col sm="2">végétariennes</Col>
                                 </Row>
                                 <Row className="justify-content-end mt-2">
                                     <Col sm="2">

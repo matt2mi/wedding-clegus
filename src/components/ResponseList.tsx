@@ -27,8 +27,10 @@ export default class PresenceList extends React.Component <Props, State> {
                     id: presence.id,
                     name: presence.name,
                     firstname: presence.firstname,
+                    phoneNumber: presence.phoneNumber,
+                    email: presence.email,
                     nbPersons: presence.nbPersons,
-                    phoneNumber: presence.phoneNumber
+                    nbVeganPersons: presence.nbVeganPersons
                 }));
                 this.setState({presences: truePresences});
             })
@@ -45,8 +47,10 @@ export default class PresenceList extends React.Component <Props, State> {
                             <tr>
                                 <th>Prénom</th>
                                 <th>Nom</th>
+                                <th>Téléphone</th>
+                                <th>Email</th>
                                 <th>Nombre</th>
-                                <th>Numéro</th>
+                                <th>Véggies</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -55,8 +59,10 @@ export default class PresenceList extends React.Component <Props, State> {
                                     <tr key={presence.id}>
                                         <td>{presence.firstname}</td>
                                         <td>{presence.name}</td>
-                                        <td>{presence.nbPersons}</td>
                                         <td>{presence.phoneNumber}</td>
+                                        <td>{presence.email}</td>
+                                        <td>{presence.nbPersons}</td>
+                                        <td>{presence.nbVeganPersons}</td>
                                     </tr>
                                 );
                             })}

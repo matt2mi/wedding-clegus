@@ -108,8 +108,10 @@ module.exports = function (app, indexFilePath) {
                     id: key,
                     name: dbPresences[key].name,
                     firstname: dbPresences[key].firstname,
+                    phoneNumber: dbPresences[key].phoneNumber,
+                    email: dbPresences[key].email,
                     nbPersons: dbPresences[key].nbPersons,
-                    phoneNumber: dbPresences[key].phoneNumber
+                    nbVeganPersons: dbPresences[key].nbVeganPersons
                 }));
             res.json(result);
             console.log('presences sent', result);
@@ -123,7 +125,9 @@ module.exports = function (app, indexFilePath) {
                 name: req.body.name,
                 firstname: req.body.firstname,
                 phoneNumber: req.body.phoneNumber,
-                nbPersons: req.body.nbPersons
+                email: req.body.email,
+                nbPersons: req.body.nbPersons,
+                nbVeganPersons: req.body.nbVeganPersons
             }, (error) => {
                 if (error) {
                     res.json({saved: false, message: error});

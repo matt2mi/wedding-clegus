@@ -14,6 +14,8 @@ export interface PresenceResponse {
     id: string;
     name: string;
     firstname: string;
-    nbPersons: number;
     phoneNumber: string;
+    email: string;
+    nbPersons: number;
+    nbVeganPersons: number;
 }

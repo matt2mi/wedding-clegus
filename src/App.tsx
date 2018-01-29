@@ -9,7 +9,7 @@ import InvitationResponse from './components/InvitationResponse';
 import JourneyDetails from './components/JourneyDetails';
 import Main from './components/Main';
 import NavHeader from './components/NavHeader';
-import PresenceList from './components/PresenceList';
+import ResponseList from './components/ResponseList';
 import SundayFood from './components/SundayFood';
 
 class App extends React.Component {
@@ -29,7 +29,7 @@ class App extends React.Component {
                             <Route path="/buffet" component={SundayFood}/>
                             <Route path="/presence" component={InvitationResponse}/>
                             <Route path="/contacts" component={Contacts}/>
-                            <Route path="/liste-reponses" component={PresenceList}/>
+                            <Route path="/liste-reponses" component={ResponseList}/>
                         </div>
                     </Switch>
                 </div>
