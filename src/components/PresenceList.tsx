@@ -14,7 +14,7 @@ export default class PresenceList extends React.Component <Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.state = { presences: [] };
+        this.state = {presences: []};
 
         this.getPresences();
     }
@@ -30,7 +30,7 @@ export default class PresenceList extends React.Component <Props, State> {
                     nbPersons: presence.nbPersons,
                     phoneNumber: presence.phoneNumber
                 }));
-                this.setState({ presences: truePresences });
+                this.setState({presences: truePresences});
             })
             .catch(e => console.warn(e));
     }
