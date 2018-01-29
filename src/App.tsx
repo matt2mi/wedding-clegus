@@ -1,15 +1,16 @@
 import * as React from 'react';
-import './App.css';
 import { Route, Switch } from 'react-router';
-import NavHeader from './components/NavHeader';
-import Main from './components/Main';
+import './App.css';
 import CarSharing from './components/CarSharing';
-import Invitation from './components/Invitation';
-import JourneyDetails from './components/JourneyDetails';
-import HotelsNearby from './components/HotelsNearby';
-import SundayFood from './components/SundayFood';
-import InvitationResponse from './components/InvitationResponse';
 import Contacts from './components/Contacts';
+import HotelsNearby from './components/HotelsNearby';
+import Invitation from './components/Invitation';
+import InvitationResponse from './components/InvitationResponse';
+import JourneyDetails from './components/JourneyDetails';
+import Main from './components/Main';
+import NavHeader from './components/NavHeader';
+import PresenceList from './components/PresenceList';
+import SundayFood from './components/SundayFood';
 
 class App extends React.Component {
     render() {
@@ -28,6 +29,7 @@ class App extends React.Component {
                             <Route path="/buffet" component={SundayFood}/>
                             <Route path="/presence" component={InvitationResponse}/>
                             <Route path="/contacts" component={Contacts}/>
+                            <Route path="/liste-reponses" component={PresenceList}/>
                         </div>
                     </Switch>
                 </div>
