@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SyntheticEvent } from 'react';
-import Button from 'reactstrap/lib/Button';
 import { Journey } from '../helpers/interfaces';
+import CarSharingTabLine from './CarSharingTabLine';
 
 interface Props {
     journeys: Journey[];
@@ -33,52 +33,12 @@ export default class CarSharingTab extends React.Component <Props, State> {
                 <tbody>
                 {this.props.journeys.map((journey: Journey) => {
                     return (
-                        <tr key={journey.id}>
-                            <td
-                                className="pointer"
-                                onClick={() => alert('go ' + journey.toCity)}
-                            >
-                                {journey.driverFirstName}
-                            </td>
-                            <td
-                                className="pointer"
-                                onClick={() => alert('go ' + journey.toCity)}
-                            >
-                                {journey.fromCity}
-                            </td>
-                            <td
-                                className="pointer"
-                                onClick={() => alert('go ' + journey.toCity)}
-                            >
-                                {journey.toCity}
-                            </td>
-                            <td
-                                className="pointer"
-                                onClick={() => alert('go ' + journey.toCity)}
-                            >
-                                {journey.freeSeats}
-                            </td>
-                            <td>
-                                <Button
-                                    color="primary"
-                                    onClick={(e) => {
-                                        this.props.editJourney(e, journey.id);
-                                    }}
-                                >
-                                    <i className="fa fa-2 fa-pencil" aria-hidden="true"/>
-                                </Button>
-                            </td>
-                            <td>
-                                <Button
-                                    color="danger"
-                                    onClick={(e) => {
-                                        this.props.deleteJourney(e, journey.id);
-                                    }}
-                                >
-                                    <i className="fa fa-2 fa-trash-o" aria-hidden="true"/>
-                                </Button>
-                            </td>
-                        </tr>
+                        <CarSharingTabLine
+                            key={journey.id}
+                            journey={journey}
+                            editJourney={this.props.editJourney}
+                            deleteJourney={this.props.deleteJourney}
+                        />
                     );
                 })}
                 </tbody>
