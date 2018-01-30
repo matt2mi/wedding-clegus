@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SyntheticEvent } from 'react';
-import * as ReactDOM from 'react-dom';
+import { Redirect } from 'react-router';
 import Button from 'reactstrap/lib/Button';
 import { Journey } from '../helpers/interfaces';
 
@@ -11,41 +11,50 @@ interface Props {
 }
 
 interface State {
+    readonly goToDetail: boolean;
 }
 
 export default class CarSharingTabLine extends React.Component <Props, State> {
     constructor(props: Props) {
         super(props);
+
+        this.showLineDetail = this.showLineDetail.bind(this);
+
+        this.state = { goToDetail: false };
     }
 
-    componentDidMount() {
-        console.warn(ReactDOM.findDOMNode(this).getBoundingClientRect());
+    showLineDetail() {
+        this.setState({ goToDetail: !this.state.goToDetail });
     }
 
     render() {
-        return (
+        return this.state.goToDetail ?
+            (
+                <Redirect to={'/covoiturages/detail/' + this.props.journey.id}/>
+            ) :
+            (
             <tr key={this.props.journey.id}>
                 <td
                     className="pointer"
-                    onClick={() => alert('go ' + this.props.journey.toCity)}
+                    onClick={this.showLineDetail}
                 >
                     {this.props.journey.driverFirstName}
                 </td>
                 <td
                     className="pointer"
-                    onClick={() => alert('go ' + this.props.journey.toCity)}
+                    onClick={this.showLineDetail}
                 >
                     {this.props.journey.fromCity}
                 </td>
                 <td
                     className="pointer"
-                    onClick={() => alert('go ' + this.props.journey.toCity)}
+                    onClick={this.showLineDetail}
                 >
                     {this.props.journey.toCity}
                 </td>
                 <td
                     className="pointer"
-                    onClick={() => alert('go ' + this.props.journey.toCity)}
+                    onClick={this.showLineDetail}
                 >
                     {this.props.journey.freeSeats}
                 </td>
