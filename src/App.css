@@ -6,6 +6,10 @@
     margin-top: 60px;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .navbar a {
     color: white !important;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;

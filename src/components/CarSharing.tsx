@@ -5,6 +5,7 @@ import Button from 'reactstrap/lib/Button';
 import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
 import { Journey } from '../helpers/interfaces';
+import CarSharingTab from './CarSharingTab';
 
 interface Props {
 }
@@ -25,8 +26,41 @@ export default class CarSharing extends React.Component <Props, State> {
         this.deleteJourney = this.deleteJourney.bind(this);
         this.getJourneys = this.getJourneys.bind(this);
 
+        const journey1 = {
+            id: '0',
+            driverFirstName: 'driverFirstName',
+            driverName: 'driverName',
+            driverPhoneNumber: 'driverPhoneNumber',
+            driverEmail: 'driverEmail',
+            fromCity: 'fromCity',
+            toCity: 'toCity',
+            freeSeats: 4,
+            comment: 'comment'
+        };
+        const journey2 = {
+            id: '1',
+            driverFirstName: 'driverFirstName',
+            driverName: 'driverName',
+            driverPhoneNumber: 'driverPhoneNumber',
+            driverEmail: 'driverEmail',
+            fromCity: 'fromCity',
+            toCity: 'toCity',
+            freeSeats: 4,
+            comment: 'comment'
+        };
+        const journey3 = {
+            id: '2',
+            driverFirstName: 'driverFirstName',
+            driverName: 'driverName',
+            driverPhoneNumber: 'driverPhoneNumber',
+            driverEmail: 'driverEmail',
+            fromCity: 'fromCity',
+            toCity: 'toCity',
+            freeSeats: 4,
+            comment: 'comment'
+        };
         this.state = {
-            journeys: [],
+            journeys: [journey1, journey2, journey3],
             goEditJourney: false,
             goNewJourney: false,
             journeyId: ''
@@ -83,55 +117,16 @@ export default class CarSharing extends React.Component <Props, State> {
         if (this.state.goNewJourney) {
             return (<Redirect to={'/covoiturages/new'}/>);
         }
+        // <div style="overflow-x:auto;">
         return (
             <div className="base-div-content">
                 <Row>
                     <Col sm="12">
-                        <table className="table">
-                            <thead>
-                            <tr>
-                                <th>Conducteur</th>
-                                <th>Ville de départ</th>
-                                <th>Ville d'arrivée</th>
-                                <th>Sièges libres</th>
-                                <th/>
-                                <th/>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {this.state.journeys.map(journey => {
-                                return (
-                                    <tr key={journey.id}>
-                                        <td>{journey.driverFirstName}</td>
-                                        <td>{journey.fromCity}</td>
-                                        <td>{journey.toCity}</td>
-                                        <td>{journey.freeSeats}</td>
-                                        <td>
-                                            <Button
-                                                color="primary"
-                                                onClick={(e) => {
-                                                    this.editJourney(e, journey.id);
-                                                }}
-                                            >
-                                                Modifier
-                                            </Button>
-                                        </td>
-                                        <td>
-                                            <Button
-                                                color="danger"
-                                                onClick={(e) => {
-                                                    this.deleteJourney(e, journey.id);
-                                                }}
-                                            >
-                                                Supprimer
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                            </tbody>
-                        </table>
-
+                        <CarSharingTab
+                            journeys={this.state.journeys}
+                            editJourney={this.editJourney}
+                            deleteJourney={this.deleteJourney}
+                        />
                         <Button
                             color="primary"
                             onClick={(e) => {
