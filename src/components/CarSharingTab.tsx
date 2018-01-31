@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SyntheticEvent } from 'react';
-import { Journey } from '../helpers/interfaces';
+import { Journey } from '../helpers/models';
 import CarSharingTabLine from './CarSharingTabLine';
 
 interface Props {

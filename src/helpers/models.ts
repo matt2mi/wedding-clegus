@@ -1,4 +1,4 @@
-export interface Journey {
+export class Journey {
     id: string;
     driverFirstName: string;
     driverName: string;
@@ -8,6 +8,20 @@ export interface Journey {
     toCity: string;
     freeSeats: number;
     comment: string;
+
+    constructor() {
+        return {
+            id: '',
+            driverFirstName: '',
+            driverName: '',
+            driverPhoneNumber: '',
+            driverEmail: '',
+            fromCity: '',
+            toCity: '',
+            freeSeats: 0,
+            comment: ''
+        };
+    }
 }
 
 export interface PresenceResponse {
