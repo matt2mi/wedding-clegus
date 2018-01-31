@@ -4,7 +4,7 @@ import { Redirect } from 'react-router';
 import Button from 'reactstrap/lib/Button';
 import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
-import { Journey } from '../helpers/interfaces';
+import { Journey } from '../helpers/models';
 import CarSharingTab from './CarSharingTab';
 
 interface Props {
@@ -26,41 +26,8 @@ export default class CarSharing extends React.Component <Props, State> {
         this.deleteJourney = this.deleteJourney.bind(this);
         this.getJourneys = this.getJourneys.bind(this);
 
-        const journey1 = {
-            id: '0',
-            driverFirstName: 'driverFirstName',
-            driverName: 'driverName',
-            driverPhoneNumber: 'driverPhoneNumber',
-            driverEmail: 'driverEmail',
-            fromCity: 'fromCity',
-            toCity: 'toCity',
-            freeSeats: 4,
-            comment: 'comment'
-        };
-        const journey2 = {
-            id: '1',
-            driverFirstName: 'driverFirstName',
-            driverName: 'driverName',
-            driverPhoneNumber: 'driverPhoneNumber',
-            driverEmail: 'driverEmail',
-            fromCity: 'fromCity',
-            toCity: 'toCity',
-            freeSeats: 4,
-            comment: 'comment'
-        };
-        const journey3 = {
-            id: '2',
-            driverFirstName: 'driverFirstName',
-            driverName: 'driverName',
-            driverPhoneNumber: 'driverPhoneNumber',
-            driverEmail: 'driverEmail',
-            fromCity: 'fromCity',
-            toCity: 'toCity',
-            freeSeats: 4,
-            comment: 'comment'
-        };
         this.state = {
-            journeys: [journey1, journey2, journey3],
+            journeys: [],
             goEditJourney: false,
             goNewJourney: false,
             journeyId: ''

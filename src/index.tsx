@@ -4,6 +4,7 @@ import App from './App';
 import { unregister } from './registerServiceWorker';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap';
 import { HashRouter } from 'react-router-dom';
 
 ReactDOM.render(

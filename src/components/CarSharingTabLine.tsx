@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SyntheticEvent } from 'react';
 import { Redirect } from 'react-router';
 import Button from 'reactstrap/lib/Button';
-import { Journey } from '../helpers/interfaces';
+import { Journey } from '../helpers/models';
 
 interface Props {
     journey: Journey;

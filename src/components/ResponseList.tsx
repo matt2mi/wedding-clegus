@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
-import { PresenceResponse } from '../helpers/interfaces';
+import { PresenceResponse } from '../helpers/models';
 
 interface Props {
 }

@@ -12,6 +12,7 @@ import Main from './components/Main';
 import NavHeader from './components/NavHeader';
 import ResponseList from './components/ResponseList';
 import SundayFood from './components/SundayFood';
+import JourneyEdit from './components/JourneyEdit';
 
 class App extends React.Component {
     render() {
@@ -23,8 +24,9 @@ class App extends React.Component {
                         <div className="container">
                             <Route path="/" exact={true} component={Main}/>
                             <Route path="/covoiturages" exact={true} component={CarSharing}/>
-                            <Route path="/covoiturages/edit/:id" component={JourneyDetails}/>
-                            <Route path="/covoiturages/new" component={JourneyDetails}/>
+                            <Route path="/covoiturages/edit/:id" component={JourneyEdit}/>
+                            <Route path="/covoiturages/new" component={JourneyEdit}/>
+                            <Route path="/covoiturages/detail/:id" component={JourneyDetails}/>
                             <Route path="/faire-part" component={Invitation}/>
                             <Route path="/gites" component={HotelsNearby}/>
                             <Route path="/buffet" component={SundayFood}/>
