@@ -5,7 +5,7 @@ import Button from 'reactstrap/lib/Button';
 import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
 import { Journey } from '../helpers/models';
-import CarSharingTab from './CarSharingTab';
+import CarSharingCustomTab from './CarSharingCustomTab';
 
 interface Props {
 }
@@ -84,16 +84,20 @@ export default class CarSharing extends React.Component <Props, State> {
         if (this.state.goNewJourney) {
             return (<Redirect to={'/covoiturages/new'}/>);
         }
-        // <div style="overflow-x:auto;">
         return (
             <div className="base-div-content">
                 <Row>
                     <Col sm="12">
-                        <CarSharingTab
-                            journeys={this.state.journeys}
-                            editJourney={this.editJourney}
-                            deleteJourney={this.deleteJourney}
-                        />
+                        {
+                            this.state.journeys.length < 1 ?
+                                <div>Pas de trajet proposé...</div> :
+                                <CarSharingCustomTab
+                                    journeys={this.state.journeys}
+                                    editJourney={this.editJourney}
+                                    deleteJourney={this.deleteJourney}
+                                />
+                        }
+                        <hr/>
                         <Button
                             color="primary"
                             onClick={(e) => {

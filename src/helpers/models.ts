@@ -8,16 +8,21 @@ export class Journey {
     toCity: string;
     freeSeats: number;
     comment: string;
+    displayDetails?: boolean;
 
-    constructor() {
+    constructor(id: string = 'id',
+                driverFirstName: string = 'matt',
+                driverName: string = 'demi',
+                fromCity: string = 'from',
+                toCity: string = 'to') {
         return {
-            id: '',
-            driverFirstName: '',
-            driverName: '',
+            id: id,
+            driverFirstName: driverFirstName,
+            driverName: driverName,
             driverPhoneNumber: '',
             driverEmail: '',
-            fromCity: '',
-            toCity: '',
+            fromCity: fromCity,
+            toCity: toCity,
             freeSeats: 0,
             comment: ''
         };
