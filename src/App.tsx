@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Route, Switch } from 'react-router';
 import './App.css';
 import 'font-awesome/css/font-awesome.min.css';
+import '../node_modules/loaders.css/loaders.css';
 import CarSharing from './components/CarSharing';
 import Contacts from './components/Contacts';
 import HotelsNearby from './components/HotelsNearby';
@@ -21,7 +22,7 @@ class App extends React.Component {
                 <NavHeader/>
                 <div className="container mt-2">
                     <Switch>
-                        <div className="container">
+                        <div>
                             <Route path="/" exact={true} component={Main}/>
                             <Route path="/covoiturages" exact={true} component={CarSharing}/>
                             <Route path="/covoiturages/edit/:id" component={JourneyEdit}/>

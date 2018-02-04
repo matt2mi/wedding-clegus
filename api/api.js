@@ -10,8 +10,8 @@ const db = admin.database();
 
 module.exports = function (app, indexFilePath) {
     // TODO faire un retour propre avec juste statut
+    // TODO vrai script start:server
 
-    // Put all API endpoints under '/api'
     app.get('/api/journeys', (req, res) => {
         db.ref("journeys/details").once("value", function (snapshot) {
             const dbJourneys = snapshot.val();
@@ -29,7 +29,7 @@ module.exports = function (app, indexFilePath) {
                     comment: dbJourneys[key].comment
                 }));
             res.json(result);
-            console.log('journeys sent', result);
+            console.log('all journeys sent');
         });
     });
 

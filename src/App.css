@@ -34,3 +34,7 @@ table th {
 textarea {
     height: 120px;
 }
+
+.line-scale div {
+    background-color: #17a2b8 !important;
+}
