@@ -122,7 +122,7 @@ module.exports = function (app, indexFilePath) {
                 console.log('presences sent', result);
             } else {
                 res.json({});
-                console.log('no existing presences yet');
+                console.log('no existing presences yet.');
             }
         });
     });
