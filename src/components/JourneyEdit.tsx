@@ -42,18 +42,18 @@ export default class JourneyDetails extends React.Component<Props, State> {
         this.updateJourney = this.updateJourney.bind(this);
 
         this.CreateButton = withRouter(({history}) => (
-            <Button color="primary" onClick={(e) => this.createJourney(e, history)}>
+            <Button color="info" onClick={(e) => this.createJourney(e, history)}>
                 Créer
             </Button>
         ));
         this.UpdateButton = withRouter(({history}) => (
-            <Button color="primary" onClick={(e) => this.updateJourney(e, history)}>
+            <Button color="info" onClick={(e) => this.updateJourney(e, history)}>
                 MAJ
             </Button>
         ));
         this.GoBackButton = withRouter(({history}) => (
             <Button
-                color="primary"
+                color="info"
                 onClick={(e) => {
                     e.preventDefault();
                     history.push('/covoiturages');

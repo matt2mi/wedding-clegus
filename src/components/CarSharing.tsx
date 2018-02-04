@@ -141,7 +141,7 @@ export default class CarSharing extends React.Component <Props, State> {
                         }
                         <hr/>
                         <Button
-                            color="primary"
+                            color="info"
                             onClick={(e) => {
                                 this.newJourney(e);
                             }}

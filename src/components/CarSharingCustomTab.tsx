@@ -27,10 +27,6 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
         };
     }
 
-    showLineDetail(idToDetailed: string) {
-        this.setState({goToDetail: idToDetailed});
-    }
-
     toggle(journeyId: string) {
         const newJourneys: Journey[] = this.state.journeys.map((journey: Journey) => {
             return journey.id === journeyId ? {...journey, displayDetails: !journey.displayDetails} : {...journey};
