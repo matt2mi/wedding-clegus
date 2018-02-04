@@ -85,7 +85,7 @@ module.exports = function (app, indexFilePath) {
     });
 
     app.put('/api/journey', (req, res) => {
-        db.ref("journeys" + req.body.id)
+        db.ref("journeys/" + req.body.id)
             .set({
                 driverFirstName: req.body.driverFirstName,
                 driverName: req.body.driverName,

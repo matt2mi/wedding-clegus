@@ -68,7 +68,7 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
                                             color="link"
                                             className="col-12"
                                             onClick={(e) => {
-                                                this.props.editJourney(e, '');
+                                                this.props.editJourney(e, journey.id);
                                             }}
                                         >
                                             <i className="fa fa-2 fa-pencil" aria-hidden="true"/> Modifier
@@ -77,7 +77,7 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
                                             color="link"
                                             className="col-12"
                                             onClick={(e) => {
-                                                this.props.deleteJourney(e, '');
+                                                this.props.deleteJourney(e, journey.id);
                                             }}
                                         >
                                             <i className="fa fa-2 fa-trash-o" aria-hidden="true"/> Supprimer
