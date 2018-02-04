@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SyntheticEvent } from 'react';
 import { Journey } from '../helpers/models';
-import { Button, Card, CardBody, Col, Collapse, Row } from 'reactstrap';
+import { Button, Card, Col, Row } from 'reactstrap';
 import { Redirect } from 'react-router';
 
 interface Props {
@@ -35,91 +35,59 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
     }
 
     render() {
-
         return this.state.goToDetail.length > 0 ?
             (
                 <Redirect to={'/covoiturages/detail/' + this.state.goToDetail}/>
             ) :
             (
-                <div>
-                    <Row>
-                        <Col lg="2">Conducteur</Col>
-                        <Col lg="2">Ville de départ</Col>
-                        <Col lg="2">Ville d'arrivée</Col>
-                        <Col lg="2">Sièges libres</Col>
-                        <Col lg="1"/>
-                        <Col lg="1"/>
-                    </Row>
-                    {this.state.journeys.map((journey: Journey) => {
-                        return (
-                            <Card key={journey.id} className="mt-2 p-1">
+
+                this.state.journeys.map((journey: Journey) => {
+                    return (
+                        <Row key={journey.id} className="justify-content-center">
+                            <Card className="p-2 mb-2 col-lg-10 col-sm-12">
                                 <Row>
-                                    <Col
-                                        lg="2"
-                                        className="pt-2"
-                                        onClick={() => this.toggle(journey.id)}
-                                    >
-                                        {journey.driverFirstName}
+                                    <Col sm="4" className="text-left">
+                                        <div>{journey.driverFirstName + ' ' + journey.driverName}</div>
+                                        <div>{journey.driverPhoneNumber}</div>
+                                        <div>{journey.driverEmail}</div>
                                     </Col>
-                                    <Col
-                                        lg="2"
-                                        className="pt-2"
-                                        onClick={() => this.toggle(journey.id)}
-                                    >
-                                        {journey.fromCity}
+                                    <Col sm="4">
+                                        <Row className="justify-content-center">
+                                            <div>
+                                                {journey.freeSeats + ' place(s) de ' +
+                                                journey.fromCity + ' à ' +
+                                                journey.toCity}
+                                            </div>
+                                        </Row>
+                                        <Row className="justify-content-center">
+                                            <p>{journey.comment}</p>
+                                        </Row>
                                     </Col>
-                                    <Col
-                                        lg="2"
-                                        className="pt-2"
-                                        onClick={() => this.toggle(journey.id)}
-                                    >
-                                        {journey.toCity}
-                                    </Col>
-                                    <Col
-                                        lg="2"
-                                        className="pt-2"
-                                        onClick={() => this.toggle(journey.id)}
-                                    >
-                                        {journey.freeSeats}
-                                    </Col>
-                                    <Col lg="1">
+                                    <Col sm="4">
                                         <Button
-                                            color="info"
+                                            color="link"
+                                            className="col-12"
                                             onClick={(e) => {
-                                                this.props.editJourney(e, journey.id);
+                                                this.props.editJourney(e, '');
                                             }}
                                         >
-                                            <i className="fa fa-2 fa-pencil" aria-hidden="true"/>
+                                            <i className="fa fa-2 fa-pencil" aria-hidden="true"/> Modifier
                                         </Button>
-                                    </Col>
-                                    <Col lg="1">
                                         <Button
-                                            color="danger"
+                                            color="link"
+                                            className="col-12"
                                             onClick={(e) => {
-                                                this.props.deleteJourney(e, journey.id);
+                                                this.props.deleteJourney(e, '');
                                             }}
                                         >
-                                            <i className="fa fa-2 fa-trash-o" aria-hidden="true"/>
+                                            <i className="fa fa-2 fa-trash-o" aria-hidden="true"/> Supprimer
                                         </Button>
                                     </Col>
                                 </Row>
-                                <Collapse isOpen={journey.displayDetails}>
-                                    <Card>
-                                        <CardBody>
-                                            <Row>
-                                                <Col sm="4">{journey.driverFirstName + ' ' + journey.driverName}</Col>
-                                                <Col sm="4">
-                                                    {journey.driverPhoneNumber + ' - ' + journey.driverEmail}
-                                                </Col>
-                                                <Col sm="4">{journey.comment}</Col>
-                                            </Row>
-                                        </CardBody>
-                                    </Card>
-                                </Collapse>
                             </Card>
-                        );
-                    })}
-                </div>
+                        </Row>
+                    );
+                })
             );
     }
 }

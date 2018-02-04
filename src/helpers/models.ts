@@ -11,20 +11,23 @@ export class Journey {
     displayDetails?: boolean;
 
     constructor(id: string = 'id',
+                comment: string = 'commentcomment\ncommentcomment\ncommentcomment',
                 driverFirstName: string = 'matt',
                 driverName: string = 'demi',
+                driverPhoneNumber: string = '0601020304',
+                driverEmail: string = 'driverEmail@driverEmail.fr',
                 fromCity: string = 'from',
                 toCity: string = 'to') {
         return {
             id: id,
-            driverFirstName: driverFirstName,
-            driverName: driverName,
-            driverPhoneNumber: '',
-            driverEmail: '',
-            fromCity: fromCity,
-            toCity: toCity,
+            driverFirstName,
+            driverName,
+            driverPhoneNumber,
+            driverEmail,
+            fromCity,
+            toCity,
             freeSeats: 0,
-            comment: ''
+            comment
         };
     }
 }

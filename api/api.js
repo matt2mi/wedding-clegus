@@ -13,28 +13,33 @@ module.exports = function (app, indexFilePath) {
     // TODO vrai script start:server
 
     app.get('/api/journeys', (req, res) => {
-        db.ref("journeys/details").once("value", function (snapshot) {
+        db.ref("journeys").once("value", function (snapshot) {
             const dbJourneys = snapshot.val();
-            const result = Object
-                .keys(dbJourneys)
-                .map(key => ({
-                    id: key,
-                    driverFirstName: dbJourneys[key].driverFirstName,
-                    driverName: dbJourneys[key].driverName,
-                    driverPhoneNumber: dbJourneys[key].driverPhoneNumber,
-                    driverEmail: dbJourneys[key].driverEmail,
-                    fromCity: dbJourneys[key].fromCity,
-                    toCity: dbJourneys[key].toCity,
-                    freeSeats: dbJourneys[key].freeSeats,
-                    comment: dbJourneys[key].comment
-                }));
-            res.json(result);
-            console.log('all journeys sent');
+            if (dbJourneys) {
+                const result = Object
+                    .keys(dbJourneys)
+                    .map(key => ({
+                        id: key,
+                        driverFirstName: dbJourneys[key].driverFirstName,
+                        driverName: dbJourneys[key].driverName,
+                        driverPhoneNumber: dbJourneys[key].driverPhoneNumber,
+                        driverEmail: dbJourneys[key].driverEmail,
+                        fromCity: dbJourneys[key].fromCity,
+                        toCity: dbJourneys[key].toCity,
+                        freeSeats: dbJourneys[key].freeSeats,
+                        comment: dbJourneys[key].comment
+                    }));
+                res.json(result);
+                console.log('all journeys sent');
+            } else {
+                res.json({});
+                console.log('no existing journeys yet');
+            }
         });
     });
 
     app.get('/api/journey/:id', (req, res) => {
-        db.ref("journeys/details").once("value", function (snapshot) {
+        db.ref("journeys").once("value", function (snapshot) {
             const journey = snapshot.val()[req.params.id];
             const result = {
                 id: req.params.id,
@@ -56,7 +61,6 @@ module.exports = function (app, indexFilePath) {
 
     app.post('/api/journey', (req, res) => {
         db.ref("journeys")
-            .child("details")
             .push({
                 driverFirstName: req.body.driverFirstName,
                 driverName: req.body.driverName,
@@ -73,8 +77,7 @@ module.exports = function (app, indexFilePath) {
     });
 
     app.delete('/api/journey', (req, res) => {
-        db.ref("journeys")
-            .child("details/" + req.body.id)
+        db.ref("journeys/" + req.body.id)
             .remove(() => {
                 res.status(200).json({});
                 console.log('journey deleted');
@@ -82,8 +85,7 @@ module.exports = function (app, indexFilePath) {
     });
 
     app.put('/api/journey', (req, res) => {
-        db.ref("journeys")
-            .child("details/" + req.body.id)
+        db.ref("journeys" + req.body.id)
             .set({
                 driverFirstName: req.body.driverFirstName,
                 driverName: req.body.driverName,
@@ -100,28 +102,33 @@ module.exports = function (app, indexFilePath) {
     });
 
     app.get('/api/presences', (req, res) => {
-        db.ref("presences/answers").once("value", function (snapshot) {
+        db.ref("presences").once("value", function (snapshot) {
             const dbPresences = snapshot.val();
-            const result = Object
-                .keys(dbPresences)
-                .map(key => ({
-                    id: key,
-                    name: dbPresences[key].name,
-                    firstname: dbPresences[key].firstname,
-                    phoneNumber: dbPresences[key].phoneNumber,
-                    email: dbPresences[key].email,
-                    nbPersons: dbPresences[key].nbPersons,
-                    nbVeganPersons: dbPresences[key].nbVeganPersons,
-                    comment: dbPresences[key].comment
-                }));
-            res.json(result);
-            console.log('presences sent', result);
+
+            if (dbPresences) {
+                const result = Object
+                    .keys(dbPresences)
+                    .map(key => ({
+                        id: key,
+                        name: dbPresences[key].name,
+                        firstname: dbPresences[key].firstname,
+                        phoneNumber: dbPresences[key].phoneNumber,
+                        email: dbPresences[key].email,
+                        nbPersons: dbPresences[key].nbPersons,
+                        nbVeganPersons: dbPresences[key].nbVeganPersons,
+                        comment: dbPresences[key].comment
+                    }));
+                res.json(result);
+                console.log('presences sent', result);
+            } else {
+                res.json({});
+                console.log('no existing presences yet');
+            }
         });
     });
 
     app.post('/api/presence', (req, res) => {
         db.ref("presences")
-            .child("answers")
             .push({
                 name: req.body.name,
                 firstname: req.body.firstname,

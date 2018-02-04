@@ -15,7 +15,7 @@
   "scripts": {
     "start": "npm i && node server.js",
     "start:client": "react-scripts-ts start",
-    "start:server": "npm i && nodemon server.js",
+    "start:server": "nodemon server.js",
     "build": "react-scripts-ts build",
     "server": "node server.js",
     "test:client": "react-scripts-ts test --env=jsdom",

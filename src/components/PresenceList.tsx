@@ -29,24 +29,28 @@ export default class PresenceList extends React.Component <Props, State> {
         fetch('/api/presences')
             .then(result => result.json())
             .then((presences: PresenceResponse[]): void => {
-                const truePresences: PresenceResponse[] = presences.map((presence: PresenceResponse) => {
-                    this.setState({
-                        nbParticipants: this.state.nbParticipants + Number.parseInt(presence.nbPersons),
-                        nbVeganParticipants: this.state.nbVeganParticipants +
-                        Number.parseInt(presence.nbVeganPersons)
+                if (presences instanceof Array) {
+                    const truePresences: PresenceResponse[] = presences.map((presence: PresenceResponse) => {
+                        this.setState({
+                            nbParticipants: this.state.nbParticipants + Number.parseInt(presence.nbPersons),
+                            nbVeganParticipants: this.state.nbVeganParticipants +
+                            Number.parseInt(presence.nbVeganPersons)
+                        });
+                        return {
+                            id: presence.id,
+                            name: presence.name,
+                            firstname: presence.firstname,
+                            phoneNumber: presence.phoneNumber,
+                            email: presence.email,
+                            nbPersons: presence.nbPersons,
+                            nbVeganPersons: presence.nbVeganPersons,
+                            comment: presence.comment
+                        };
                     });
-                    return {
-                        id: presence.id,
-                        name: presence.name,
-                        firstname: presence.firstname,
-                        phoneNumber: presence.phoneNumber,
-                        email: presence.email,
-                        nbPersons: presence.nbPersons,
-                        nbVeganPersons: presence.nbVeganPersons,
-                        comment: presence.comment
-                    };
-                });
-                this.setState({presences: truePresences});
+                    this.setState({presences: truePresences});
+                } else {
+                    this.setState({presences: []});
+                }
             })
             .catch(e => console.warn(e));
     }

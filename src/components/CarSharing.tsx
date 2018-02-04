@@ -78,18 +78,22 @@ export default class CarSharing extends React.Component <Props, State> {
         fetch('/api/journeys')
             .then(result => result.json())
             .then((journeys: Journey[]): void => {
-                const trueJourneys: Journey[] = journeys.map((journey: Journey) => ({
-                    id: journey.id,
-                    driverFirstName: journey.driverFirstName,
-                    driverName: journey.driverName,
-                    driverPhoneNumber: journey.driverPhoneNumber,
-                    driverEmail: journey.driverEmail,
-                    fromCity: journey.fromCity,
-                    toCity: journey.toCity,
-                    freeSeats: journey.freeSeats,
-                    comment: journey.comment
-                }));
-                this.setState({journeys: trueJourneys});
+                if (journeys instanceof Array) {
+                    const trueJourneys: Journey[] = journeys.map((journey: Journey) => ({
+                        id: journey.id,
+                        driverFirstName: journey.driverFirstName,
+                        driverName: journey.driverName,
+                        driverPhoneNumber: journey.driverPhoneNumber,
+                        driverEmail: journey.driverEmail,
+                        fromCity: journey.fromCity,
+                        toCity: journey.toCity,
+                        freeSeats: journey.freeSeats,
+                        comment: journey.comment
+                    }));
+                    this.setState({journeys: trueJourneys});
+                } else {
+                    this.setState({journeys: []});
+                }
                 this.stopLoading();
             })
             .catch(e => {

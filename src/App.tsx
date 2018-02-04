@@ -7,11 +7,11 @@ import CarSharing from './components/CarSharing';
 import Contacts from './components/Contacts';
 import HotelsNearby from './components/HotelsNearby';
 import Invitation from './components/Invitation';
-import InvitationResponse from './components/InvitationResponse';
+import PresenceForm from './components/PresenceForm';
 import JourneyDetails from './components/JourneyDetails';
 import Main from './components/Main';
 import NavHeader from './components/NavHeader';
-import ResponseList from './components/ResponseList';
+import PresenceList from './components/PresenceList';
 import SundayFood from './components/SundayFood';
 import JourneyEdit from './components/JourneyEdit';
 
@@ -31,9 +31,9 @@ class App extends React.Component {
                             <Route path="/faire-part" component={Invitation}/>
                             <Route path="/gites" component={HotelsNearby}/>
                             <Route path="/buffet" component={SundayFood}/>
-                            <Route path="/presence" component={InvitationResponse}/>
+                            <Route path="/presence" component={PresenceForm}/>
                             <Route path="/contacts" component={Contacts}/>
-                            <Route path="/liste-reponses" component={ResponseList}/>
+                            <Route path="/liste-presences" component={PresenceList}/>
                         </div>
                     </Switch>
                 </div>
