@@ -31,10 +31,13 @@ export default class PresenceList extends React.Component <Props, State> {
             .then((presences: PresenceResponse[]): void => {
                 if (presences instanceof Array) {
                     const truePresences: PresenceResponse[] = presences.map((presence: PresenceResponse) => {
+                        const nbParticipants = isNaN(Number.parseInt(presence.nbPersons)) ?
+                            0 : Number.parseInt(presence.nbPersons);
+                        const nbVeggies = isNaN(Number.parseInt(presence.nbVeganPersons)) ?
+                            0 : Number.parseInt(presence.nbVeganPersons);
                         this.setState({
-                            nbParticipants: this.state.nbParticipants + Number.parseInt(presence.nbPersons),
-                            nbVeganParticipants: this.state.nbVeganParticipants +
-                            Number.parseInt(presence.nbVeganPersons)
+                            nbParticipants: this.state.nbParticipants + nbParticipants,
+                            nbVeganParticipants: this.state.nbVeganParticipants + nbVeggies
                         });
                         return {
                             id: presence.id,

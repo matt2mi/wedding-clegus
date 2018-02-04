@@ -86,7 +86,6 @@ export default class InvitationResponse extends React.Component<Props, State> {
         })
             .then(result => result.json())
             .then((result: { saved: boolean, message: string }) => {
-                console.warn(result);
                 this.toggleNotification(result);
                 this.stopLoading();
             })
