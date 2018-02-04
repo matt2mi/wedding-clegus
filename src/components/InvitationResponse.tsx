@@ -9,6 +9,7 @@ interface Props {
 }
 
 interface State {
+    readonly loading: boolean;
     readonly name: string;
     readonly firstname: string;
     readonly nbPersons: number;
@@ -22,14 +23,20 @@ interface State {
 }
 
 export default class InvitationResponse extends React.Component<Props, State> {
+    loaderStyle = {
+        marginTop: window.innerHeight / 2 + 'px'
+    };
 
     constructor(props: Props) {
         super(props);
 
         this.createAnswer = this.createAnswer.bind(this);
         this.toggleNotification = this.toggleNotification.bind(this);
+        this.startLoading = this.startLoading.bind(this);
+        this.stopLoading = this.stopLoading.bind(this);
 
         this.state = {
+            loading: false,
             name: '',
             firstname: '',
             nbPersons: 0,
@@ -43,6 +50,14 @@ export default class InvitationResponse extends React.Component<Props, State> {
         };
     }
 
+    startLoading() {
+        this.setState({loading: true});
+    }
+
+    stopLoading() {
+        this.setState({loading: false});
+    }
+
     /* tslint:disable */
     handleChangeForm(event: any, fieldName: string) {
         event.preventDefault();
@@ -54,6 +69,7 @@ export default class InvitationResponse extends React.Component<Props, State> {
     /* tslint:enable */
 
     createAnswer(event: React.SyntheticEvent<HTMLButtonElement>) {
+        this.startLoading();
         event.preventDefault();
         fetch('/api/presence', {
             method: 'post',
@@ -72,8 +88,12 @@ export default class InvitationResponse extends React.Component<Props, State> {
             .then((result: { saved: boolean, message: string }) => {
                 console.warn(result);
                 this.toggleNotification(result);
+                this.stopLoading();
             })
-            .catch(e => console.warn(e));
+            .catch(e => {
+                console.warn(e);
+                this.stopLoading();
+            });
     }
 
     toggleNotification(result: { saved: boolean, message: string }): void {
@@ -85,6 +105,19 @@ export default class InvitationResponse extends React.Component<Props, State> {
     }
 
     render() {
+        if (this.state.loading) {
+            return (
+                <div className="loader" style={this.loaderStyle}>
+                    <div className="line-scale">
+                        <div/>
+                        <div/>
+                        <div/>
+                        <div/>
+                        <div/>
+                    </div>
+                </div>
+            );
+        }
         return (
             <div className="base-div-content">
                 <Card body={true}>
@@ -140,6 +173,7 @@ export default class InvitationResponse extends React.Component<Props, State> {
                                         <Row className="justify-content-sm-start">
                                             <Input
                                                 type="text"
+                                                placeholder="0601020304"
                                                 name="phoneNumber"
                                                 id="phoneNumber"
                                                 value={this.state.phoneNumber}
