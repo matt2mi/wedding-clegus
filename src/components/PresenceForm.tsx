@@ -10,12 +10,14 @@ interface Props {
 
 interface State {
     readonly loading: boolean;
-    readonly name: string;
-    readonly firstname: string;
-    readonly nbPersons: number;
-    readonly nbVeganPersons: number;
+    readonly who: string;
     readonly phoneNumber: string;
     readonly email: string;
+    readonly nbPersons: number;
+    readonly nbVeganPersons: number;
+    readonly whenSaturdayMorning: boolean;
+    readonly whenSaturdayLunch: boolean;
+    readonly whenSundayLunch: boolean;
     readonly comment: string;
     readonly displayForm: boolean;
     readonly notificationVisible: boolean;
@@ -30,6 +32,7 @@ export default class InvitationResponse extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        this.handleChangeForm = this.handleChangeForm.bind(this);
         this.createAnswer = this.createAnswer.bind(this);
         this.toggleNotification = this.toggleNotification.bind(this);
         this.startLoading = this.startLoading.bind(this);
@@ -37,12 +40,14 @@ export default class InvitationResponse extends React.Component<Props, State> {
 
         this.state = {
             loading: false,
-            name: '',
-            firstname: '',
-            nbPersons: 0,
-            nbVeganPersons: 0,
+            who: '',
             phoneNumber: '',
             email: '',
+            nbPersons: 0,
+            nbVeganPersons: 0,
+            whenSaturdayMorning: false,
+            whenSaturdayLunch: false,
+            whenSundayLunch: false,
             comment: '',
             displayForm: true,
             notificationVisible: false,
@@ -59,10 +64,9 @@ export default class InvitationResponse extends React.Component<Props, State> {
     }
 
     /* tslint:disable */
-    handleChangeForm(event: any, fieldName: string) {
-        event.preventDefault();
+    handleChangeForm(event: any) {
         const change = {};
-        change[fieldName] = event.target.value;
+        change[event.target.name] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         this.setState(change);
     }
 
@@ -75,12 +79,14 @@ export default class InvitationResponse extends React.Component<Props, State> {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                name: this.state.name,
-                firstname: this.state.firstname,
-                nbPersons: this.state.nbPersons,
-                nbVeganPersons: this.state.nbVeganPersons,
+                who: this.state.who,
                 phoneNumber: this.state.phoneNumber,
                 email: this.state.email,
+                nbPersons: this.state.nbPersons,
+                nbVeganPersons: this.state.nbVeganPersons,
+                whenSaturdayMorning: this.state.whenSaturdayMorning,
+                whenSaturdayLunch: this.state.whenSaturdayLunch,
+                whenSundayLunch: this.state.whenSundayLunch,
                 comment: this.state.comment
             })
         })
@@ -127,36 +133,17 @@ export default class InvitationResponse extends React.Component<Props, State> {
                                 <Row className="justify-content-start mt-2">
                                     <Col sm="4" xs="12">
                                         <Row className="justify-content-sm-end">
-                                            <Label className="mt-2 pr-3" for="firstname">Prénom</Label>
+                                            <Label className="mt-2 pr-3" for="who">Qui ?</Label>
                                         </Row>
                                     </Col>
                                     <Col sm="4" xs="12">
                                         <Row className="justify-content-sm-start">
                                             <Input
                                                 type="text"
-                                                name="firstname"
-                                                id="firstname"
-                                                value={this.state.firstname}
-                                                onChange={(e) => this.handleChangeForm(e, 'firstname')}
-                                            />
-                                        </Row>
-                                    </Col>
-                                </Row>
-
-                                <Row className="justify-content-start mt-2">
-                                    <Col sm="4" xs="12">
-                                        <Row className="justify-content-sm-end">
-                                            <Label className="mt-2 pr-3" for="name">Nom</Label>
-                                        </Row>
-                                    </Col>
-                                    <Col sm="4" xs="12">
-                                        <Row className="justify-content-sm-start">
-                                            <Input
-                                                type="text"
-                                                name="name"
-                                                id="name"
-                                                value={this.state.name}
-                                                onChange={(e) => this.handleChangeForm(e, 'name')}
+                                                name="who"
+                                                id="who"
+                                                value={this.state.who}
+                                                onChange={this.handleChangeForm}
                                             />
                                         </Row>
                                     </Col>
@@ -176,7 +163,7 @@ export default class InvitationResponse extends React.Component<Props, State> {
                                                 name="phoneNumber"
                                                 id="phoneNumber"
                                                 value={this.state.phoneNumber}
-                                                onChange={(e) => this.handleChangeForm(e, 'phoneNumber')}
+                                                onChange={this.handleChangeForm}
                                             />
                                         </Row>
                                     </Col>
@@ -195,16 +182,18 @@ export default class InvitationResponse extends React.Component<Props, State> {
                                                 name="email"
                                                 id="email"
                                                 value={this.state.email}
-                                                onChange={(e) => this.handleChangeForm(e, 'email')}
+                                                onChange={this.handleChangeForm}
                                             />
                                         </Row>
                                     </Col>
                                 </Row>
 
+                                <hr/>
+
                                 <Row className="justify-content-start mt-2">
                                     <Col sm="4" xs="12">
                                         <Row className="justify-content-sm-end">
-                                            <Label className="mt-2 pr-3" for="nbPersons">Nous serons</Label>
+                                            <Label className="mt-2 pr-3" for="nbPersons">Combien ?</Label>
                                         </Row>
                                     </Col>
                                     <Col sm="2" xs="12">
@@ -215,7 +204,7 @@ export default class InvitationResponse extends React.Component<Props, State> {
                                                 id="nbPersons"
                                                 min="0"
                                                 value={this.state.nbPersons}
-                                                onChange={(e) => this.handleChangeForm(e, 'nbPersons')}
+                                                onChange={this.handleChangeForm}
                                             />
                                         </Row>
                                     </Col>
@@ -241,16 +230,60 @@ export default class InvitationResponse extends React.Component<Props, State> {
                                                 max={this.state.nbPersons}
                                                 min="0"
                                                 value={this.state.nbVeganPersons}
-                                                onChange={(e) => this.handleChangeForm(e, 'nbVeganPersons')}
+                                                onChange={this.handleChangeForm}
                                             />
                                         </Row>
                                     </Col>
                                     <Col sm="2" xs="12">
                                         <Row className="justify-content-sm-start">
-                                            <Label className="mt-2 pl-3" for="nbVeganPersons2">végétariennes</Label>
+                                            <Label className="mt-2 pl-3" for="nbVeganPersons2">végétarien.ne.s</Label>
                                         </Row>
                                     </Col>
                                 </Row>
+
+                                <hr/>
+
+                                <Row className="justify-content-start mt-2">
+                                    <Col sm="4" xs="12">
+                                        <Row className="justify-content-sm-end">
+                                            <Label className="mt-2 pr-3" for="when">Quand ?</Label>
+                                        </Row>
+                                    </Col>
+                                    <Col sm="6" xs="12" className="input-row">
+                                        <Row className="justify-content-sm-start">
+                                            <Input
+                                                name="whenSaturdayMorning"
+                                                id="whenSaturdayMorning"
+                                                type="checkbox"
+                                                checked={this.state.whenSaturdayMorning}
+                                                onChange={this.handleChangeForm}
+                                            />
+                                            {' '}Samedi 10h30 Mairie
+                                        </Row>
+                                        <Row className="justify-content-sm-start">
+                                            <Input
+                                                type="checkbox"
+                                                name="whenSaturdayLunch"
+                                                id="whenSaturdayLunch"
+                                                checked={this.state.whenSaturdayLunch}
+                                                onChange={this.handleChangeForm}
+                                            />
+                                            {' '}Samedi 12h30
+                                        </Row>
+                                        <Row className="justify-content-sm-start">
+                                            <Input
+                                                type="checkbox"
+                                                name="whenSundayLunch"
+                                                id="whenSundayLunch"
+                                                checked={this.state.whenSundayLunch}
+                                                onChange={this.handleChangeForm}
+                                            />
+                                            {' '}Dimanche 13h
+                                        </Row>
+                                    </Col>
+                                </Row>
+
+                                <hr/>
 
                                 <Row className="justify-content-start mt-2">
                                     <Col sm="4" xs="12">
@@ -265,11 +298,12 @@ export default class InvitationResponse extends React.Component<Props, State> {
                                                 name="comment"
                                                 id="comment"
                                                 value={this.state.comment}
-                                                onChange={(e) => this.handleChangeForm(e, 'comment')}
+                                                onChange={this.handleChangeForm}
                                             />
                                         </Row>
                                     </Col>
                                 </Row>
+
                                 <Row className="mt-2 justify-content-center">
                                     <Col sm="2" xs="12">
                                         <Button color="primary" onClick={this.createAnswer}>

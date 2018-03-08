@@ -12,10 +12,12 @@ export default class Main extends React.Component {
                 <Row>
                     <Col sm="12">
                         <Card body={true}>
-                            <CardTitle>Infos pratiques</CardTitle>
-                            <CardText>Déroulé</CardText>
-                            <CardText>Heures</CardText>
-                            <CardText>Lieux...</CardText>
+                            <CardTitle>Bienvenu.e.s sur le site internet de notre mariage !</CardTitle>
+                            <CardText>
+                                C’est ici que vous trouverez, on l’espère, toutes les informations que vous cherchez.
+                                Fouinez dans les différentes rubriques, téléchargez notre faire-part si ça vous dit, et
+                                surtout : dites-nous si vous serez présent.e.s (youpi) > rubrique « Présence » !
+                            </CardText>
                         </Card>
                     </Col>
                 </Row>

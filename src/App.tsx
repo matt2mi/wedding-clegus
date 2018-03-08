@@ -14,6 +14,7 @@ import NavHeader from './components/NavHeader';
 import PresenceList from './components/PresenceList';
 import SundayFood from './components/SundayFood';
 import JourneyEdit from './components/JourneyEdit';
+import Information from './components/Information';
 
 class App extends React.Component {
     render() {
@@ -24,14 +25,15 @@ class App extends React.Component {
                     <Switch>
                         <div>
                             <Route path="/" exact={true} component={Main}/>
-                            <Route path="/covoiturages" exact={true} component={CarSharing}/>
+                            <Route path="/infos" component={Information}/>
+                            <Route path="/presence" component={PresenceForm}/>
+                            <Route path="/covoiturages" component={CarSharing}/>
                             <Route path="/covoiturages/edit/:id" component={JourneyEdit}/>
                             <Route path="/covoiturages/new" component={JourneyEdit}/>
                             <Route path="/covoiturages/detail/:id" component={JourneyDetails}/>
-                            <Route path="/faire-part" component={Invitation}/>
                             <Route path="/gites" component={HotelsNearby}/>
                             <Route path="/buffet" component={SundayFood}/>
-                            <Route path="/presence" component={PresenceForm}/>
+                            <Route path="/faire-part" component={Invitation}/>
                             <Route path="/contacts" component={Contacts}/>
                             <Route path="/liste-presences" component={PresenceList}/>
                         </div>

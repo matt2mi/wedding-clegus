@@ -38,3 +38,7 @@ textarea {
 .line-scale div {
     background-color: #17a2b8 !important;
 }
+
+.input-row {
+    padding-left: 34px !important;
+}

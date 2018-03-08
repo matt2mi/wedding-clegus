@@ -30,24 +30,27 @@ export default class App extends React.Component<Props, State> {
         return (
             <div>
                 <Navbar color="faded" light={true} expand="md" fixed="top">
-                    <NavbarBrand href="#/">Mariage CleGus</NavbarBrand>
+                    <NavbarBrand href="#/">Mariage Clé et Gus</NavbarBrand>
                     <NavbarToggler onClick={this.toggle}/>
                     <Collapse isOpen={this.state.isOpen} navbar={true}>
                         <Nav navbar={true}>
                             <NavItem>
-                                <NavLink href="#/covoiturages" onClick={this.toggle}>Covoiturage</NavLink>
+                                <NavLink href="#/infos" onClick={this.toggle}>Infos pratiques</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/faire-part" onClick={this.toggle}>Faire-Part</NavLink>
+                                <NavLink href="#/presence" onClick={this.toggle}>Présence</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="#/covoiturages" onClick={this.toggle}>Covoiturage</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="#/gites" onClick={this.toggle}>Gîtes</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/buffet" onClick={this.toggle}>Buffet</NavLink>
+                                <NavLink href="#/buffet" onClick={this.toggle}>Buffet participatif</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/presence" onClick={this.toggle}>Présence</NavLink>
+                                <NavLink href="#/faire-part" onClick={this.toggle}>Faire-Part</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="#/contacts" onClick={this.toggle}>Contacts</NavLink>

@@ -12,8 +12,8 @@ export default class SundayFood extends React.Component {
                 <Row>
                     <Col sm="12">
                         <Card body={true}>
-                            <CardTitle>Buffet participatif</CardTitle>
-                            <CardText>Comment ça se passe le dimanche.</CardText>
+                            <CardTitle>Buffet participatif du dimanche</CardTitle>
+                            <CardText>Comment ça se passe.</CardText>
                         </Card>
                     </Col>
                 </Row>
