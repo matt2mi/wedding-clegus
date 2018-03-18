@@ -14,36 +14,27 @@ export default class Information extends React.Component {
                         <Card body={true}>
                             <CardTitle>Samedi 22 septembre 2018</CardTitle>
                             <CardText>
-                                10h30 – Mairie de Pouancé
+                                10h30 – Mairie de Pouancé<br/>
                                 12h30 – RDV à Saint-Saturnin-du-Limet pour une journée festive et une soirée endiablée.
-                                > Adresse : Salle la Salsa, 1 la Rivière, 53800 Saint-Saturnin-du-Limet
-                                Au programme :
-                                - Apéro d'honneur
-                                - Banquet convivial : Méchoui ou Plat Végétarien
-                                - Pétanque, palets, mölky, papotte...
-                                - Galettes party et dancefloor !
-                            </CardText>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col sm="12">
-                        <Card body={true}>
-                            <CardTitle>Dimanche 23 septembre</CardTitle>
-                            <CardText>
-                                - Pour les lève-tôt : petit-dej autonome (tout sera sur place !)
+                                <br/>
+                                <i className="fa fa-2 fa-home" aria-hidden="true"/>
+                                {' '}Salle la Salsa, 1 la Rivière, 53800 Saint-Saturnin-du-Limet<br/>
+                                Au programme :<br/>
+                                - Apéro d'honneur<br/>
+                                - Banquet convivial : Méchoui ou Plat Végétarien<br/>
+                                - Pétanque, palets, mölky, papotte...<br/>
+                                - Galettes party et dancefloor !<br/>
+
+                                <hr/>
+
+                                - Pour les lève-tôt : petit-dej autonome (tout sera sur place !)<br/>
                                 - 13h : Buffet participatif ! Plus d'infos dans la rubrique « Buffet participatif du
                                 dimanche »
-                            </CardText>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col sm="12">
-                        <Card body={true}>
-                            <CardText>
+
+                                <hr/>
+
                                 - Possibilité de camper sur place (espace camping) sinon rendezvous dans la rubrique «
-                                gîtes »
+                                gîtes »<br/>
                                 - N’oubliez pas vos jeux : palets, mölky, pétanque, jeu de tarot…
                             </CardText>
                         </Card>

@@ -34,11 +34,13 @@ export class Journey {
 
 export interface PresenceResponse {
     id: string;
-    name: string;
-    firstname: string;
+    who: string;
     phoneNumber: string;
     email: string;
     nbPersons: string;
     nbVeganPersons: string;
+    whenSaturdayMorning: boolean;
+    whenSaturdayLunch: boolean;
+    whenSundayLunch: boolean;
     comment: string;
 }

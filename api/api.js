@@ -110,12 +110,14 @@ module.exports = function (app, indexFilePath) {
                     .keys(dbPresences)
                     .map(key => ({
                         id: key,
-                        name: dbPresences[key].name,
-                        firstname: dbPresences[key].firstname,
+                        who: dbPresences[key].who,
                         phoneNumber: dbPresences[key].phoneNumber,
                         email: dbPresences[key].email,
                         nbPersons: dbPresences[key].nbPersons,
                         nbVeganPersons: dbPresences[key].nbVeganPersons,
+                        whenSaturdayMorning: dbPresences[key].whenSaturdayMorning,
+                        whenSaturdayLunch: dbPresences[key].whenSaturdayLunch,
+                        whenSundayLunch: dbPresences[key].whenSundayLunch,
                         comment: dbPresences[key].comment
                     }));
                 res.json(result);
@@ -130,12 +132,14 @@ module.exports = function (app, indexFilePath) {
     app.post('/api/presence', (req, res) => {
         db.ref("presences")
             .push({
-                name: req.body.name,
-                firstname: req.body.firstname,
+                who: req.body.who,
                 phoneNumber: req.body.phoneNumber,
                 email: req.body.email,
                 nbPersons: req.body.nbPersons,
                 nbVeganPersons: req.body.nbVeganPersons,
+                whenSaturdayMorning: req.body.whenSaturdayMorning,
+                whenSaturdayLunch: req.body.whenSaturdayLunch,
+                whenSundayLunch: req.body.whenSundayLunch,
                 comment: req.body.comment
             }, (error) => {
                 if (error) {

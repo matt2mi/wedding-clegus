@@ -14,53 +14,32 @@ export default class Contacts extends React.Component {
                         <Card body={true}>
                             <CardTitle>Contacts</CardTitle>
                             <Row className="justify-content-around">
-                                <Col sm="12" md="6" className="mb-3">
-                                    <Card body={true}>
-                                        <CardTitle>Clémence Esnault</CardTitle>
+                                <Col sm="12" className="mb-3">
+                                    <br/>
+                                    <CardTitle>Clémence et Augustin</CardTitle>
                                         <CardText>
-                                            <i className="fa fa-2 fa-mobile" aria-hidden="true"/> : 0606060606
+                                            17 boulevard de la Prairie au Duc
+                                            <br/>
+                                            44200 NANTES
                                         </CardText>
                                         <CardText>
-                                            <i className="fa fa-2 fa-envelope-o" aria-hidden="true"/> :
-                                            clemence.tcho@aol.fr
+                                            Clé : 06 65 29 83 19 - clemenceesnault@laposte.net
                                         </CardText>
                                         <CardText>
-                                            <i className="fa fa-2 fa-home" aria-hidden="true"/> :
-                                            43 boulevard des Ducs de nantes - 44100 Nantes
+                                            Gus : 06 58 98 27 59 - augustin.bannier@hotmail.fr
                                         </CardText>
-                                    </Card>
                                 </Col>
-                                <Col sm="12" md="6" className="mb-3">
-                                    <Card body={true}>
-                                        <CardTitle>Augustin Bannier</CardTitle>
+                                <Col sm="12" className="mb-3">
+                                    <br/>
+                                    <CardTitle>Témoin: Mylène Robert</CardTitle>
                                         <CardText>
-                                            <i className="fa fa-2 fa-mobile" aria-hidden="true"/> : 0707070707
+                                            135 Rue de montreuil
+                                            <br/>
+                                            75011 Paris
                                         </CardText>
                                         <CardText>
-                                            <i className="fa fa-2 fa-envelope-o" aria-hidden="true"/> :
-                                            gugus.gobelin@vieuxgeek.fr
+                                            07 86 76 20 19 - robertmylene@hotmail.fr
                                         </CardText>
-                                        <CardText>
-                                            <i className="fa fa-2 fa-home" aria-hidden="true"/> :
-                                            43 boulevard des Ducs de nantes - 44100 Nantes
-                                        </CardText>
-                                    </Card>
-                                </Col>
-                                <Col sm="12" md="6" className="mb-3">
-                                    <Card body={true}>
-                                        <CardTitle>Mimi Rombière</CardTitle>
-                                        <CardText>
-                                            <i className="fa fa-2 fa-mobile" aria-hidden="true"/> : 0909090909
-                                        </CardText>
-                                        <CardText>
-                                            <i className="fa fa-2 fa-envelope-o" aria-hidden="true"/> :
-                                            vive_la_vie_13@hippieland.fr
-                                        </CardText>
-                                        <CardText>
-                                            <i className="fa fa-2 fa-home" aria-hidden="true"/> :
-                                            43 boulevard des Ducs de nantes - 44100 Nantes
-                                        </CardText>
-                                    </Card>
                                 </Col>
                             </Row>
                         </Card>
