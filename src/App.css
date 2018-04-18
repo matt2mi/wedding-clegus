@@ -1,5 +1,6 @@
 .App {
     text-align: center;
+    font-weight: 100;
 }
 
 .base-div-content {
@@ -41,4 +42,18 @@ textarea {
 
 .input-row {
     padding-left: 34px !important;
+}
+
+.form-title {
+    font-size: 1.8rem;
+    font-weight: 100;
+}
+
+.form-subtitle {
+    font-size: 1.5rem;
+    font-weight: 100;
+}
+
+.thin-font {
+    font-weight: 100;
 }

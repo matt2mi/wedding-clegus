@@ -38,9 +38,12 @@ export interface PresenceResponse {
     phoneNumber: string;
     email: string;
     nbPersons: string;
+    nbPorkPersons: string;
     nbVeganPersons: string;
     whenSaturdayMorning: boolean;
     whenSaturdayLunch: boolean;
+    whenSaturdayDiner: boolean;
     whenSundayLunch: boolean;
+    commentSundayLunchInfo: string;
     comment: string;
 }

@@ -45,7 +45,7 @@ export default class HotelsNearby extends React.Component<Props, State> {
                 <Row>
                     <Col sm="12">
                         <Card body={true}>
-                            <CardTitle>Gîtes</CardTitle>
+                            <CardTitle className="form-title">Gîtes</CardTitle>
                             <CardText>Les gîtes à proximité du lieu.</CardText>
                             <Row>
                                 {
@@ -60,7 +60,8 @@ export default class HotelsNearby extends React.Component<Props, State> {
                                                         alt={item.captionHeader}
                                                     />
                                                     <CardBody>
-                                                        <CardTitle>{item.captionHeader}</CardTitle>
+                                                        <CardTitle
+                                                            className="form-title">{item.captionHeader}</CardTitle>
                                                         <CardText>{item.captionText}</CardText>
                                                         <CardText>
                                                             <a target="_blank" href={item.href}>lien annonce</a>

@@ -12,11 +12,12 @@ export default class Contacts extends React.Component {
                 <Row>
                     <Col sm="12">
                         <Card body={true}>
-                            <CardTitle>Contacts</CardTitle>
+                            <CardTitle className="form-title">Contacts</CardTitle>
+                            <hr/>
                             <Row className="justify-content-around">
                                 <Col sm="12" className="mb-3">
                                     <br/>
-                                    <CardTitle>Clémence et Augustin</CardTitle>
+                                    <CardTitle className="form-title">Clémence et Augustin</CardTitle>
                                         <CardText>
                                             17 boulevard de la Prairie au Duc
                                             <br/>
@@ -31,7 +32,7 @@ export default class Contacts extends React.Component {
                                 </Col>
                                 <Col sm="12" className="mb-3">
                                     <br/>
-                                    <CardTitle>Témoin: Mylène Robert</CardTitle>
+                                    <CardTitle className="form-title">Témoin: Mylène Robert</CardTitle>
                                         <CardText>
                                             135 Rue de montreuil
                                             <br/>

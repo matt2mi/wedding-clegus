@@ -13,8 +13,8 @@ export default class SundayFood extends React.Component {
                 <Row>
                     <Col sm="12">
                         <Card body={true}>
-                            <CardTitle>Buffet participatif du dimanche</CardTitle>
-                            <CardSubtitle>
+                            <CardTitle className="form-title">Buffet participatif du dimanche</CardTitle>
+                            <CardSubtitle className="form-subtitle">
                                 A partir de 13h00 le dimanche, nous vous proposons un buffet participatif !
                             </CardSubtitle>
                             <CardText>

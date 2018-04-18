@@ -30,30 +30,44 @@ export default class App extends React.Component<Props, State> {
         return (
             <div>
                 <Navbar color="faded" light={true} expand="md" fixed="top">
-                    <NavbarBrand href="#/">Mariage Clé et Gus</NavbarBrand>
+                    <NavbarBrand href="#/" className="thin-font">Mariage Clé et Gus</NavbarBrand>
                     <NavbarToggler onClick={this.toggle}/>
                     <Collapse isOpen={this.state.isOpen} navbar={true}>
                         <Nav navbar={true}>
                             <NavItem>
-                                <NavLink href="#/infos" onClick={this.toggle}>Infos pratiques</NavLink>
+                                <NavLink href="#/infos" onClick={this.toggle} className="thin-font">
+                                    Infos pratiques
+                                </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/presence" onClick={this.toggle}>Présence</NavLink>
+                                <NavLink href="#/presence" onClick={this.toggle} className="thin-font">
+                                    Présence
+                                </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/covoiturages" onClick={this.toggle}>Covoiturage</NavLink>
+                                <NavLink href="#/covoiturages" onClick={this.toggle} className="thin-font">
+                                    Covoiturage
+                                </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/gites" onClick={this.toggle}>Gîtes</NavLink>
+                                <NavLink href="#/gites" onClick={this.toggle} className="thin-font">
+                                    Gîtes
+                                </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/buffet" onClick={this.toggle}>Buffet participatif</NavLink>
+                                <NavLink href="#/buffet" onClick={this.toggle} className="thin-font">
+                                    Buffet participatif
+                                </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/faire-part" onClick={this.toggle}>Faire-Part</NavLink>
+                                <NavLink href="#/faire-part" onClick={this.toggle} className="thin-font">
+                                    Faire-Part
+                                </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/contacts" onClick={this.toggle}>Contacts</NavLink>
+                                <NavLink href="#/contacts" onClick={this.toggle} className="thin-font">
+                                    Contacts
+                                </NavLink>
                             </NavItem>
                         </Nav>
                     </Collapse>

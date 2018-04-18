@@ -12,7 +12,7 @@ export default class Information extends React.Component {
                 <Row>
                     <Col sm="12">
                         <Card body={true}>
-                            <CardTitle>Samedi 22 septembre 2018</CardTitle>
+                            <CardTitle className="form-title">Samedi 22 septembre 2018</CardTitle>
                             <CardText>
                                 10h30 – Mairie de Pouancé<br/>
                                 12h30 – RDV à Saint-Saturnin-du-Limet pour une journée festive et une soirée endiablée.
@@ -33,7 +33,7 @@ export default class Information extends React.Component {
 
                                 <hr/>
 
-                                - Possibilité de camper sur place (espace camping) sinon rendezvous dans la rubrique «
+                                - Possibilité de camper sur place (espace camping) sinon rendez-vous dans la rubrique «
                                 gîtes »<br/>
                                 - N’oubliez pas vos jeux : palets, mölky, pétanque, jeu de tarot…
                             </CardText>

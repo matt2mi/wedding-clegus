@@ -121,7 +121,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
         return (
             <div className="base-div-content">
                 <Card body={true}>
-                    <CardTitle>Détails du trajet</CardTitle>
+                    <CardTitle className="form-title">Détails du trajet</CardTitle>
 
                     <Form>
                         <Row className="justify-content-start mt-2">

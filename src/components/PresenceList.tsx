@@ -12,6 +12,7 @@ interface State {
     readonly nbVeganParticipants: number;
     readonly nbSaturdayMorningParticipants: number;
     readonly nbSaturdayLunchParticipants: number;
+    readonly nbSaturdayDinerParticipants: number;
     readonly nbSundayLunchParticipants: number;
 }
 
@@ -25,6 +26,7 @@ export default class PresenceList extends React.Component <Props, State> {
             nbVeganParticipants: 0,
             nbSaturdayMorningParticipants: 0,
             nbSaturdayLunchParticipants: 0,
+            nbSaturdayDinerParticipants: 0,
             nbSundayLunchParticipants: 0
         };
     }
@@ -37,11 +39,14 @@ export default class PresenceList extends React.Component <Props, State> {
                     who: 'Matt2mi',
                     phoneNumber: '06060606',
                     email: 'matt@demi.fr',
-                    nbPersons: '3',
+                    nbPersons: '2',
+                    nbPorkPersons: '1',
                     nbVeganPersons: '1',
                     whenSaturdayMorning: false,
                     whenSaturdayLunch: true,
+                    whenSaturdayDiner: true,
                     whenSundayLunch: true,
+                    commentSundayLunchInfo: 'tartifloute',
                     comment: 'comcomcocmcomment'
                 },
                 {
@@ -50,17 +55,21 @@ export default class PresenceList extends React.Component <Props, State> {
                     phoneNumber: '0601010101',
                     email: 'matt@demi.fr',
                     nbPersons: '3',
+                    nbPorkPersons: '2',
                     nbVeganPersons: '1',
                     whenSaturdayMorning: true,
                     whenSaturdayLunch: true,
+                    whenSaturdayDiner: true,
                     whenSundayLunch: false,
+                    commentSundayLunchInfo: '',
                     comment: 'comcomcommmmmm'
                 }
             ],
             nbParticipants: 250,
             nbVeganParticipants: 45,
             nbSaturdayMorningParticipants: 100,
-            nbSaturdayLunchParticipants: 235,
+            nbSaturdayLunchParticipants: 185,
+            nbSaturdayDinerParticipants: 235,
             nbSundayLunchParticipants: 250
         });
         this.getPresences();
@@ -75,6 +84,7 @@ export default class PresenceList extends React.Component <Props, State> {
                         nbVeganParticipants = 0,
                         nbSaturdayMorningParticipants = 0,
                         nbSaturdayLunchParticipants = 0,
+                        nbSaturdayDinerParticipants = 0,
                         nbSundayLunchParticipants = 0;
                     const truePresences: PresenceResponse[] = presences.map((presence: PresenceResponse) => {
                         nbParticipants = isNaN(Number.parseInt(presence.nbPersons)) ?
@@ -84,6 +94,7 @@ export default class PresenceList extends React.Component <Props, State> {
 
                         nbSaturdayMorningParticipants += presence.whenSaturdayMorning ? 1 : 0;
                         nbSaturdayLunchParticipants += presence.whenSaturdayLunch ? 1 : 0;
+                        nbSaturdayDinerParticipants += presence.whenSaturdayDiner ? 1 : 0;
                         nbSundayLunchParticipants += presence.whenSundayLunch ? 1 : 0;
 
                         return {
@@ -92,10 +103,13 @@ export default class PresenceList extends React.Component <Props, State> {
                             phoneNumber: presence.phoneNumber,
                             email: presence.email,
                             nbPersons: presence.nbPersons,
+                            nbPorkPersons: presence.nbPorkPersons,
                             nbVeganPersons: presence.nbVeganPersons,
                             whenSaturdayMorning: presence.whenSaturdayMorning,
                             whenSaturdayLunch: presence.whenSaturdayLunch,
+                            whenSaturdayDiner: presence.whenSaturdayDiner,
                             whenSundayLunch: presence.whenSundayLunch,
+                            commentSundayLunchInfo: presence.commentSundayLunchInfo,
                             comment: presence.comment
                         };
                     });
@@ -105,6 +119,7 @@ export default class PresenceList extends React.Component <Props, State> {
                         nbVeganParticipants,
                         nbSaturdayMorningParticipants,
                         nbSaturdayLunchParticipants,
+                        nbSaturdayDinerParticipants,
                         nbSundayLunchParticipants
                     });
                 } else {
@@ -129,6 +144,7 @@ export default class PresenceList extends React.Component <Props, State> {
                             Présents le :<br/>
                             samedi matin : {this.state.nbSaturdayMorningParticipants} personnes<br/>
                             samedi midi : {this.state.nbSaturdayLunchParticipants} personnes<br/>
+                            samedi soir : {this.state.nbSaturdayDinerParticipants} personnes<br/>
                             dimanche midi : {this.state.nbSundayLunchParticipants} personnes
                         </p>
                     </Col>
@@ -141,11 +157,13 @@ export default class PresenceList extends React.Component <Props, State> {
                                 <th>Qui</th>
                                 <th>Téléphone</th>
                                 <th>Email</th>
-                                <th>Nombre</th>
+                                <th>Porcs</th>
                                 <th>Véggies</th>
                                 <th>Samedi matin</th>
                                 <th>Samedi midi</th>
+                                <th>Samedi soir</th>
                                 <th>Dimanche midi</th>
+                                <th>Bouffe dim midi</th>
                                 <th>Commentaire</th>
                             </tr>
                             </thead>
@@ -156,7 +174,7 @@ export default class PresenceList extends React.Component <Props, State> {
                                         <td>{presence.who}</td>
                                         <td>{presence.phoneNumber}</td>
                                         <td>{presence.email}</td>
-                                        <td>{presence.nbPersons}</td>
+                                        <td>{presence.nbPorkPersons}</td>
                                         <td>{presence.nbVeganPersons}</td>
                                         <td>
                                             {
@@ -174,11 +192,19 @@ export default class PresenceList extends React.Component <Props, State> {
                                         </td>
                                         <td>
                                             {
+                                                presence.whenSaturdayDiner ?
+                                                    <i className="fas fa-check"/> :
+                                                    <i className="fas fa-times"/>
+                                            }
+                                        </td>
+                                        <td>
+                                            {
                                                 presence.whenSundayLunch ?
                                                     <i className="fas fa-check"/> :
                                                     <i className="fas fa-times"/>
                                             }
                                         </td>
+                                        <td>{presence.commentSundayLunchInfo}</td>
                                         <td>{presence.comment}</td>
                                     </tr>
                                 );

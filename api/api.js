@@ -114,10 +114,13 @@ module.exports = function (app, indexFilePath) {
                         phoneNumber: dbPresences[key].phoneNumber,
                         email: dbPresences[key].email,
                         nbPersons: dbPresences[key].nbPersons,
+                        nbPorkPersons: dbPresences[key].nbPorkPersons,
                         nbVeganPersons: dbPresences[key].nbVeganPersons,
                         whenSaturdayMorning: dbPresences[key].whenSaturdayMorning,
                         whenSaturdayLunch: dbPresences[key].whenSaturdayLunch,
+                        whenSaturdayDiner: dbPresences[key].whenSaturdayDiner,
                         whenSundayLunch: dbPresences[key].whenSundayLunch,
+                        commentSundayLunchInfo: dbPresences[key].commentSundayLunchInfo,
                         comment: dbPresences[key].comment
                     }));
                 res.json(result);
@@ -136,10 +139,13 @@ module.exports = function (app, indexFilePath) {
                 phoneNumber: req.body.phoneNumber,
                 email: req.body.email,
                 nbPersons: req.body.nbPersons,
+                nbPorkPersons: req.body.nbPorkPersons,
                 nbVeganPersons: req.body.nbVeganPersons,
                 whenSaturdayMorning: req.body.whenSaturdayMorning,
                 whenSaturdayLunch: req.body.whenSaturdayLunch,
+                whenSaturdayDiner: req.body.whenSaturdayDiner,
                 whenSundayLunch: req.body.whenSundayLunch,
+                commentSundayLunchInfo: req.body.commentSundayLunchInfo,
                 comment: req.body.comment
             }, (error) => {
                 if (error) {
