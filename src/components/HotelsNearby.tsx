@@ -60,8 +60,9 @@ export default class HotelsNearby extends React.Component<Props, State> {
                                                         alt={item.captionHeader}
                                                     />
                                                     <CardBody>
-                                                        <CardTitle
-                                                            className="form-title">{item.captionHeader}</CardTitle>
+                                                        <CardTitle className="form-title">
+                                                            {item.captionHeader}
+                                                        </CardTitle>
                                                         <CardText>{item.captionText}</CardText>
                                                         <CardText>
                                                             <a target="_blank" href={item.href}>lien annonce</a>
