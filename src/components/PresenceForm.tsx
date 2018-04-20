@@ -90,7 +90,7 @@ export default class InvitationResponse extends React.Component<Props, State> {
                 who: this.state.who,
                 phoneNumber: this.state.phoneNumber,
                 email: this.state.email,
-                nbPersons: this.state.nbPorkPersons + this.state.nbVeganPersons,
+                nbPersons: this.state.nbPersons,
                 nbPorkPersons: this.state.nbPorkPersons,
                 nbVeganPersons: this.state.nbVeganPersons,
                 whenSaturdayMorning: this.state.whenSaturdayMorning,

@@ -32,46 +32,6 @@ export default class PresenceList extends React.Component <Props, State> {
     }
 
     componentDidMount() {
-        this.setState({
-            presences: [
-                {
-                    id: '-L78llRujn1-lYsjDY_W',
-                    who: 'Matt2mi',
-                    phoneNumber: '06060606',
-                    email: 'matt@demi.fr',
-                    nbPersons: '2',
-                    nbPorkPersons: '1',
-                    nbVeganPersons: '1',
-                    whenSaturdayMorning: false,
-                    whenSaturdayLunch: true,
-                    whenSaturdayDiner: true,
-                    whenSundayLunch: true,
-                    commentSundayLunchInfo: 'tartifloute',
-                    comment: 'comcomcocmcomment'
-                },
-                {
-                    id: '-L7C3tHiw_WabVUkIzFP',
-                    who: 'matt2mi',
-                    phoneNumber: '0601010101',
-                    email: 'matt@demi.fr',
-                    nbPersons: '3',
-                    nbPorkPersons: '2',
-                    nbVeganPersons: '1',
-                    whenSaturdayMorning: true,
-                    whenSaturdayLunch: true,
-                    whenSaturdayDiner: true,
-                    whenSundayLunch: false,
-                    commentSundayLunchInfo: '',
-                    comment: 'comcomcommmmmm'
-                }
-            ],
-            nbParticipants: 250,
-            nbVeganParticipants: 45,
-            nbSaturdayMorningParticipants: 100,
-            nbSaturdayLunchParticipants: 185,
-            nbSaturdayDinerParticipants: 235,
-            nbSundayLunchParticipants: 250
-        });
         this.getPresences();
     }
 
@@ -157,6 +117,7 @@ export default class PresenceList extends React.Component <Props, State> {
                                 <th>Qui</th>
                                 <th>Téléphone</th>
                                 <th>Email</th>
+                                <th>Total</th>
                                 <th>Porcs</th>
                                 <th>Véggies</th>
                                 <th>Samedi matin</th>
@@ -174,6 +135,7 @@ export default class PresenceList extends React.Component <Props, State> {
                                         <td>{presence.who}</td>
                                         <td>{presence.phoneNumber}</td>
                                         <td>{presence.email}</td>
+                                        <td>{presence.nbPersons}</td>
                                         <td>{presence.nbPorkPersons}</td>
                                         <td>{presence.nbVeganPersons}</td>
                                         <td>

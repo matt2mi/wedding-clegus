@@ -1,3 +1,8 @@
+body {
+    background-image: url("./img/fond_light.png");
+    background-repeat: repeat;
+}
+
 .App {
     text-align: center;
     font-weight: 100;
@@ -11,6 +16,9 @@
     cursor: pointer;
 }
 
+.navbar {
+    background-color: darkred !important;
+}
 .navbar a {
     color: white !important;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -56,4 +64,13 @@ textarea {
 
 .thin-font {
     font-weight: 100;
+}
+
+@font-face {
+    font-family: 'YourFontName'; /*a name to be used later*/
+    src: url('./img/AmulhedUpdate2016.otf'); /*URL to font*/
+}
+
+.custom-font {
+    font-family: 'YourFontName', serif !important;
 }
