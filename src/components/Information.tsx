@@ -24,15 +24,19 @@ export default class Information extends React.Component {
                                 - Banquet convivial : Méchoui ou Plat Végétarien<br/>
                                 - Pétanque, palets, mölky, papotte...<br/>
                                 - Galettes party et dancefloor !<br/>
+                            </CardText>
 
-                                <hr/>
+                            <hr/>
 
+                            <CardText>
                                 - Pour les lève-tôt : petit-dej autonome (tout sera sur place !)<br/>
                                 - 13h : Buffet participatif ! Plus d'infos dans la rubrique « Buffet participatif du
                                 dimanche »
+                            </CardText>
 
-                                <hr/>
+                            <hr/>
 
+                            <CardText>
                                 - Possibilité de camper sur place (espace camping) sinon rendez-vous dans la rubrique «
                                 gîtes »<br/>
                                 - N’oubliez pas vos jeux : palets, mölky, pétanque, jeu de tarot…

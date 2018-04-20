@@ -23,20 +23,18 @@ class App extends React.Component {
                 <NavHeader/>
                 <div className="container mt-2">
                     <Switch>
-                        <div>
-                            <Route path="/" exact={true} component={Main}/>
-                            <Route path="/infos" component={Information}/>
-                            <Route path="/presence" component={PresenceForm}/>
-                            <Route path="/covoiturages" component={CarSharing}/>
-                            <Route path="/covoiturages/edit/:id" component={JourneyEdit}/>
-                            <Route path="/covoiturages/new" component={JourneyEdit}/>
-                            <Route path="/covoiturages/detail/:id" component={JourneyDetails}/>
-                            <Route path="/gites" component={HotelsNearby}/>
-                            <Route path="/buffet" component={SundayFood}/>
-                            <Route path="/faire-part" component={Invitation}/>
-                            <Route path="/contacts" component={Contacts}/>
-                            <Route path="/liste-presences" component={PresenceList}/>
-                        </div>
+                        <Route path="/" exact={true} component={Main}/>
+                        <Route path="/infos" component={Information}/>
+                        <Route path="/presence" component={PresenceForm}/>
+                        <Route path="/covoiturages" component={CarSharing}/>
+                        <Route path="/covoiturages/edit/:id" component={JourneyEdit}/>
+                        <Route path="/covoiturages/new" component={JourneyEdit}/>
+                        <Route path="/covoiturages/detail/:id" component={JourneyDetails}/>
+                        <Route path="/gites" component={HotelsNearby}/>
+                        <Route path="/buffet" component={SundayFood}/>
+                        <Route path="/faire-part" component={Invitation}/>
+                        <Route path="/contacts" component={Contacts}/>
+                        <Route path="/liste-presences" component={PresenceList}/>
                     </Switch>
                 </div>
             </div>

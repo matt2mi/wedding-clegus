@@ -1,7 +1,7 @@
-body {
-    background-image: url("./img/fond_light.png");
-    background-repeat: repeat;
-}
+/*body {*/
+/*background-image: url("./img/fond_light.png");*/
+/*background-repeat: repeat;*/
+/*}*/
 
 .App {
     text-align: center;
@@ -19,6 +19,7 @@ body {
 .navbar {
     background-color: darkred !important;
 }
+
 .navbar a {
     color: white !important;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -64,13 +65,14 @@ textarea {
 
 .thin-font {
     font-weight: 100;
+    font-family: unset !important;
 }
 
-@font-face {
-    font-family: 'YourFontName'; /*a name to be used later*/
-    src: url('./img/AmulhedUpdate2016.otf'); /*URL to font*/
-}
+/*@font-face {*/
+/*font-family: 'YourFontName'; !*a name to be used later*!*/
+/*src: url('./img/AmulhedUpdate2016.otf'); !*URL to font*!*/
+/*}*/
 
-.custom-font {
-    font-family: 'YourFontName', serif !important;
-}
+/*.custom-font {*/
+/*font-family: 'YourFontName', serif !important;*/
+/*}*/
