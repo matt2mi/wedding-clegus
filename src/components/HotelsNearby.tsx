@@ -7,7 +7,8 @@ interface Props {
 interface State {
 }
 
-const defaultSrcHouse = require('../img/defaultSrcHouse.png');
+const defaultSrcHouse = require('../img/default-house-orange.png');
+const defaultSrcHouse2 = require('../img/defaultSrcHouse.png');
 const items = [
     {
         src: require('../img/hostel1.jpg'),
@@ -143,9 +144,9 @@ const items = [
         href: ''
     },
     {
-        src: defaultSrcHouse,
+        src: defaultSrcHouse2,
         location: 'La Boissière 53800',
-        description: 'La Viotterie mobilhomes bungalows chalets',
+        description: 'Camping La Viotterie',
         phone: '02 43 06 80 10',
         href: ''
     }
@@ -164,7 +165,7 @@ export default class HotelsNearby extends React.Component<Props, State> {
                                 {
                                     items.map((item, id) => {
                                         return (
-                                            <Col xs="12" sm="6" md="6" lg="4" className="mb-3" key={id}>
+                                            <Col xs="12" sm="6" md="6" lg="3" className="mb-3" key={id}>
                                                 <Card>
                                                     <CardImg
                                                         top={true}
