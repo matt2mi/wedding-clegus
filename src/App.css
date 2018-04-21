@@ -17,7 +17,7 @@
 }
 
 .navbar {
-    background-color: darkred !important;
+    background-color: #f9a138 !important;
 }
 
 .navbar a {
@@ -31,6 +31,11 @@
 .navbar,
 .navbar-default {
     background-color: #17A2B8;
+}
+
+.card-body {
+    background-color: #f9f7f2 !important;
+    color: #906430 !important;
 }
 
 label {

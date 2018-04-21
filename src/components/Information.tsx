@@ -28,6 +28,7 @@ export default class Information extends React.Component {
 
                             <hr/>
 
+                            <CardTitle className="form-title">Dimanche 23 septembre 2018</CardTitle>
                             <CardText>
                                 - Pour les lève-tôt : petit-dej autonome (tout sera sur place !)<br/>
                                 - 13h : Buffet participatif ! Plus d'infos dans la rubrique « Buffet participatif du
