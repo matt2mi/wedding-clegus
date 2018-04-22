@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, CardBody, CardImg, CardText, CardTitle, Col, Row, } from 'reactstrap';
+import {Card, CardBody, CardImg, CardText, CardTitle, Col, Row,} from 'reactstrap';
 
 interface Props {
 }
@@ -7,7 +7,7 @@ interface Props {
 interface State {
 }
 
-const defaultSrcHouse = require('../img/defaultSrcHouse.png');
+const defaultSrcHouse = require('../img/default-house-orange.png');
 const items = [
     {
         src: require('../img/hostel1.jpg'),
@@ -145,7 +145,7 @@ const items = [
     {
         src: defaultSrcHouse,
         location: 'La Boissière 53800',
-        description: 'La Viotterie mobilhomes bungalows chalets',
+        description: 'Camping La Viotterie',
         phone: '02 43 06 80 10',
         href: ''
     }
@@ -164,7 +164,7 @@ export default class HotelsNearby extends React.Component<Props, State> {
                                 {
                                     items.map((item, id) => {
                                         return (
-                                            <Col xs="12" sm="6" md="6" lg="4" className="mb-3" key={id}>
+                                            <Col xs="12" sm="6" md="6" lg="3" className="mb-3" key={id}>
                                                 <Card>
                                                     <CardImg
                                                         top={true}

@@ -7,10 +7,10 @@ import Row from 'reactstrap/lib/Row';
 
 export default class Contacts extends React.Component {
     private clegusSrc = require('../img/clegus_cartoon_melois.png');
-    private mimiSrc = require('../img/mimi_cartoon.png');
-    private toyoSrc = require('../img/toyo_cartoon.png');
-    private popoSrc = require('../img/popo_cartoon.png');
-    private quentinSrc = require('../img/quentin_cartoon.png');
+    private mimiSrc = require('../img/mimi-cartoon-small.png');
+    private toyoSrc = require('../img/toyo-cartoon-small.png');
+    private popoSrc = require('../img/popo-cartoon-small.png');
+    private quentinSrc = require('../img/quentin-cartoon-small.png');
 
     render() {
         return (
@@ -20,16 +20,16 @@ export default class Contacts extends React.Component {
                         <Card body={true}>
                             <CardTitle className="form-title">Contacts</CardTitle>
                             <hr/>
-                            <Row>
-                                <Col size={12} sm={2} md={3} xl={1}/>
-                                <Col size={12} sm={8} md={6} xl={4} className="mb-3">
+                            <Row className="justify-content-around">
+                                {/*<Col size={12} sm={2} md={3} xl={1}/>*/}
+                                <Col size={12} sm={8} md={6} xl={5} className="mb-3">
                                     <img
                                         className="img-fluid"
                                         src={this.clegusSrc}
                                         alt="mimi"
                                     />
                                 </Col>
-                                <Col size={0} xl={1}/>
+                                {/*<Col size={0} xl={1}/>*/}
                                 <Col size={12} xl={6} className="mb-3">
                                     <br/>
                                     <CardTitle className="form-title">Clémence et Augustin</CardTitle>
@@ -58,48 +58,54 @@ export default class Contacts extends React.Component {
                                         </Col>
                                     </Row>
                                     <br/>
-                                    <Row>
-                                        <Col xs={4} sm={2}>
+                                    <Row className="justify-content-around">
+                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
                                             <img
                                                 className="img-fluid"
                                                 src={this.mimiSrc}
                                                 alt="mimi"
                                             />
+                                            Mylène
                                         </Col>
-                                        <Col xs={4} sm={2}>
+                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
                                             <img
                                                 className="img-fluid"
                                                 src={this.toyoSrc}
                                                 alt="mimi"
                                             />
+                                            Antoine
                                         </Col>
-                                        <Col xs={4} sm={2}>
+                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
                                             <img
                                                 className="img-fluid"
                                                 src={this.popoSrc}
                                                 alt="mimi"
                                             />
+                                            Pauline
                                         </Col>
-                                        <Col xs={4} sm={2}>
+                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
                                             <img
                                                 className="img-fluid"
                                                 src={this.quentinSrc}
                                                 alt="mimi"
                                             />
+                                            Quentin
                                         </Col>
-                                        <Col xs={4} sm={2}>
+                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
                                             <img
                                                 className="img-fluid"
                                                 src={this.quentinSrc}
                                                 alt="mimi"
                                             />
+                                            Maxime
                                         </Col>
-                                        <Col xs={4} sm={2}>
+                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
                                             <img
                                                 className="img-fluid"
                                                 src={this.quentinSrc}
                                                 alt="mimi"
                                             />
+                                            Guillaume
                                         </Col>
                                     </Row>
                                 </Col>
