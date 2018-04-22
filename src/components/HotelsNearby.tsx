@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, CardBody, CardImg, CardText, CardTitle, Col, Row, } from 'reactstrap';
+import {Card, CardBody, CardImg, CardText, CardTitle, Col, Row,} from 'reactstrap';
 
 interface Props {
 }
@@ -8,7 +8,6 @@ interface State {
 }
 
 const defaultSrcHouse = require('../img/default-house-orange.png');
-const defaultSrcHouse2 = require('../img/defaultSrcHouse.png');
 const items = [
     {
         src: require('../img/hostel1.jpg'),
@@ -144,7 +143,7 @@ const items = [
         href: ''
     },
     {
-        src: defaultSrcHouse2,
+        src: defaultSrcHouse,
         location: 'La Boissière 53800',
         description: 'Camping La Viotterie',
         phone: '02 43 06 80 10',
