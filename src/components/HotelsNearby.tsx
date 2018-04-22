@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Card, CardBody, CardImg, CardText, CardTitle, Col, Row,} from 'reactstrap';
+import { Card, CardBody, CardImg, CardText, CardTitle, Col, Row, } from 'reactstrap';
 
 interface Props {
 }
