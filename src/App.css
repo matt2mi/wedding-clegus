@@ -46,6 +46,10 @@ textarea {
     font-weight: bold !important;
 }
 
+.small-font {
+    font-weight: lighter !important;
+}
+
 .base-div-content {
     margin-top: 60px;
 }
