@@ -8,9 +8,9 @@ import 'bootstrap/dist/js/bootstrap';
 import { HashRouter } from 'react-router-dom';
 
 ReactDOM.render(
-  <HashRouter basename="/">
-    <App/>
-  </HashRouter>,
-  document.getElementById('root') as HTMLElement
+    <HashRouter basename="/">
+        <App/>
+    </HashRouter>,
+    document.getElementById('root') as HTMLElement
 );
 unregister();

@@ -1,42 +1,22 @@
-/*body {*/
-/*background-image: url("./img/fond_light.png");*/
-/*background-repeat: repeat;*/
-/*}*/
-
-.App {
-    text-align: center;
-    font-weight: 100;
+@font-face {
+    font-family: 'borden-light';
+    src: url('./img/borden-light.otf');
 }
 
-.base-div-content {
-    margin-top: 60px;
+@font-face {
+    font-family: 'borden';
+    src: url('./img/borden.otf');
 }
 
-.pointer {
-    cursor: pointer;
-}
-
-.navbar {
+button {
     background-color: #f9a138 !important;
+    border-color: #906430 !important;
+    font-size: 2rem !important;
+    font-weight: bold !important;
 }
 
-.navbar a {
-    color: white !important;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-}
-
-.navbar-brand {
-    font-weight: bold;
-}
-
-.navbar,
-.navbar-default {
-    background-color: #17A2B8;
-}
-
-.card-body {
-    background-color: #f9f7f2 !important;
-    color: #906430 !important;
+nav button {
+    font-size: 1.2rem !important;
 }
 
 label {
@@ -51,8 +31,58 @@ textarea {
     height: 120px;
 }
 
+.App {
+    text-align: center;
+    font-weight: 100;
+    font-size: 1.7rem;
+    font-family: 'borden-light', serif;
+}
+
+.borden {
+    font-family: 'borden', serif !important;
+}
+
+.big-font {
+    font-weight: bold !important;
+}
+
+.base-div-content {
+    margin-top: 60px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.navbar {
+    background-color: #f9a138 !important;
+}
+.navbar a {
+    color: white !important;
+}
+.navbar-brand {
+    font-weight: bold;
+}
+
+.navbar-item-big {
+    font-size: xx-large !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.navbar-item {
+    font-size: xx-large !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.card-body {
+    background-color: #f9f7f2 !important;
+    color: #906430 !important;
+}
+
 .line-scale div {
-    background-color: #17a2b8 !important;
+    background-color: #f9a138 !important;
 }
 
 .input-row {
@@ -60,25 +90,23 @@ textarea {
 }
 
 .form-title {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
+    font-weight: bold;
+}
+.form-subtitle {
+    font-size: 2rem;
     font-weight: 100;
 }
 
-.form-subtitle {
-    font-size: 1.5rem;
-    font-weight: 100;
+.form-field {
+    font-family: 'borden', serif !important;
+    font-size: 1.2rem !important;
 }
 
 .thin-font {
     font-weight: 100;
-    font-family: unset !important;
 }
 
-/*@font-face {*/
-/*font-family: 'YourFontName'; !*a name to be used later*!*/
-/*src: url('./img/AmulhedUpdate2016.otf'); !*URL to font*!*/
-/*}*/
-
-/*.custom-font {*/
-/*font-family: 'YourFontName', serif !important;*/
-/*}*/
+.thin-font-title {
+    font-weight: 300;
+}

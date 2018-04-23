@@ -157,7 +157,7 @@ export default class HotelsNearby extends React.Component<Props, State> {
             <div className="base-div-content">
                 <Row>
                     <Col sm="12">
-                        <Card body={true}>
+                        <Card body={true} className="mt-3">
                             <CardTitle className="form-title">Gîtes</CardTitle>
                             <CardText>Les gîtes à proximité de Saint-Saturnin du Limet.</CardText>
                             <Row>
@@ -176,7 +176,10 @@ export default class HotelsNearby extends React.Component<Props, State> {
                                                         <CardTitle className="form-title">
                                                             {item.description}
                                                         </CardTitle>
-                                                        <CardText>{item.location}</CardText>
+                                                        <CardText>
+                                                            <i className="fa fa-2 fa-home" aria-hidden="true"/>
+                                                            {' ' + item.location}
+                                                        </CardText>
                                                         {
                                                             item.phone &&
                                                             <CardText>

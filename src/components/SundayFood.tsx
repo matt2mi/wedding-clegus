@@ -12,7 +12,7 @@ export default class SundayFood extends React.Component {
             <div className="base-div-content">
                 <Row>
                     <Col sm="12">
-                        <Card body={true}>
+                        <Card body={true} className="mt-3">
                             <CardTitle className="form-title">Buffet participatif du dimanche</CardTitle>
                             <CardSubtitle className="form-subtitle">
                                 A partir de 13h00 le dimanche, nous vous proposons un buffet participatif !

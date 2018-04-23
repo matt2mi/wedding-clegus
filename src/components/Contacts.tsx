@@ -6,32 +6,36 @@ import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
 
 export default class Contacts extends React.Component {
-    private clegusSrc = require('../img/clegus_cartoon_melois.png');
-    private mimiSrc = require('../img/mimi-cartoon-small.png');
-    private toyoSrc = require('../img/toyo-cartoon-small.png');
-    private popoSrc = require('../img/popo-cartoon-small.png');
-    private quentinSrc = require('../img/quentin-cartoon-small.png');
+    private witnesses = [
+        {src: require('../img/mimi-cartoon-small.png'), name: 'Mylène'},
+        {src: require('../img/popo-small.png'), name: 'Pauline'},
+        {src: require('../img/toyo-cartoon-small.png'), name: 'Antoine'},
+        {src: require('../img/toyo-small.png'), name: 'Antoine'},
+        {src: require('../img/guillaume-small.png'), name: 'Guillaume'},
+        {src: require('../img/maxime-small.png'), name: 'Maxime'},
+        {src: require('../img/quentin-small.png'), name: 'Quentin'},
+    ];
+    private cleSrc = require('../img/cle-evjf-cartoon.png');
+    private gusSrc = require('../img/gus-evg-small.png');
 
     render() {
         return (
             <div className="base-div-content">
                 <Row>
                     <Col sm="12">
-                        <Card body={true}>
+                        <Card body={true} className="mt-3">
                             <CardTitle className="form-title">Contacts</CardTitle>
                             <hr/>
                             <Row className="justify-content-around">
-                                {/*<Col size={12} sm={2} md={3} xl={1}/>*/}
-                                <Col size={12} sm={8} md={6} xl={5} className="mb-3">
+                                <Col sm={3}>
                                     <img
                                         className="img-fluid"
-                                        src={this.clegusSrc}
+                                        src={this.cleSrc}
                                         alt="mimi"
                                     />
                                 </Col>
-                                {/*<Col size={0} xl={1}/>*/}
-                                <Col size={12} xl={6} className="mb-3">
-                                    <br/>
+
+                                <Col sm={3}>
                                     <CardTitle className="form-title">Clémence et Augustin</CardTitle>
                                     <CardText>
                                         17 boulevard de la Prairie au Duc
@@ -44,6 +48,14 @@ export default class Contacts extends React.Component {
                                     <CardText>
                                         Gus : 06 58 98 27 59 - augustin.bannier@hotmail.fr
                                     </CardText>
+                                </Col>
+
+                                <Col sm={3}>
+                                    <img
+                                        className="img-fluid"
+                                        src={this.gusSrc}
+                                        alt="mimi"
+                                    />
                                 </Col>
                             </Row>
                             <hr/>
@@ -59,54 +71,18 @@ export default class Contacts extends React.Component {
                                     </Row>
                                     <br/>
                                     <Row className="justify-content-around">
-                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
-                                            <img
-                                                className="img-fluid"
-                                                src={this.mimiSrc}
-                                                alt="mimi"
-                                            />
-                                            Mylène
-                                        </Col>
-                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
-                                            <img
-                                                className="img-fluid"
-                                                src={this.toyoSrc}
-                                                alt="mimi"
-                                            />
-                                            Antoine
-                                        </Col>
-                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
-                                            <img
-                                                className="img-fluid"
-                                                src={this.popoSrc}
-                                                alt="mimi"
-                                            />
-                                            Pauline
-                                        </Col>
-                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
-                                            <img
-                                                className="img-fluid"
-                                                src={this.quentinSrc}
-                                                alt="mimi"
-                                            />
-                                            Quentin
-                                        </Col>
-                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
-                                            <img
-                                                className="img-fluid"
-                                                src={this.quentinSrc}
-                                                alt="mimi"
-                                            />
-                                            Maxime
-                                        </Col>
-                                        <Col xs={4} sm={2} className="mb-2 mb-sm-0">
-                                            <img
-                                                className="img-fluid"
-                                                src={this.quentinSrc}
-                                                alt="mimi"
-                                            />
-                                            Guillaume
-                                        </Col>
+                                        {
+                                            this.witnesses.map(witness => (
+                                                <Col xs={4} sm={2} className="mb-2 mb-sm-0">
+                                                    <img
+                                                        className="img-fluid"
+                                                        src={witness.src}
+                                                        alt={witness.name}
+                                                    />
+                                                    {witness.name}
+                                                </Col>
+                                            ))
+                                        }
                                     </Row>
                                 </Col>
                             </Row>

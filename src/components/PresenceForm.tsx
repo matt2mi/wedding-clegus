@@ -27,7 +27,7 @@ interface State {
     readonly notificationMessage: string;
 }
 
-export default class InvitationResponse extends React.Component<Props, State> {
+export default class PresenceForm extends React.Component<Props, State> {
     loaderStyle = {
         marginTop: window.innerHeight / 2 + 'px'
     };
@@ -38,6 +38,7 @@ export default class InvitationResponse extends React.Component<Props, State> {
         super(props);
 
         this.handleChangeForm = this.handleChangeForm.bind(this);
+        this.onClickCheckboxLine = this.onClickCheckboxLine.bind(this);
         this.createAnswer = this.createAnswer.bind(this);
         this.toggleNotification = this.toggleNotification.bind(this);
         this.startLoading = this.startLoading.bind(this);
@@ -75,6 +76,12 @@ export default class InvitationResponse extends React.Component<Props, State> {
     handleChangeForm(event: any) {
         const change = {};
         change[event.target.name] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+        this.setState(change);
+    }
+
+    onClickCheckboxLine(event: any) {
+        const change = {};
+        change[event.target.id] = !this.state[event.target.id];
         this.setState(change);
     }
 
@@ -136,243 +143,271 @@ export default class InvitationResponse extends React.Component<Props, State> {
         }
         return (
             <div className="base-div-content">
-                <Card body={true}>
-                    <CardTitle className="text-left form-title">Formulaire de présence</CardTitle>
-                    <hr/>
-                    {
-                        this.state.displayForm ?
-                            <Form className="thin-font">
-                                <Row className="justify-content-center mt-2 form-title">
-                                    Qui ?
-                                </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Col sm="3" xs="12"/>
-                                    <Col sm="6" xs="12">
-                                        <Row className="justify-content-sm-start">
-                                            <Input
-                                                type="text"
-                                                name="who"
-                                                id="who"
-                                                className="thin-font"
-                                                placeholder="Nom"
-                                                value={this.state.who}
-                                                onChange={this.handleChangeForm}
-                                            />
+                <Row>
+                    <Col>
+                        <Card body={true} className="mt-3">
+                            <CardTitle className="text-left form-title">Formulaire de présence</CardTitle>
+                            <hr/>
+                            {
+                                this.state.displayForm ?
+                                    <Form className="thin-font">
+                                        <Row className="justify-content-center mt-2 form-title">
+                                            Qui ?
                                         </Row>
-                                    </Col>
-                                </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Col sm="3" xs="12"/>
-                                    <Col sm="6" xs="12">
-                                        <Row className="justify-content-sm-start">
-                                            <Input
-                                                type="text"
-                                                name="phoneNumber"
-                                                id="phoneNumber"
-                                                className="thin-font"
-                                                placeholder="Téléphone"
-                                                value={this.state.phoneNumber}
-                                                onChange={this.handleChangeForm}
-                                            />
+                                        <Row className="justify-content-start mt-2">
+                                            <Col sm="3" xs="12"/>
+                                            <Col sm="6" xs="12">
+                                                <Row className="justify-content-sm-start">
+                                                    <Input
+                                                        type="text"
+                                                        name="who"
+                                                        id="who"
+                                                        className="form-field"
+                                                        placeholder="Nom"
+                                                        value={this.state.who}
+                                                        onChange={this.handleChangeForm}
+                                                    />
+                                                </Row>
+                                            </Col>
                                         </Row>
-                                    </Col>
-                                </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Col sm="3" xs="12"/>
-                                    <Col sm="6" xs="12">
-                                        <Row className="justify-content-sm-start">
-                                            <Input
-                                                type="email"
-                                                name="email"
-                                                id="email"
-                                                className="thin-font"
-                                                placeholder="Adresse email"
-                                                value={this.state.email}
-                                                onChange={this.handleChangeForm}
-                                            />
+                                        <Row className="justify-content-start mt-2">
+                                            <Col sm="3" xs="12"/>
+                                            <Col sm="6" xs="12">
+                                                <Row className="justify-content-sm-start">
+                                                    <Input
+                                                        type="text"
+                                                        name="phoneNumber"
+                                                        id="phoneNumber"
+                                                        className="form-field"
+                                                        placeholder="Téléphone"
+                                                        value={this.state.phoneNumber}
+                                                        onChange={this.handleChangeForm}
+                                                    />
+                                                </Row>
+                                            </Col>
                                         </Row>
-                                    </Col>
-                                </Row>
+                                        <Row className="justify-content-start mt-2">
+                                            <Col sm="3" xs="12"/>
+                                            <Col sm="6" xs="12">
+                                                <Row className="justify-content-sm-start">
+                                                    <Input
+                                                        type="email"
+                                                        name="email"
+                                                        id="email"
+                                                        className="form-field"
+                                                        placeholder="Adresse email"
+                                                        value={this.state.email}
+                                                        onChange={this.handleChangeForm}
+                                                    />
+                                                </Row>
+                                            </Col>
+                                        </Row>
 
-                                <hr/>
+                                        <hr/>
 
-                                <Row className="justify-content-center mt-2 form-title">
-                                    Combien ?
-                                </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Col sm="6" xs="12">
-                                        <Row className="justify-content-sm-end">
-                                            <Label className="mt-2 pr-3" for="nbPersons">
-                                                Nombre de personnes
-                                            </Label>
+                                        <Row className="justify-content-center mt-2 form-title">
+                                            Combien ?
                                         </Row>
-                                    </Col>
-                                    <Col sm="2" xs="12">
-                                        <Row className="justify-content-start">
-                                            <Input
-                                                type="number"
-                                                name="nbPersons"
-                                                id="nbPersons"
-                                                className="thin-font"
-                                                min="0"
-                                                value={this.state.nbPersons}
-                                                onChange={this.handleChangeForm}
-                                            />
+                                        <Row className="justify-content-start mt-2">
+                                            <Col sm="6" xs="12">
+                                                <Row className="justify-content-sm-end">
+                                                    <Label className="mt-2 pr-3" for="nbPersons">
+                                                        Nombre de personnes
+                                                    </Label>
+                                                </Row>
+                                            </Col>
+                                            <Col sm="2" xs="12">
+                                                <Row className="justify-content-start">
+                                                    <Input
+                                                        type="number"
+                                                        name="nbPersons"
+                                                        id="nbPersons"
+                                                        className="form-field"
+                                                        min="0"
+                                                        value={this.state.nbPersons}
+                                                        onChange={this.handleChangeForm}
+                                                    />
+                                                </Row>
+                                            </Col>
                                         </Row>
-                                    </Col>
-                                </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Col sm="6" xs="12">
-                                        <Row className="justify-content-sm-end">
-                                            <Label className="mt-2 pr-3" for="nbPorkPersons">
-                                                Part.s de méchoui (porc)
-                                            </Label>
+                                        <Row className="justify-content-start mt-2">
+                                            <Col sm="6" xs="12">
+                                                <Row className="justify-content-sm-end">
+                                                    <Label className="mt-2 pr-3" for="nbPorkPersons">
+                                                        Part.s de méchoui (porc)
+                                                    </Label>
+                                                </Row>
+                                            </Col>
+                                            <Col sm="2" xs="12">
+                                                <Row className="justify-content-start">
+                                                    <Input
+                                                        type="number"
+                                                        name="nbPorkPersons"
+                                                        id="nbPorkPersons"
+                                                        className="form-field"
+                                                        min="0"
+                                                        value={this.state.nbPorkPersons}
+                                                        onChange={this.handleChangeForm}
+                                                    />
+                                                </Row>
+                                            </Col>
                                         </Row>
-                                    </Col>
-                                    <Col sm="2" xs="12">
-                                        <Row className="justify-content-start">
-                                            <Input
-                                                type="number"
-                                                name="nbPorkPersons"
-                                                id="nbPorkPersons"
-                                                className="thin-font"
-                                                min="0"
-                                                value={this.state.nbPorkPersons}
-                                                onChange={this.handleChangeForm}
-                                            />
+                                        <Row className="justify-content-start mt-2">
+                                            <Col sm="6" xs="12">
+                                                <Row className="justify-content-sm-end">
+                                                    <Label className="mt-2 pr-3" for="nbVeganPersons">
+                                                        Part.s végétarien.ne.s
+                                                    </Label>
+                                                </Row>
+                                            </Col>
+                                            <Col sm="2" xs="12">
+                                                <Row className="justify-content-start">
+                                                    <Input
+                                                        type="number"
+                                                        name="nbVeganPersons"
+                                                        id="nbVeganPersons"
+                                                        className="form-field"
+                                                        min="0"
+                                                        value={this.state.nbVeganPersons}
+                                                        onChange={this.handleChangeForm}
+                                                    />
+                                                </Row>
+                                            </Col>
                                         </Row>
-                                    </Col>
-                                </Row>
-                                <Row className="justify-content-start mt-2">
-                                    <Col sm="6" xs="12">
-                                        <Row className="justify-content-sm-end">
-                                            <Label className="mt-2 pr-3" for="nbVeganPersons">
-                                                Part.s végétarien.ne.s
-                                            </Label>
-                                        </Row>
-                                    </Col>
-                                    <Col sm="2" xs="12">
-                                        <Row className="justify-content-start">
-                                            <Input
-                                                type="number"
-                                                name="nbVeganPersons"
-                                                id="nbVeganPersons"
-                                                className="thin-font"
-                                                min="0"
-                                                value={this.state.nbVeganPersons}
-                                                onChange={this.handleChangeForm}
-                                            />
-                                        </Row>
-                                    </Col>
-                                </Row>
 
-                                <hr/>
+                                        <hr/>
 
-                                <Row className="justify-content-center mt-2 form-title">
-                                    Quand ?
-                                </Row>
-                                <Row className="mt-2">
-                                    <Col sm="12" className="text-left text-sm-center pl-4 pl-sm-2">
-                                        <Input
-                                            name="whenSaturdayMorning"
-                                            id="whenSaturdayMorning"
-                                            type="checkbox"
-                                            className="thin-font"
-                                            checked={this.state.whenSaturdayMorning}
-                                            onChange={this.handleChangeForm}
-                                        />
-                                        {' '}Samedi 10h30 Mairie
-                                    </Col>
-                                </Row>
-                                <Row className="mt-2">
-                                    <Col sm="12" className="text-left text-sm-center pl-4 pl-sm-2">
-                                        <Input
-                                            type="checkbox"
-                                            name="whenSaturdayLunch"
-                                            id="whenSaturdayLunch"
-                                            className="thin-font"
-                                            checked={this.state.whenSaturdayLunch}
-                                            onChange={this.handleChangeForm}
-                                        />
-                                        {' '}Samedi 12h30 Banquet convivial
-                                    </Col>
-                                </Row>
-                                <Row className="mt-2">
-                                    <Col sm="12" className="text-left text-sm-center pl-4 pl-sm-2">
-                                        <Input
-                                            type="checkbox"
-                                            name="whenSaturdayDiner"
-                                            id="whenSaturdayDiner"
-                                            className="thin-font"
-                                            checked={this.state.whenSaturdayDiner}
-                                            onChange={this.handleChangeForm}
-                                        />
-                                        {' '}Samedi 19h Galettes party
-                                    </Col>
-                                </Row>
-                                <Row className="mt-2">
-                                    <Col sm="12" className="text-left text-sm-center pl-4 pl-sm-2">
-                                        <Input
-                                            type="checkbox"
-                                            name="whenSundayLunch"
-                                            id="whenSundayLunch"
-                                            className="thin-font"
-                                            checked={this.state.whenSundayLunch}
-                                            onChange={this.handleChangeForm}
-                                        />
-                                        {' '}Dimanche 13h Buffet participatif
-                                    </Col>
-                                </Row>
-                                <Row className="mt-2">
-                                    <Col sm="3"/>
-                                    <Col sm="6" className="text-left text-sm-center pl-4 pl-sm-2">
-                                        <Collapse isOpen={this.state.whenSundayLunch}>
-                                            <Input
-                                                type="textarea"
-                                                name="commentSundayLunchInfo"
-                                                id="commentSundayLunchInfo"
-                                                className="thin-font"
-                                                placeholder={this.sundayFoodMsg}
-                                                value={this.state.commentSundayLunchInfo}
-                                                onChange={this.handleChangeForm}
-                                            />
-                                        </Collapse>
-                                    </Col>
-                                </Row>
-
-                                <hr/>
-
-                                <Row className="justify-content-start mt-2">
-                                    <Col sm="3" xs="12"/>
-                                    <Col sm="6" xs="12">
-                                        <Row className="justify-content-sm-start">
-                                            <Input
-                                                type="textarea"
-                                                name="comment"
-                                                id="comment"
-                                                className="thin-font"
-                                                placeholder="Autre chose à nous dire ?"
-                                                value={this.state.comment}
-                                                onChange={this.handleChangeForm}
-                                            />
+                                        <Row className="justify-content-center mt-2 form-title">
+                                            Quand ?
                                         </Row>
-                                    </Col>
-                                </Row>
-                                <Row className="justify-content-center mt-2">
-                                    <Col sm="12">
-                                        <Button color="primary" onClick={this.createAnswer}>
-                                            Envoyer la réponse
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </Form> :
-                            null
-                    }
+                                        <Row className="mt-2">
+                                            <Col sm="12" className="text-left text-sm-center pl-4 pl-sm-2">
+                                                <Input
+                                                    name="whenSaturdayMorning"
+                                                    id="whenSaturdayMorning"
+                                                    type="checkbox"
+                                                    className="form-field pointer"
+                                                    checked={this.state.whenSaturdayMorning}
+                                                    onChange={this.handleChangeForm}
+                                                />
+                                                <span
+                                                    id="whenSaturdayMorning"
+                                                    className="pointer"
+                                                    onClick={this.onClickCheckboxLine}
+                                                >
+                                                    Samedi 10h30 Mairie
+                                                </span>
+                                            </Col>
+                                        </Row>
+                                        <Row className="mt-2">
+                                            <Col sm="12" className="text-left text-sm-center pl-4 pl-sm-2">
+                                                <Input
+                                                    type="checkbox"
+                                                    name="whenSaturdayLunch"
+                                                    id="whenSaturdayLunch"
+                                                    className="form-field pointer"
+                                                    checked={this.state.whenSaturdayLunch}
+                                                    onChange={this.handleChangeForm}
+                                                />
+                                                <span
+                                                    id="whenSaturdayLunch"
+                                                    className="pointer"
+                                                    onClick={this.onClickCheckboxLine}
+                                                >
+                                                    Samedi 12h30 Banquet convivial
+                                                </span>
+                                            </Col>
+                                        </Row>
+                                        <Row className="mt-2">
+                                            <Col sm="12" className="text-left text-sm-center pl-4 pl-sm-2">
+                                                <Input
+                                                    type="checkbox"
+                                                    name="whenSaturdayDiner"
+                                                    id="whenSaturdayDiner"
+                                                    className="form-field pointer"
+                                                    checked={this.state.whenSaturdayDiner}
+                                                    onChange={this.handleChangeForm}
+                                                />
+                                                <span
+                                                    id="whenSaturdayDiner"
+                                                    className="pointer"
+                                                    onClick={this.onClickCheckboxLine}
+                                                >
+                                                    Samedi 19h Galettes party
+                                                </span>
+                                            </Col>
+                                        </Row>
+                                        <Row className="mt-2">
+                                            <Col sm="12" className="text-left text-sm-center pl-4 pl-sm-2">
+                                                <Input
+                                                    type="checkbox"
+                                                    name="whenSundayLunch"
+                                                    id="whenSundayLunch"
+                                                    className="form-field pointer"
+                                                    checked={this.state.whenSundayLunch}
+                                                    onChange={this.handleChangeForm}
+                                                />
+                                                <span
+                                                    id="whenSundayLunch"
+                                                    className="pointer"
+                                                    onClick={this.onClickCheckboxLine}
+                                                >
+                                                    Dimanche 13h Buffet participatif
+                                                </span>
+                                            </Col>
+                                        </Row>
+                                        <Row className="mt-2">
+                                            <Col sm="3"/>
+                                            <Col sm="6" className="text-left text-sm-center pl-4 pl-sm-2">
+                                                <Collapse isOpen={this.state.whenSundayLunch}>
+                                                    <Input
+                                                        type="textarea"
+                                                        name="commentSundayLunchInfo"
+                                                        id="commentSundayLunchInfo"
+                                                        className="form-field"
+                                                        placeholder={this.sundayFoodMsg}
+                                                        value={this.state.commentSundayLunchInfo}
+                                                        onChange={this.handleChangeForm}
+                                                    />
+                                                </Collapse>
+                                            </Col>
+                                        </Row>
 
-                    <Alert color="info" isOpen={this.state.notificationVisible}>
-                        {this.state.notificationMessage}
-                    </Alert>
-                </Card>
+                                        <hr/>
+
+                                        <Row className="justify-content-start mt-2">
+                                            <Col sm="3" xs="12"/>
+                                            <Col sm="6" xs="12">
+                                                <Row className="justify-content-sm-start">
+                                                    <Input
+                                                        type="textarea"
+                                                        name="comment"
+                                                        id="comment"
+                                                        className="form-field"
+                                                        placeholder="Autre chose à nous dire ?"
+                                                        value={this.state.comment}
+                                                        onChange={this.handleChangeForm}
+                                                    />
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                        <Row className="justify-content-center mt-2">
+                                            <Col sm="12">
+                                                <Button color="primary" onClick={this.createAnswer}>
+                                                    Envoyer la réponse
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                    </Form> :
+                                    null
+                            }
+
+                            <Alert color="info" isOpen={this.state.notificationVisible}>
+                                {this.state.notificationMessage}
+                            </Alert>
+                        </Card>
+                    </Col>
+                </Row>
             </div>
         );
     }

@@ -62,7 +62,9 @@ export default class JourneyDetails extends React.Component<Props, State> {
     render() {
         return (
             <div className="base-div-content">
-                <Card body={true}>
+                <Row>
+                    <Col sm="12">
+                        <Card body={true} className="mt-3">
                     <CardTitle className="form-title">Détails du trajet</CardTitle>
                     <Row>
                         <Col xs="12" sm="12" md="5" className="pt-3">
@@ -109,6 +111,8 @@ export default class JourneyDetails extends React.Component<Props, State> {
                         </Col>
                     </Row>
                 </Card>
+                    </Col>
+                </Row>
             </div>
         );
     }

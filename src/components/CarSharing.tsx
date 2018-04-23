@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import { Button, Col, Row } from 'reactstrap';
 import { Journey } from '../helpers/models';
 import CarSharingCustomTab from './CarSharingCustomTab';
+import Card from 'reactstrap/lib/Card';
 
 interface Props {
 }
@@ -38,12 +39,11 @@ export default class CarSharing extends React.Component <Props, State> {
             loading: true,
             journeyId: ''
         };
-
-        this.getJourneys();
     }
 
     componentDidMount() {
         this.startLoading();
+        this.getJourneys();
     }
 
     editJourney(event: SyntheticEvent<HTMLButtonElement>, journeyId: string): void {
@@ -134,24 +134,26 @@ export default class CarSharing extends React.Component <Props, State> {
             <div className="base-div-content">
                 <Row>
                     <Col sm="12">
-                        {
-                            this.state.journeys.length < 1 ?
-                                <div>Pas de trajet proposé...</div> :
-                                <CarSharingCustomTab
-                                    journeys={this.state.journeys}
-                                    editJourney={this.editJourney}
-                                    deleteJourney={this.deleteJourney}
-                                />
-                        }
-                        <hr/>
-                        <Button
-                            color="info"
-                            onClick={(e) => {
-                                this.newJourney(e);
-                            }}
-                        >
-                            Ajouter
-                        </Button>
+                        <Card body={true} className="mt-3">
+                            {
+                                this.state.journeys.length < 1 ?
+                                    <div>Pas de trajet proposé...</div> :
+                                    <CarSharingCustomTab
+                                        journeys={this.state.journeys}
+                                        editJourney={this.editJourney}
+                                        deleteJourney={this.deleteJourney}
+                                    />
+                            }
+                            <hr/>
+                            <Button
+                                color="info"
+                                onClick={(e) => {
+                                    this.newJourney(e);
+                                }}
+                            >
+                                Ajouter
+                            </Button>
+                        </Card>
                     </Col>
                 </Row>
             </div>
