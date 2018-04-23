@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SyntheticEvent } from 'react';
 import { Journey } from '../helpers/models';
-import { Button, Card, Col, Row } from 'reactstrap';
+import { Card, Col, Row, Tooltip } from 'reactstrap';
 import { Redirect } from 'react-router';
 
 interface Props {
@@ -11,6 +11,8 @@ interface Props {
 }
 
 interface State {
+    readonly tooltipEditOpen: boolean;
+    readonly tooltipDeleteOpen: boolean;
     readonly goToDetail: string;
     readonly journeys: Journey[];
 }
@@ -19,19 +21,27 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
     constructor(props: Props) {
         super(props);
 
-        this.toggle = this.toggle.bind(this);
+        this.toggleEdit = this.toggleEdit.bind(this);
+        this.toggleDelete = this.toggleDelete.bind(this);
 
         this.state = {
+            tooltipEditOpen: false,
+            tooltipDeleteOpen: false,
             goToDetail: '',
             journeys: props.journeys.map((journey: Journey) => ({...journey, displayDetails: false}))
         };
     }
 
-    toggle(journeyId: string) {
-        const newJourneys: Journey[] = this.state.journeys.map((journey: Journey) => {
-            return journey.id === journeyId ? {...journey, displayDetails: !journey.displayDetails} : {...journey};
+    toggleEdit() {
+        this.setState({
+            tooltipEditOpen: !this.state.tooltipEditOpen
         });
-        this.setState({journeys: newJourneys});
+    }
+
+    toggleDelete() {
+        this.setState({
+            tooltipDeleteOpen: !this.state.tooltipDeleteOpen
+        });
     }
 
     render() {
@@ -40,7 +50,6 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
                 <Redirect to={'/covoiturages/detail/' + this.state.goToDetail}/>
             ) :
             (
-
                 this.state.journeys.map((journey: Journey) => {
                     return (
                         <Row key={journey.id} className="justify-content-center">
@@ -64,24 +73,48 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
                                         </Row>
                                     </Col>
                                     <Col sm="4">
-                                        <Button
-                                            color="link"
-                                            className="col-12"
-                                            onClick={(e) => {
-                                                this.props.editJourney(e, journey.id);
-                                            }}
-                                        >
-                                            <i className="fa fa-2 fa-pencil" aria-hidden="true"/> Modifier
-                                        </Button>
-                                        <Button
-                                            color="link"
-                                            className="col-12"
-                                            onClick={(e) => {
-                                                this.props.deleteJourney(e, journey.id);
-                                            }}
-                                        >
-                                            <i className="fa fa-2 fa-trash-o" aria-hidden="true"/> Supprimer
-                                        </Button>
+                                        <div>
+                                            <button
+                                                id="BtnEdit"
+                                                type="button"
+                                                className="btn btn-info"
+                                                onClick={(e) => {
+                                                    this.props.editJourney(e, journey.id);
+                                                }}
+                                            >
+                                                <i className="far fa-edit" aria-hidden="true"/>
+                                            </button>
+                                            <Tooltip
+                                                placement="right"
+                                                isOpen={this.state.tooltipEditOpen}
+                                                target="BtnEdit"
+                                                toggle={this.toggleEdit}
+                                                delay={{show: 500, hide: 0}}
+                                            >
+                                                Modifier
+                                            </Tooltip>
+                                        </div>
+                                        <div>
+                                            <button
+                                                id="BtnDelete"
+                                                type="button"
+                                                className="btn btn-info"
+                                                onClick={(e) => {
+                                                    this.props.deleteJourney(e, journey.id);
+                                                }}
+                                            >
+                                                <i className="fas fa-trash-alt" aria-hidden="true"/>
+                                            </button>
+                                            <Tooltip
+                                                placement="right"
+                                                isOpen={this.state.tooltipDeleteOpen}
+                                                target="BtnDelete"
+                                                toggle={this.toggleDelete}
+                                                delay={{show: 500, hide: 0}}
+                                            >
+                                                Supprimer
+                                            </Tooltip>
+                                        </div>
                                     </Col>
                                 </Row>
                             </Card>

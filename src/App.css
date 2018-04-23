@@ -8,14 +8,23 @@
     src: url('./img/borden.otf');
 }
 
+@font-face {
+    font-family: 'myFont';
+    src: url('./img/font.otf');
+}
+
 button {
     background-color: #f9a138 !important;
     border-color: #906430 !important;
-    font-size: 2rem !important;
-    font-weight: bold !important;
+    font-weight: 100 !important;
+    font-size: 1.2rem !important;
 }
 
-nav button {
+.cancel-button {
+    background-color: transparent !important;
+    border-color: #906430 !important;
+    color: #f9a138;
+    font-weight: 100 !important;
     font-size: 1.2rem !important;
 }
 
@@ -33,21 +42,19 @@ textarea {
 
 .App {
     text-align: center;
+    font-family: myFont, sans-serif;
     font-weight: 100;
-    font-size: 1.7rem;
-    font-family: 'borden-light', serif;
+    font-size: 1.4rem;
 }
 
-.borden {
-    font-family: 'borden', serif !important;
+.title {
+    font-size: 1.6rem !important;
+    font-weight: 600 !important;
 }
 
-.big-font {
-    font-weight: bold !important;
-}
-
-.small-font {
-    font-weight: lighter !important;
+.subtitle {
+    font-size: 1.4rem !important;
+    font-weight: 600 !important;
 }
 
 .base-div-content {
@@ -64,18 +71,13 @@ textarea {
 .navbar a {
     color: white !important;
 }
-.navbar-brand {
-    font-weight: bold;
-}
 
 .navbar-item-big {
-    font-size: xx-large !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
 
 .navbar-item {
-    font-size: xx-large !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
@@ -93,24 +95,6 @@ textarea {
     padding-left: 34px !important;
 }
 
-.form-title {
-    font-size: 2.2rem;
-    font-weight: bold;
-}
-.form-subtitle {
-    font-size: 2rem;
-    font-weight: 100;
-}
-
-.form-field {
-    font-family: 'borden', serif !important;
-    font-size: 1.2rem !important;
-}
-
-.thin-font {
-    font-weight: 100;
-}
-
-.thin-font-title {
-    font-weight: 300;
+.form-control {
+    font-size: 1.4rem !important;
 }

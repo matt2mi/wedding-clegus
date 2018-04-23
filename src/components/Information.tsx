@@ -15,20 +15,20 @@ export default class Information extends React.Component {
                         <Card body={true} className="m-3">
                             <Row className="text-left">
                                 <Col sm="6">
-                                    <div className="form-title">Samedi 22 septembre 2018</div>
+                                    <div className="title">Samedi 22 septembre 2018</div>
                                     <div>
-                                        <span className="big-font">10h30 :</span> Mairie de Pouancé
+                                        <span className="subtitle">10h30 :</span> Mairie de Pouancé
                                         <br/>
-                                        <span className="big-font">12h30 :</span> RDV à la salle Salsa (voir dessous)
+                                        <span className="subtitle">12h30 :</span> RDV à la salle Salsa (voir dessous)
                                         pour l'apéro d'honneur
                                         <br/>
-                                        <span className="big-font">13h :</span> Banquet convivial : Méchoui ou Plat
+                                        <span className="subtitle">13h :</span> Banquet convivial : Méchoui ou Plat
                                         Végétarien
                                         <br/>
-                                        <span className="big-font">Après-midi :</span> Pétanque, palets, mölky,
+                                        <span className="subtitle">Après-midi :</span> Pétanque, palets, mölky,
                                         papotte...
                                         <br/>
-                                        <span className="big-font">19h :</span> Galettes party et dancefloor !
+                                        <span className="subtitle">19h :</span> Galettes party et dancefloor !
                                     </div>
                                     <div className="d-sm-none">
                                         <hr/>
@@ -36,12 +36,12 @@ export default class Information extends React.Component {
                                 </Col>
 
                                 <Col sm="6">
-                                    <div className="form-title">Dimanche 23 septembre 2018</div>
+                                    <div className="title">Dimanche 23 septembre 2018</div>
                                     <div>
-                                        <span className="big-font">Pour les lève-tôt :</span> petit-dej autonome (tout
+                                        <span className="subtitle">Pour les lève-tôt :</span> petit-dej autonome (tout
                                         sera sur place !)
                                         <br/>
-                                        <span className="big-font">13h :</span> Buffet participatif ! Plus d'infos dans
+                                        <span className="subtitle">13h :</span> Buffet participatif ! Plus d'infos dans
                                         la rubrique « <a href="#/buffet">Buffet participatif du dimanche</a> »
                                     </div>
                                 </Col>
@@ -50,7 +50,7 @@ export default class Information extends React.Component {
                             <hr/>
 
                             <Row className="justify-content-center">
-                                <div className="col-8 col-sm-4">
+                                <div className="col-6 col-sm-3">
                                     <img width="100%" src={this.campingGif}/>
                                 </div>
                                 <div className="col-12 col-sm-8">
@@ -59,7 +59,9 @@ export default class Information extends React.Component {
                                         <br/>
                                         Ou de louer un gîte, dans la rubrique « <a href="#/gites">Gîtes</a> »
                                         <br/>
-                                        N’oubliez pas vos jeux : palets, mölky, pétanque, jeu de tarot…
+                                        <span className="title">
+                                            N’oubliez pas vos jeux : palets, mölky, pétanque, jeu de tarot…
+                                        </span>
                                     </div>
                                 </div>
                             </Row>

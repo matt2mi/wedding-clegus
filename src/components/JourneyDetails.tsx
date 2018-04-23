@@ -65,7 +65,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                 <Row>
                     <Col sm="12">
                         <Card body={true} className="mt-3">
-                    <CardTitle className="form-title">Détails du trajet</CardTitle>
+                            <CardTitle className="">Détails du trajet</CardTitle>
                     <Row>
                         <Col xs="12" sm="12" md="5" className="pt-3">
                             <Row className="justify-content-md-end justify-content-center">
@@ -89,7 +89,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
 
                     <hr/>
 
-                    <CardTitle className="form-title">Conducteur</CardTitle>
+                            <CardTitle className="">Conducteur</CardTitle>
                     <CardText>{this.state.journey.driverFirstName + ' ' + this.state.journey.driverName}</CardText>
                     <CardText>
                         {this.state.journey.driverPhoneNumber}
@@ -100,7 +100,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
 
                     <hr/>
 
-                    <CardTitle className="form-title">Commentaire</CardTitle>
+                            <CardTitle className="">Commentaire</CardTitle>
                     <CardText>{this.state.journey.comment}</CardText>
 
                     <hr/>

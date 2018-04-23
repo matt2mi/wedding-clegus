@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SyntheticEvent } from 'react';
 import { Redirect } from 'react-router';
-import { Button, Col, Row } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import { Journey } from '../helpers/models';
 import CarSharingCustomTab from './CarSharingCustomTab';
 import Card from 'reactstrap/lib/Card';
@@ -33,7 +33,19 @@ export default class CarSharing extends React.Component <Props, State> {
         this.stopLoading = this.stopLoading.bind(this);
 
         this.state = {
-            journeys: [],
+            journeys: [
+                // {
+                // id: 'r',
+                // driverFirstName: 'driverFirstName',
+                // driverName: 'driverName',
+                // driverPhoneNumber: 'driverPhoneNumber',
+                // driverEmail: 'driverEmail',
+                // fromCity: 'fromCity',
+                // toCity: 'toCity',
+                // freeSeats: 0,
+                // comment: 'rrrr'
+                // }
+            ],
             goEditJourney: false,
             goNewJourney: false,
             loading: true,
@@ -135,24 +147,31 @@ export default class CarSharing extends React.Component <Props, State> {
                 <Row>
                     <Col sm="12">
                         <Card body={true} className="mt-3">
-                            {
-                                this.state.journeys.length < 1 ?
-                                    <div>Pas de trajet proposé...</div> :
-                                    <CarSharingCustomTab
-                                        journeys={this.state.journeys}
-                                        editJourney={this.editJourney}
-                                        deleteJourney={this.deleteJourney}
-                                    />
-                            }
+                            <Row>
+                                <Col sm="12">
+                                    {
+                                        this.state.journeys.length < 1 ?
+                                            <div>Pas de trajet proposé...</div> :
+                                            <CarSharingCustomTab
+                                                journeys={this.state.journeys}
+                                                editJourney={this.editJourney}
+                                                deleteJourney={this.deleteJourney}
+                                            />
+                                    }
+                                </Col>
+                            </Row>
                             <hr/>
-                            <Button
-                                color="info"
-                                onClick={(e) => {
-                                    this.newJourney(e);
-                                }}
-                            >
-                                Ajouter
-                            </Button>
+                            <Row className="justify-content-center">
+                                <button
+                                    type="button"
+                                    className="btn btn-info"
+                                    onClick={(e) => {
+                                        this.newJourney(e);
+                                    }}
+                                >
+                                    Ajouter
+                                </button>
+                            </Row>
                         </Card>
                     </Col>
                 </Row>

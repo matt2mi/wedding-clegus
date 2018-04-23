@@ -146,12 +146,12 @@ export default class PresenceForm extends React.Component<Props, State> {
                 <Row>
                     <Col>
                         <Card body={true} className="mt-3">
-                            <CardTitle className="text-left form-title">Formulaire de présence</CardTitle>
+                            <CardTitle className="text-left title">Formulaire de présence</CardTitle>
                             <hr/>
                             {
                                 this.state.displayForm ?
-                                    <Form className="thin-font">
-                                        <Row className="justify-content-center mt-2 form-title">
+                                    <Form>
+                                        <Row className="justify-content-center mt-2 subtitle">
                                             Qui ?
                                         </Row>
                                         <Row className="justify-content-start mt-2">
@@ -162,7 +162,6 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         type="text"
                                                         name="who"
                                                         id="who"
-                                                        className="form-field"
                                                         placeholder="Nom"
                                                         value={this.state.who}
                                                         onChange={this.handleChangeForm}
@@ -178,7 +177,6 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         type="text"
                                                         name="phoneNumber"
                                                         id="phoneNumber"
-                                                        className="form-field"
                                                         placeholder="Téléphone"
                                                         value={this.state.phoneNumber}
                                                         onChange={this.handleChangeForm}
@@ -194,7 +192,6 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         type="email"
                                                         name="email"
                                                         id="email"
-                                                        className="form-field"
                                                         placeholder="Adresse email"
                                                         value={this.state.email}
                                                         onChange={this.handleChangeForm}
@@ -205,7 +202,7 @@ export default class PresenceForm extends React.Component<Props, State> {
 
                                         <hr/>
 
-                                        <Row className="justify-content-center mt-2 form-title">
+                                        <Row className="justify-content-center mt-2 subtitle">
                                             Combien ?
                                         </Row>
                                         <Row className="justify-content-start mt-2">
@@ -222,9 +219,8 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         type="number"
                                                         name="nbPersons"
                                                         id="nbPersons"
-                                                        className="form-field"
                                                         min="0"
-                                                        value={this.state.nbPersons}
+                                                        placeholder="0"
                                                         onChange={this.handleChangeForm}
                                                     />
                                                 </Row>
@@ -244,9 +240,8 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         type="number"
                                                         name="nbPorkPersons"
                                                         id="nbPorkPersons"
-                                                        className="form-field"
                                                         min="0"
-                                                        value={this.state.nbPorkPersons}
+                                                        placeholder="0"
                                                         onChange={this.handleChangeForm}
                                                     />
                                                 </Row>
@@ -266,9 +261,8 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         type="number"
                                                         name="nbVeganPersons"
                                                         id="nbVeganPersons"
-                                                        className="form-field"
                                                         min="0"
-                                                        value={this.state.nbVeganPersons}
+                                                        placeholder="0"
                                                         onChange={this.handleChangeForm}
                                                     />
                                                 </Row>
@@ -277,7 +271,7 @@ export default class PresenceForm extends React.Component<Props, State> {
 
                                         <hr/>
 
-                                        <Row className="justify-content-center mt-2 form-title">
+                                        <Row className="justify-content-center mt-2 subtitle">
                                             Quand ?
                                         </Row>
                                         <Row className="mt-2">
@@ -286,7 +280,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                     name="whenSaturdayMorning"
                                                     id="whenSaturdayMorning"
                                                     type="checkbox"
-                                                    className="form-field pointer"
+                                                    className="pointer"
                                                     checked={this.state.whenSaturdayMorning}
                                                     onChange={this.handleChangeForm}
                                                 />
@@ -305,7 +299,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                     type="checkbox"
                                                     name="whenSaturdayLunch"
                                                     id="whenSaturdayLunch"
-                                                    className="form-field pointer"
+                                                    className="pointer"
                                                     checked={this.state.whenSaturdayLunch}
                                                     onChange={this.handleChangeForm}
                                                 />
@@ -324,7 +318,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                     type="checkbox"
                                                     name="whenSaturdayDiner"
                                                     id="whenSaturdayDiner"
-                                                    className="form-field pointer"
+                                                    className="pointer"
                                                     checked={this.state.whenSaturdayDiner}
                                                     onChange={this.handleChangeForm}
                                                 />
@@ -343,7 +337,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                     type="checkbox"
                                                     name="whenSundayLunch"
                                                     id="whenSundayLunch"
-                                                    className="form-field pointer"
+                                                    className="pointer"
                                                     checked={this.state.whenSundayLunch}
                                                     onChange={this.handleChangeForm}
                                                 />
@@ -364,7 +358,6 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         type="textarea"
                                                         name="commentSundayLunchInfo"
                                                         id="commentSundayLunchInfo"
-                                                        className="form-field"
                                                         placeholder={this.sundayFoodMsg}
                                                         value={this.state.commentSundayLunchInfo}
                                                         onChange={this.handleChangeForm}
@@ -383,7 +376,6 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         type="textarea"
                                                         name="comment"
                                                         id="comment"
-                                                        className="form-field"
                                                         placeholder="Autre chose à nous dire ?"
                                                         value={this.state.comment}
                                                         onChange={this.handleChangeForm}

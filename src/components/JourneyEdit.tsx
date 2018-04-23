@@ -1,7 +1,6 @@
 import * as H from 'history';
 import * as React from 'react';
 import { withRouter } from 'react-router';
-import Button from 'reactstrap/lib/Button';
 import Card from 'reactstrap/lib/Card';
 import CardTitle from 'reactstrap/lib/CardTitle';
 import Col from 'reactstrap/lib/Col';
@@ -42,25 +41,26 @@ export default class JourneyDetails extends React.Component<Props, State> {
         this.updateJourney = this.updateJourney.bind(this);
 
         this.CreateButton = withRouter(({history}) => (
-            <Button color="info" onClick={(e) => this.createJourney(e, history)}>
+            <button type="button" className="btn btn-info" onClick={(e) => this.createJourney(e, history)}>
                 Créer
-            </Button>
+            </button>
         ));
         this.UpdateButton = withRouter(({history}) => (
-            <Button color="info" onClick={(e) => this.updateJourney(e, history)}>
-                MAJ
-            </Button>
+            <button type="button" className="btn btn-info" onClick={(e) => this.updateJourney(e, history)}>
+                Modifier
+            </button>
         ));
         this.GoBackButton = withRouter(({history}) => (
-            <Button
-                color="info"
+            <button
+                type="button"
+                className="btn btn-outline-info"
                 onClick={(e) => {
                     e.preventDefault();
                     history.push('/covoiturages');
                 }}
             >
-                cancel
-            </Button>
+                Annuler
+            </button>
         ));
 
         this.state = {
@@ -125,7 +125,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                 <Row>
                     <Col sm="12">
                         <Card body={true} className="mt-3">
-                            <CardTitle className="form-title">Détails du trajet</CardTitle>
+                            <CardTitle className="">Détails du trajet</CardTitle>
 
                             <Form>
                                 <Row className="justify-content-start mt-2">
@@ -287,14 +287,13 @@ export default class JourneyDetails extends React.Component<Props, State> {
                                     </Col>
                                 </Row>
 
-                                <Row className="mt-2">
-                                    <Col lg="4"/>
-                                    <Col lg="2">
+                                <Row className="mt-2 justify-content-center">
+                                    <div className="col-3 mb-2">
                                         <this.GoBackButton/>
-                                    </Col>
-                                    <Col lg="2">
+                                    </div>
+                                    <div className="col-3">
                                         {this.state.createMode ? <this.CreateButton/> : <this.UpdateButton/>}
-                                    </Col>
+                                    </div>
                                 </Row>
                             </Form>
                         </Card>

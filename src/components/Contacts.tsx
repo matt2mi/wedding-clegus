@@ -9,7 +9,6 @@ export default class Contacts extends React.Component {
     private witnesses = [
         {src: require('../img/mimi-cartoon-small.png'), name: 'Mylène'},
         {src: require('../img/popo-small.png'), name: 'Pauline'},
-        {src: require('../img/toyo-cartoon-small.png'), name: 'Antoine'},
         {src: require('../img/toyo-small.png'), name: 'Antoine'},
         {src: require('../img/guillaume-small.png'), name: 'Guillaume'},
         {src: require('../img/maxime-small.png'), name: 'Maxime'},
@@ -24,7 +23,7 @@ export default class Contacts extends React.Component {
                 <Row>
                     <Col sm="12">
                         <Card body={true} className="mt-3">
-                            <CardTitle className="form-title">Contacts</CardTitle>
+                            <CardTitle className="">Contacts</CardTitle>
                             <hr/>
                             <Row className="justify-content-around">
                                 <Col sm={3}>
@@ -36,7 +35,7 @@ export default class Contacts extends React.Component {
                                 </Col>
 
                                 <Col sm={3}>
-                                    <CardTitle className="form-title">Clémence et Augustin</CardTitle>
+                                    <CardTitle className="">Clémence et Augustin</CardTitle>
                                     <CardText>
                                         17 boulevard de la Prairie au Duc
                                         <br/>
@@ -63,7 +62,7 @@ export default class Contacts extends React.Component {
                                 <Col sm="12" className="mb-3">
                                     <Row>
                                         <Col xs={12}>
-                                            <CardTitle className="form-title">Contact témoin</CardTitle>
+                                            <CardTitle className="">Contact témoin</CardTitle>
                                             <CardText>
                                                 Mylène Robert : 07 86 76 20 19 - robertmylene@hotmail.fr
                                             </CardText>

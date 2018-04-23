@@ -13,7 +13,7 @@ export default class Invitation extends React.Component {
                 <Row>
                     <Col sm="12">
                         <Card body={true} className="mt-3">
-                            <CardTitle className="form-title">Faire Part</CardTitle>
+                            <CardTitle className="">Faire Part</CardTitle>
                             <CardText>
                                 <Button color="info">Télécharger</Button>
                             </CardText>

@@ -14,6 +14,8 @@ const items = [
         location: 'St Saturnin du Limet 53800',
         description: 'Appartements Le Hardas',
         phone: '',
+        beds: '',
+        distance: 0,
         href: 'https://www.gites.fr/gites_le-hardas-mercure_saint-saturnin-du-limet_h668613.htm'
     },
     {
@@ -21,6 +23,8 @@ const items = [
         location: 'Renazé 53800',
         description: 'Maison de vacances La Petite Coquais',
         phone: '',
+        beds: '',
+        distance: 3.1,
         href: 'https://www.gites.fr/gites_holiday-home-la-petite-coquais-05_renaze_h821078.htm'
     },
     {
@@ -28,6 +32,8 @@ const items = [
         location: 'La Rouaudière 53390',
         description: 'Maison de vacances La Rouaudière',
         phone: '',
+        beds: '',
+        distance: 0,
         href: 'https://www.gites.fr/gites_holiday-home-la-rouaudiere-with-fireplace-i_la-rouaudiere_h1093959.htm'
     },
     {
@@ -35,55 +41,71 @@ const items = [
         location: 'Congrier 53800',
         description: 'Maison de vacances La Rouardière',
         phone: '',
+        beds: '',
+        distance: 0,
         href: 'https://www.grandsgites.com/gite-53-rouardiere-2756.htm'
     },
     {
         src: defaultSrcHouse,
         location: '49420 Pouancé 49420',
-        description: 'La porte angevine, 19 couchages',
+        description: 'La porte angevine',
         phone: '02 41 92 68 52 ou 02 41 92 68 52',
-        href: ''
+        beds: '19',
+        distance: 0,
+        href: 'http://www.laporteangevine.com/soiree-etape-maineetloire.aspx'
     },
     {
         src: defaultSrcHouse,
         location: 'Bouchamps-les-Craon 53400',
-        description: 'M. Gandon, 10 couchages',
+        description: 'M. Gandon',
         phone: '02 43 06 21 36',
+        beds: '10',
+        distance: 0,
         href: ''
     },
     {
         src: defaultSrcHouse,
         location: 'Niafles 53400',
-        description: 'Mme Gendry, 9 couchages',
+        description: 'Mme Gendry',
         phone: '02 43 06 11 86',
+        beds: '9',
+        distance: 0,
         href: ''
     },
     {
         src: defaultSrcHouse,
         location: 'La Selle-craonnaise 53800',
-        description: 'M. Ballé, 9 couchages',
+        description: 'M. Ballé',
         phone: '02 43 07 55 21',
+        beds: '9',
+        distance: 0,
         href: ''
     },
     {
         src: defaultSrcHouse,
         location: 'St Martin du limet 53800',
-        description: 'M. Laurent, la Renazaie, 12 ou 25 couchages',
+        description: 'M. Laurent, la Renazaie',
         phone: '02 43 06 04 47',
+        beds: '12 ou 25',
+        distance: 0,
         href: ''
     },
     {
         src: defaultSrcHouse,
         location: 'La Selle-craonnaise 53800',
-        description: 'M. Ferré, 5 couchages',
+        description: 'M. Ferré',
         phone: '02 43 06 15 99',
+        beds: '5',
+        distance: 0,
         href: ''
     },
     {
         src: defaultSrcHouse,
         location: 'La Selle-craonnaise 53800',
-        description: 'La Forterie, 17 à 24 couchages',
+        description: 'La Forterie',
         phone: '02 43 06 10 40 ou 02 61 28 82 59',
+        beds: '17 à 24',
+        distance: 0,
         href: ''
     },
     {
@@ -91,6 +113,8 @@ const items = [
         location: 'Craon 53400',
         description: 'Langley Brian',
         phone: '02 43 06 35 36 ou 09 61 28 82 59',
+        beds: '',
+        distance: 0,
         href: ''
     },
     {
@@ -98,20 +122,26 @@ const items = [
         location: 'Renazé 53800',
         description: 'Gîte du chéran',
         phone: '02 41 34 18 33 ou 06 26 12 95 14',
-        href: ''
+        beds: '',
+        distance: 3.1,
+        href: 'https://www.gites-de-france.com/location-vacances-Renaze-Gite-Gite-Du-Cheran-53G0230.html'
     },
     {
         src: defaultSrcHouse,
         location: 'Pouancé 49420',
         description: 'Yannick et Marie-jo Brousse',
         phone: '02 41 92 62 66',
-        href: ''
+        beds: '',
+        distance: 0,
+        href: 'http://www.lasaulnerie.com/'
     },
     {
         src: defaultSrcHouse,
         location: 'Craon 53400',
         description: 'Tribondeau Chantal',
         phone: '02 43 06 37 07 ou 06 74 64 72 72',
+        beds: '',
+        distance: 0,
         href: ''
     },
     {
@@ -119,6 +149,8 @@ const items = [
         location: 'Craon 53400',
         description: 'La Rêtiverie',
         phone: '02 43 07 46 89',
+        beds: '',
+        distance: 0,
         href: ''
     },
     {
@@ -126,6 +158,8 @@ const items = [
         location: 'Craon 53400',
         description: 'M. Paillard',
         phone: '02 43 06 41 65',
+        beds: '',
+        distance: 0,
         href: ''
     },
     {
@@ -133,6 +167,8 @@ const items = [
         location: 'Craon 53400',
         description: 'Maison Familiale de Craon',
         phone: '02 43 06 14 98',
+        beds: '',
+        distance: 0,
         href: ''
     },
     {
@@ -140,14 +176,18 @@ const items = [
         location: 'La Selle-craonnaise 53800',
         description: 'La Rincerie',
         phone: '02 43 07 50 20',
-        href: ''
+        beds: '',
+        distance: 0,
+        href: 'http://www.la-rincerie.com/le-sejour'
     },
     {
         src: defaultSrcHouse,
         location: 'La Boissière 53800',
         description: 'Camping La Viotterie',
         phone: '02 43 06 80 10',
-        href: ''
+        beds: '',
+        distance: 0,
+        href: 'http://campinglaviotterie.fr/'
     }
 ];
 
@@ -158,7 +198,7 @@ export default class HotelsNearby extends React.Component<Props, State> {
                 <Row>
                     <Col sm="12">
                         <Card body={true} className="mt-3">
-                            <CardTitle className="form-title">Gîtes</CardTitle>
+                            <CardTitle className="">Gîtes</CardTitle>
                             <CardText>Les gîtes à proximité de Saint-Saturnin du Limet.</CardText>
                             <Row>
                                 {
@@ -173,7 +213,7 @@ export default class HotelsNearby extends React.Component<Props, State> {
                                                         alt={item.description}
                                                     />
                                                     <CardBody>
-                                                        <CardTitle className="form-title">
+                                                        <CardTitle className="">
                                                             {item.description}
                                                         </CardTitle>
                                                         <CardText>
@@ -181,11 +221,20 @@ export default class HotelsNearby extends React.Component<Props, State> {
                                                             {' ' + item.location}
                                                         </CardText>
                                                         {
-                                                            item.phone &&
+                                                            item.beds !== '' &&
+                                                            <CardText>
+                                                                <i className="fas fa-bed"/>{' ' + item.beds + ' couchages'}
+                                                            </CardText>
+                                                        }
+                                                        {
+                                                            item.phone !== '' &&
                                                             <CardText>
                                                                 <i className="fas fa-phone"/>{' ' + item.phone}
                                                             </CardText>
                                                         }
+                                                        <CardText>
+                                                            <i className="fas fa-car"/>{' ' + item.distance + ' kms'}
+                                                        </CardText>
                                                         {
                                                             item.href !== '' &&
                                                             <CardText>

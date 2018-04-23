@@ -31,48 +31,27 @@ export default class Main extends React.Component {
                     <Col sm="12" lg="6" className="mt-3">
                         <Row className="justify-content-center">
                             <Col sm="12">
-                                <div className="borden">
+                                <div>
                                     <br/>
                                     Vous avez ici toutes les informations dont vous aurez besoin pour le weekend.
                                     <br/>
                                     <br/>
-                                    Vous pourrez y trouver un chauffeur, de quoi vous guider jusqu'à la salle, tout
-                                    savoir niveau timing, ainsi que bien sûr, nos coordonnées et celles de nos témoins
-                                    si nécessaire !
+                                    Vous pourrez y trouver <a href="#/covoiturages">un chauffeur</a>, de quoi vous
+                                    guider jusqu'à la salle, découvrir <a href="#/infos">le déroulement</a> du
+                                    weekend, ainsi que bien sûr, <a href="#/contacts">nos coordonnées</a> et celles de
+                                    nos témoins si nécessaire !
                                     <br/>
                                     <br/>
-                                    Si vous fouinez dans les différentes rubriques, vous pourrez même téléchargez notre
-                                    faire-part si ça vous dit !
+                                    Vous pourrez même <a href="#/faire-part">téléchargez notre faire-part</a> si ça vous
+                                    dit !
+                                    <br/>
+                                    <br/>
+                                    <span className="title">
+                                        =>  Et n'oubliez pas de confirmer <a href="#/presence">votre présence ici !</a>
+                                        {' <='}
+                                    </span>
                                 </div>
                             </Col>
-                        </Row>
-
-                        <br/>
-
-                        <Row className="justify-content-center">
-                            <div className="col-2 col-sm-2">
-                                <div className="borden">
-                                    <img
-                                        className="img-fluid"
-                                        src={require('../img/warning.gif')}
-                                        alt="warning"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="col-8 borden">
-                                <a href="#/presence">N'oubliez pas de confirmer votre présence ici !</a>
-                            </div>
-
-                            <div className="col-2 col-sm-2">
-                                <div className="borden">
-                                    <img
-                                        className="img-fluid"
-                                        src={require('../img/warning.gif')}
-                                        alt="warning"
-                                    />
-                                </div>
-                            </div>
                         </Row>
                     </Col>
                 </Row>
