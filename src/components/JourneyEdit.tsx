@@ -53,7 +53,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
         this.GoBackButton = withRouter(({history}) => (
             <button
                 type="button"
-                className="btn btn-outline-info"
+                className="btn cancel-button"
                 onClick={(e) => {
                     e.preventDefault();
                     history.push('/covoiturages');

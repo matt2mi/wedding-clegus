@@ -52,69 +52,80 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
             (
                 this.state.journeys.map((journey: Journey) => {
                     return (
-                        <Row key={journey.id} className="justify-content-center">
-                            <Card className="p-2 mb-2 col-lg-10 col-sm-12">
-                                <Row>
-                                    <Col sm="4" className="text-left">
-                                        <div>{journey.driverFirstName + ' ' + journey.driverName}</div>
-                                        <div>{journey.driverPhoneNumber}</div>
-                                        <div>{journey.driverEmail}</div>
-                                    </Col>
+                        <Row key={journey.id}>
+                            <Card className="p-2 mb-2 col-12">
+                                <Row className="justify-content-center">
                                     <Col sm="4">
-                                        <Row className="justify-content-center">
-                                            <div>
-                                                {journey.freeSeats + ' place(s) de ' +
-                                                journey.fromCity + ' à ' +
-                                                journey.toCity}
+                                        <Row className="text-sm-left">
+                                            <div className="col-12">
+                                                {journey.driverFirstName + ' ' + journey.driverName}
+                                            </div>
+                                            <div className="col-12">
+                                                {journey.driverPhoneNumber}
+                                            </div>
+                                            <div className="col-12">
+                                                {journey.driverEmail}
                                             </div>
                                         </Row>
-                                        <Row className="justify-content-center">
-                                            <p>{journey.comment}</p>
+                                    </Col>
+                                    <Col sm="4">
+                                        <Row>
+                                            <Col>
+                                                {journey.freeSeats +
+                                                (journey.freeSeats > 1 ? ' places de ' : ' place de ') +
+                                                journey.fromCity + ' à ' +
+                                                journey.toCity}
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>{journey.comment}</Col>
                                         </Row>
                                     </Col>
                                     <Col sm="4">
-                                        <div>
-                                            <button
-                                                id="BtnEdit"
-                                                type="button"
-                                                className="btn btn-info"
-                                                onClick={(e) => {
-                                                    this.props.editJourney(e, journey.id);
-                                                }}
-                                            >
-                                                <i className="far fa-edit" aria-hidden="true"/>
-                                            </button>
-                                            <Tooltip
-                                                placement="right"
-                                                isOpen={this.state.tooltipEditOpen}
-                                                target="BtnEdit"
-                                                toggle={this.toggleEdit}
-                                                delay={{show: 500, hide: 0}}
-                                            >
-                                                Modifier
-                                            </Tooltip>
-                                        </div>
-                                        <div>
-                                            <button
-                                                id="BtnDelete"
-                                                type="button"
-                                                className="btn btn-info"
-                                                onClick={(e) => {
-                                                    this.props.deleteJourney(e, journey.id);
-                                                }}
-                                            >
-                                                <i className="fas fa-trash-alt" aria-hidden="true"/>
-                                            </button>
-                                            <Tooltip
-                                                placement="right"
-                                                isOpen={this.state.tooltipDeleteOpen}
-                                                target="BtnDelete"
-                                                toggle={this.toggleDelete}
-                                                delay={{show: 500, hide: 0}}
-                                            >
-                                                Supprimer
-                                            </Tooltip>
-                                        </div>
+                                        <Row className="justify-content-center">
+                                            <div className="col-3 col-sm-12 mb-2">
+                                                <button
+                                                    id="BtnEdit"
+                                                    type="button"
+                                                    className="btn btn-info"
+                                                    onClick={(e) => {
+                                                        this.props.editJourney(e, journey.id);
+                                                    }}
+                                                >
+                                                    <i className="far fa-edit" aria-hidden="true"/>
+                                                </button>
+                                                <Tooltip
+                                                    placement="right"
+                                                    isOpen={this.state.tooltipEditOpen}
+                                                    target="BtnEdit"
+                                                    toggle={this.toggleEdit}
+                                                    delay={{show: 500, hide: 0}}
+                                                >
+                                                    Modifier
+                                                </Tooltip>
+                                            </div>
+                                            <div className="col-3 col-sm-12">
+                                                <button
+                                                    id="BtnDelete"
+                                                    type="button"
+                                                    className="btn btn-info"
+                                                    onClick={(e) => {
+                                                        this.props.deleteJourney(e, journey.id);
+                                                    }}
+                                                >
+                                                    <i className="fas fa-trash-alt" aria-hidden="true"/>
+                                                </button>
+                                                <Tooltip
+                                                    placement="right"
+                                                    isOpen={this.state.tooltipDeleteOpen}
+                                                    target="BtnDelete"
+                                                    toggle={this.toggleDelete}
+                                                    delay={{show: 500, hide: 0}}
+                                                >
+                                                    Supprimer
+                                                </Tooltip>
+                                            </div>
+                                        </Row>
                                     </Col>
                                 </Row>
                             </Card>

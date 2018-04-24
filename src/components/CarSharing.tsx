@@ -35,15 +35,15 @@ export default class CarSharing extends React.Component <Props, State> {
         this.state = {
             journeys: [
                 // {
-                // id: 'r',
-                // driverFirstName: 'driverFirstName',
-                // driverName: 'driverName',
-                // driverPhoneNumber: 'driverPhoneNumber',
-                // driverEmail: 'driverEmail',
-                // fromCity: 'fromCity',
-                // toCity: 'toCity',
-                // freeSeats: 0,
-                // comment: 'rrrr'
+                //     id: 'r',
+                //     driverFirstName: 'Mathieu',
+                //     driverName: 'Deumié',
+                //     driverPhoneNumber: '0102030405',
+                //     driverEmail: 'mathieu@deumie.org',
+                //     fromCity: 'Paris city',
+                //     toCity: 'Ceupouan',
+                //     freeSeats: 1,
+                //     comment: ''
                 // }
             ],
             goEditJourney: false,

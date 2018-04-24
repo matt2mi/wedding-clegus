@@ -31,7 +31,7 @@ export default class Main extends React.Component {
                     <Col sm="12" lg="6" className="mt-3">
                         <Row className="justify-content-center">
                             <Col sm="12">
-                                <div>
+                                <div className="mt-lg-5">
                                     <br/>
                                     Vous avez ici toutes les informations dont vous aurez besoin pour le weekend.
                                     <br/>
