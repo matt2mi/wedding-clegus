@@ -1,6 +1,4 @@
 import * as React from 'react';
-import CardText from 'reactstrap/lib/CardText';
-import CardTitle from 'reactstrap/lib/CardTitle';
 import Card from 'reactstrap/lib/Card';
 import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
@@ -23,7 +21,7 @@ export default class Contacts extends React.Component {
                 <Row>
                     <Col sm="12">
                         <Card body={true} className="mt-3">
-                            <CardTitle className="">Contacts</CardTitle>
+                            <div className="title">Contacts</div>
                             <hr/>
                             <Row className="justify-content-around">
                                 <Col sm={3}>
@@ -35,18 +33,20 @@ export default class Contacts extends React.Component {
                                 </Col>
 
                                 <Col sm={3}>
-                                    <CardTitle className="">Clémence et Augustin</CardTitle>
-                                    <CardText>
+                                    <div className="subtitle">Clémence et Augustin</div>
+                                    <div>
                                         17 boulevard de la Prairie au Duc
                                         <br/>
                                         44200 NANTES
-                                    </CardText>
-                                    <CardText>
+                                    </div>
+                                    <br/>
+                                    <div>
                                         Clé : 06 65 29 83 19 - clemenceesnault@laposte.net
-                                    </CardText>
-                                    <CardText>
+                                    </div>
+                                    <br/>
+                                    <div>
                                         Gus : 06 58 98 27 59 - augustin.bannier@hotmail.fr
-                                    </CardText>
+                                    </div>
                                 </Col>
 
                                 <Col sm={3}>
@@ -62,10 +62,10 @@ export default class Contacts extends React.Component {
                                 <Col sm="12" className="mb-3">
                                     <Row>
                                         <Col xs={12}>
-                                            <CardTitle className="">Contact témoin</CardTitle>
-                                            <CardText>
+                                            <div className="subtitle">Contact témoin</div>
+                                            <div>
                                                 Mylène Robert : 07 86 76 20 19 - robertmylene@hotmail.fr
-                                            </CardText>
+                                            </div>
                                         </Col>
                                     </Row>
                                     <br/>

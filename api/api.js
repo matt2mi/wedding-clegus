@@ -1,12 +1,118 @@
+require('dotenv').config();
 const path = require('path');
 
 // firebase connection - https://firebase.google.com/docs/admin/setup
 const admin = require("firebase-admin");
 admin.initializeApp({
-    credential: admin.credential.cert(require('../clegus-wedding-db-credentials')),
-    databaseURL: "https://clegus-wedding-db.firebaseio.com"
+    credential: admin.credential.cert({
+        "type": "service_account",
+        "project_id": process.env.PJ_ID,
+        "private_key_id": process.env.PV_KEY_ID,
+        "private_key": process.env.PV_KEY,
+        "client_email": process.env.CLI_MAIL,
+        "client_id": process.env.CLI_ID,
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://accounts.google.com/o/oauth2/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": process.env.CLI_CERT_URL
+    }),
+    databaseURL: process.env.BDD_URL
 });
 const db = admin.database();
+
+const getNewPresenceHtmlPart = presence => {
+    let htmlMsg = '<h3>Et hop, ' + presence.who + ' en plus !</h3><p>';
+
+    if (presence.phoneNumber !== '') htmlMsg += 'Téléphone : ' + presence.phoneNumber + '<br/>';
+    if (presence.email !== '') htmlMsg += 'Email : ' + presence.email;
+    htmlMsg += '</p>';
+
+    if (presence.nbPersons > 1) {
+        htmlMsg += '<p>Ils ou elles seront ' + presence.nbPersons + ' à venir.<br/>' +
+            'Et seront présents:<br/>';
+    }
+    else htmlMsg += '<p>Il ou elle sera' + presence.nbPersons + ' à venir.<br/>' +
+        'Et sera présent:<br/>';
+
+    htmlMsg += presence.whenSaturdayMorning ? '- le samedi matin<br/>' : '';
+    htmlMsg += presence.whenSaturdayLunch ? '- le samedi midi<br/>' : '';
+    htmlMsg += presence.whenSaturdayDiner ? '- le samedi soir<br/>' : '';
+    htmlMsg += presence.whenSundayLunch ? '- le dimanche midi<br/>' : '';
+    htmlMsg += '</p>';
+
+    if (presence.whenSaturdayLunch) htmlMsg += '<p>Dont ' + presence.nbPorkPersons +
+        ' part(s) de méchoui et ' + presence.nbVeganPersons + ' part(s) végan(s)</p>';
+
+    if (presence.commentSundayLunchInfo !== '') {
+        htmlMsg += '<p>Pour le dimanche midi, cette (ces) personne(s) prévoie(ent) :<br/>' +
+            presence.commentSundayLunchInfo + '</p>';
+    }
+
+    if (presence.comment !== '') {
+        htmlMsg += '<p>Cette (ces) personne(s) souhaitait(ent) ajouter :<br/>' +
+            presence.comment + '</p>';
+    }
+
+    htmlMsg += '<p>Made by Matou with <3 ;)</p>';
+
+    return htmlMsg;
+};
+
+const sendNewPresenceMail = (presence) => {
+    const mailjet = require('node-mailjet')
+        .connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
+    const requ = mailjet
+        .post('send')
+        .request({
+            "FromEmail": "mariageclegus@gmail.com",
+            "FromName": "Mariage Clegus",
+            "Subject": presence.who + " en plus au mariage !",
+            "Html-part": getNewPresenceHtmlPart(presence),
+            "Recipients": [{"Email": "2m1tema@gmail.com"}]
+        });
+    requ
+        .then(response => {
+            console.log(response.body);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+const getNewJourneyHtmlPart = (journey) => {
+    return "<h3>Nouveau covoit' proposé par " + journey.driverFirstName + "</h3>" +
+        "<p>" + journey.driverFirstName + " propose " + journey.freeSeats +
+        " places pour aller de " + journey.fromCity + " à " + journey.toCity + ".</p>" +
+
+        "<p>Coordonnées :<br/>" + journey.driverFirstName + " " + journey.driverName +
+        "<br/>Téléphone : " + journey.driverPhoneNumber +
+        "<br/>Email : " + journey.driverEmail + "</p>" +
+
+        "<p>Commentaire du conducteur :<br/>" + journey.comment + "</p>" +
+
+        "<p>Made by Matou with <3 ;)</p>"
+};
+
+const sendNewJourneyMail = (journey) => {
+    const mailjet = require('node-mailjet')
+        .connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
+    const requ = mailjet
+        .post('send')
+        .request({
+            "FromEmail": "mariageclegus@gmail.com",
+            "FromName": "Mariage Clegus",
+            "Subject": "Nouveau covoit' proposé par " + journey.driverFirstName,
+            "Html-part": getNewJourneyHtmlPart(journey),
+            "Recipients": [{"Email": "2m1tema@gmail.com"}]
+        });
+    requ
+        .then(response => {
+            console.log(response.body);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
 
 module.exports = function (app, indexFilePath) {
     // TODO faire un retour propre avec juste statut
@@ -70,9 +176,16 @@ module.exports = function (app, indexFilePath) {
                 toCity: req.body.toCity,
                 freeSeats: req.body.freeSeats,
                 comment: req.body.comment
-            }, () => {
-                res.json({});
-                console.log('journey created', req.body);
+            }, (error) => {
+                if (error) {
+                    res.json({saved: false, message: error});
+                    console.log('error creating journey ', error);
+                } else {
+                    sendNewJourneyMail(req.body);
+                    // TODO : if(req.body.email !== '') sendConfirmationMail();
+                    res.json({saved: true, message: 'Mail new covoit\'  envoyé !'});
+                    console.log('journey created', req.body);
+                }
             });
     });
 
@@ -152,8 +265,10 @@ module.exports = function (app, indexFilePath) {
                     res.json({saved: false, message: error});
                     console.log('error saving presence ', error);
                 } else {
-                    res.json({saved: true, message: 'Réponse envoyée, à bientôt ' + req.body.firstname + ' !'});
-                    console.log('presence answer created', req.body);
+                    sendNewPresenceMail(req.body);
+                    // TODO : if(req.body.email !== '') sendConfirmationMail();
+                    res.json({saved: true, message: 'Mail new presence envoyé !'});
+                    console.log('new presence answer created for', req.body.who);
                 }
             });
     });
