@@ -3,12 +3,13 @@ const path = require('path');
 
 // firebase connection - https://firebase.google.com/docs/admin/setup
 const admin = require("firebase-admin");
+console.log('env bdd url', process.env.BDD_URL);
 admin.initializeApp({
     credential: admin.credential.cert({
         "type": "service_account",
         "project_id": process.env.PJ_ID,
         "private_key_id": process.env.PV_KEY_ID,
-        "private_key": process.env.PV_KEY,
+        "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCtKMPfXjviddNS\ntE6xIW6DIGAJpmiUMMl0hT6uILOw7kaJJljx/tUM5TvRcBw07XhUZVdf8nuENQVA\nH5WC+3RLfjMhxTTiijq0CK6IAE+9XGNVmm12SfrpICJO+TvSVDelHz6VPik/NyMA\nY9iZ8EAX6W0YOunY+b9mkJsPfPa714stqQx2Ku0Lhu9/J2tsNhsruLxmx1jCvmjc\nlXpKsqY4iCPxs/Tysfolsop7v3CXHhyYehuWm/5n+J/kNCKFm9KMR3eP1l5MehHn\ni4ztQLZ6yhwEP1xayB4+5vowanwxRRxVXWoXXYwqRE1ZlFBvRwP79zbQphre5vP2\nojTd30dlAgMBAAECggEABB2msDm/byXRUNMv1qZ+h7feiIQv0qvpMe+T2pQ06TT0\nsMBcV14xBrYxKoyBYyGs3UauYb20AWO4PPqzNVKQRFYa1YfoNqVF+W8GZP2q54uZ\nYdjCls/x2pY0so9ahGiTjQV12ZrJZLMFDjaRWLFc+KSH/w4xbkKbcc7onKDiBXtz\nQF388loHZZdO/+UW/yeSVEjq0y8wwBHpJX5e8J7loQljCPGU0VATHOAOqoqdPrBp\n+33ShV95lqhtzqRURAaM9pCJYyVcoHvyaan1Oes55fzcLB/2pQ/AJhdjw0opa/Gz\n29sNbo3/mf2Zqr3TpEmdJwzg4qXDuwiRicuJQxUIAQKBgQDvTD/rX7uxAhJKs5w4\nyrB9VTzzLpAUFBgWd5EgrCBuxtAsHKW45pqqxhx/NZhQx53iJ72+ZwglCSYdM2PI\niSA6GTO6ejzLvgrOf+Mvanryb7dU1Gg1anZ6P+oOKCme5+k7D3TJpryGo8KCMWUf\nMMi2HGd0vvRpwvpHFttNAXP4AQKBgQC5PsHctSZEmp2sMrF3M9rpVZnNEJuGtDX1\nzhF3klrLCDXCHv1Dv1y29ObZ6jMn+kkF6IfF9hm1xN/T52Su5DtXMBFSj/Nr4TVk\nQS6wmtCkae/e5TU7uT3DFQtTX1McyVFlBdSxwprVSyWySRgptPCxw8h3P87Mytse\nyKzOspZvZQKBgQCjz1+mQbebeV6KMp/LpLziXzpFAmfwxryijKEVa58cFg8lU0sC\n4yGXq9yQHGEzUyK6URgrwh4qNDQaIza4bV5ZRy1JByqdEnAVYihkKhEV6vHmKS1Y\n+5M1JpGTtVygggL/whnhfLlrtaiONUAS9PNA7vrHSXzI9YccqQHgmhEIAQKBgQCb\nUfluOx05DIMDrQWLsxjr5/ArNq+QxG0yCnQu07H45otclms4cK0mYjVlpa766Cpu\nH8gnve9UrxwVKsEKuybeNdlwZm5tl8kSpGyne0dRc9nCBGEcEHeuqGh0oUqoqkvq\n7namDUuRZ47V69+sqJ/gDQ56ni+hGr2bFBuAu9DS2QKBgEOlotujNUqvRXXQ1p9l\nH1h6XwYQJKGkl+/6UTq7MQedN3WViUUPAcsKA09lu1kwow3x5q4L/hfca/e/hA2l\nRf2nI8N7IfVsMwrjAbSIub3lTk7+CL7AWifdCGPJ1Use3cDCm3oi5708OwzL6Nui\nSwvHBuZY3LhtWYnJT45ErojH\n-----END PRIVATE KEY-----\n",
         "client_email": process.env.CLI_MAIL,
         "client_id": process.env.CLI_ID,
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
