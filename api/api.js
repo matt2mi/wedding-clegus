@@ -163,8 +163,21 @@ const sendPresenceConfirmationMail = (presence) => {
         });
 };
 
+const isValidMailAddress = (mailAddress) => {
+    if (typeof mailAddress !== 'string') return false;
+    const atSplit = mailAddress.split('@');
+    if (atSplit.length !== 2) return false;
+    const dotSplit = atSplit[1].split('.');
+    if (dotSplit.length < 2) return false;
+    return (dotSplit[dotSplit.length - 1] !== 'com' &&
+        dotSplit[dotSplit.length - 1] !== 'fr' &&
+        dotSplit[dotSplit.length - 1] !== 'net' &&
+        dotSplit[dotSplit.length - 1] !== 'org');
+};
+
 module.exports = function (app, indexFilePath) {
-    // TODO : logs à revoir
+    // TODO : ajouter logs pblm firebase
+    // TODO : use return msg in front
 
     app.get('/api/journeys', (req, res) => {
         db.ref("journeys").once("value", function (snapshot) {
@@ -184,10 +197,10 @@ module.exports = function (app, indexFilePath) {
                         comment: dbJourneys[key].comment
                     }));
                 res.json(result);
-                console.log('all journeys sent');
+                console.log('GET - /api/journeys - get all journeys');
             } else {
                 res.json({});
-                console.log('no existing journeys yet');
+                console.log('GET - /api/journeys - no existing journey yet');
             }
         });
     });
@@ -209,7 +222,7 @@ module.exports = function (app, indexFilePath) {
             };
 
             res.json(result);
-            console.log('journey get', result);
+            console.log(`GET - /api/journey/${req.params.id} - get journey with id: ${result.id}`);
         });
     });
 
@@ -227,29 +240,39 @@ module.exports = function (app, indexFilePath) {
                 comment: req.body.comment
             }, (error) => {
                 if (error) {
-                    res.json({saved: false, message: error});
-                    console.error('error creating journey ', error);
+                    res.json({
+                        saved: false,
+                        message: 'Désolé, votre trajet n\'a pas été enregistré, réessayez plus tard.'
+                    });
+                    console.error('error creating journey:', error);
                 } else {
                     sendNewJourneyMailToOwners(req.body)
                         .then(() => {
-                            console.log('journey created', req.body);
+                            console.log('POST - /api/journey - mail sent to owners');
                         })
                         .catch(error => {
-                            console.error('error new journey not created', error);
+                            console.error('POST - /api/journey - error sending mail to owners', error);
                         });
-                    if (req.body.driverEmail !== '') {
+                    if (isValidMailAddress(req.body.driverEmail)) {
                         sendNewJourneyConfirmationMail(req.body)
                             .then(() => {
-                                console.log('journey confirmation sent', req.body);
+                                console.log(`POST - /api/journey - confirmation mail sent to: ${req.body.driverEmail}`);
                             })
-                            .catch(error => {
-                                console.error('error new confirmation journey not sent:', error);
-                            });
+                            .catch(error =>
+                                console.error(
+                                    `POST - /api/journey - error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                                    error));
+                    } else {
+                        console.error(`POST - /api/journey - error wrong mail address: ${req.body.driverEmail}`);
                     }
                     res.status(200).json({
                         saved: true,
-                        message: 'Trajet sauvegardé. Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
+                        message: 'Trajet sauvegardé. Si vous avez renseigné une adresse email, vous recevrez bientôt ' +
+                        'un mail de confirmation.'
                     });
+                    console.log(
+                        `POST - /api/journey - journey created for ${req.body.driverFirstName} ${req.body.driverName}`
+                    );
                 }
             });
     });
@@ -272,22 +295,23 @@ module.exports = function (app, indexFilePath) {
                         saved: false,
                         message: 'La modification n\'a pas été enregistrée, veuillez réessayer plus tard.'
                     });
-                    console.error('error updating journey ', error);
+                    console.error('PUT - /api/journey - error updating journey:', error);
                 } else {
                     if (req.body.driverEmail !== '') {
                         sendNewJourneyConfirmationMail(req.body)
                             .then(() => {
-                                console.log('journey confirmation sent', req.body);
+                                console.log(`PUT - /api/journey - journey confirmation sent ${req.body.driverEmail}`);
                             })
-                            .catch(error => {
-                                console.error('error new confirmation journey not sent:', error);
-                            });
+                            .catch(error =>
+                                console.error(
+                                    `PUT - /api/journey - error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                                    error));
                     }
                     res.status(200).json({
                         saved: true,
                         message: 'Modification enregistrée. Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
                     });
-                    console.log('journey updated');
+                    console.log(`PUT - /api/journey - journey ${req.body.id} updated`);
                 }
             });
     });
@@ -300,28 +324,35 @@ module.exports = function (app, indexFilePath) {
                         saved: false,
                         message: 'La suppression n\'a pas été enregistrée, veuillez réessayer plus tard.'
                     });
-                    console.error('error deleting journey ', error);
+                    console.error(`DELETE - /api/journey - error deleting journey ${req.body.id}, error:`, error);
                 } else {
+                    // TODO : sendConfirmationMail ?
                     res.status(200).json({});
-                    console.log('journey deleted');
+                    console.log(`DELETE - /api/journey - journey ${req.body.id} deleted`);
                 }
             });
     });
 
     app.post('/api/carSharingSubscribe', (req, res) => {
-        // TODO : unsubscribe dans mails + ajouter liste et envoyer mails auto pour new covoit
-        db.ref("presences")
-            .push(
-                {email: req.body.email},
-                (error) => {
-                    if (error) {
-                        res.json({saved: false, message: error});
-                        console.error('error subscribing', error);
-                    } else {
-                        res.json({saved: true, message: 'Abonnement enregistré pour ' + req.body.email + ' !'});
-                        console.log('new subscription saved for', req.body.email);
-                    }
-                });
+        if (isValidMailAddress(req.body.email)) {
+            // TODO : unsubscribe dans mails + ajouter liste et envoyer mails auto pour new covoit
+            db.ref("presences")
+                .push(
+                    {email: req.body.email},
+                    (error) => {
+                        if (error) {
+                            res.json({saved: false, message: error});
+                            console.error(
+                                `POST - /api/carSharingSubscribe - error subscribing ${req.body.email}, error:`,
+                                error);
+                        } else {
+                            res.json({saved: true, message: 'Abonnement enregistré pour ' + req.body.email + ' !'});
+                            console.log(`POST - /api/carSharingSubscribe - new subscription saved for ${req.body.email}`);
+                        }
+                    });
+        } else {
+            console.error(`POST - /api/carSharingSubscribe - error wrong mail address: ${req.body.email}`);
+        }
     });
 
     // TODO
@@ -351,10 +382,10 @@ module.exports = function (app, indexFilePath) {
                         comment: dbPresences[key].comment
                     }));
                 res.json(result);
-                console.log('presences sent', result);
+                console.log(`GET - /api/presences - ${result.length} presences sent`);
             } else {
                 res.json({});
-                console.log('no existing presences yet.');
+                console.log('GET - /api/presences - no existing presences yet.');
             }
         });
     });
@@ -377,28 +408,30 @@ module.exports = function (app, indexFilePath) {
             }, (error) => {
                 if (error) {
                     res.json({saved: false, message: error});
-                    console.error('error creating presence ', error);
+                    console.error('POST - /api/presence - error creating presence ', error);
                 } else {
                     sendNewPresenceMailToOwners(req.body)
-                        .then(() => {
-                            console.log('new presence answer created for', req.body.who);
-                        })
-                        .catch(error => {
-                            console.error('error new presence not created', error);
-                        });
-                    if (req.body.email !== '') {
+                        .then(() => console.log(`POST - /api/presence - new presence mail sent to owners`))
+                        .catch(error => console.error(
+                            'POST - /api/presence - error sending presence mail to owners, error:',
+                            error));
+                    if (isValidMailAddress(req.body.email)) {
                         sendPresenceConfirmationMail(req.body)
-                            .then(() => {
-                                console.log('Mail new presence confirmation sent to', req.body.email);
-                            })
-                            .catch(error => {
-                                console.error('Mail new presence confirmation not sent:', error);
-                            });
+                            .then(() =>
+                                console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`))
+                            .catch(error => console.error(
+                                `POST - /api/presence - new presence mail confirmation not sent to ${req.body.email}, error:`,
+                                error));
+                    } else {
+                        console.error(`POST - /api/presence - error wrong mail address: ${req.body.email}`);
                     }
+                    // TODO : modif message retour si envoi mail foireux
                     res.json({
                         saved: true,
-                        message: 'Merci pour votre réponse, votre participation a bien été enregistrée. Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
+                        message: 'Merci pour votre réponse, votre participation a bien été enregistrée.' +
+                        ' Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
                     });
+                    console.log(`POST - /api/presence - new presence answer created for ${req.body.who}`);
                 }
             });
     });
