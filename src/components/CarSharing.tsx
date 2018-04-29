@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { SyntheticEvent } from 'react';
-import { Redirect } from 'react-router';
-import { Col, Row } from 'reactstrap';
-import { Journey } from '../helpers/models';
+import {SyntheticEvent} from 'react';
+import {Redirect} from 'react-router';
+import {Col, Row} from 'reactstrap';
+import {Journey} from '../helpers/models';
 import CarSharingCustomTab from './CarSharingCustomTab';
 import Card from 'reactstrap/lib/Card';
 
@@ -125,7 +125,7 @@ export default class CarSharing extends React.Component <Props, State> {
 
     render() {
         if (this.state.goSubscribe) {
-            return (<Redirect to={'/covoiturages/subscribe'}/>);
+            return (<Redirect to={'/covoiturages/inscription'}/>);
         }
         if (this.state.goEditJourney) {
             return (<Redirect to={'/covoiturages/edit/' + this.state.journeyId}/>);

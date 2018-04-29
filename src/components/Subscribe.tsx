@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { withRouter } from 'react-router';
+import {withRouter} from 'react-router';
 import Card from 'reactstrap/lib/Card';
-import { Alert, Col, Form, Input, Row } from 'reactstrap';
+import {Alert, Col, Form, Input, Row} from 'reactstrap';
 
 interface Props {
 }
@@ -84,7 +84,7 @@ export default class Subscribe extends React.Component<Props, State> {
         })
             .then(result => result.json())
             .then((result: { saved: boolean, message: string }) => {
-                this.toggleNotification(result, 'success');
+                this.toggleNotification(result, result.saved ? 'success' : 'danger');
                 this.stopLoading();
             })
             .catch(e => {
