@@ -12,6 +12,7 @@ interface Props {
 interface State {
     readonly journeys: Journey[];
     readonly journeyId: string;
+    readonly goSubscribe: boolean;
     readonly goEditJourney: boolean;
     readonly goNewJourney: boolean;
     readonly loading: boolean;
@@ -25,8 +26,9 @@ export default class CarSharing extends React.Component <Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.editJourney = this.editJourney.bind(this);
+        this.subscribe = this.subscribe.bind(this);
         this.newJourney = this.newJourney.bind(this);
+        this.editJourney = this.editJourney.bind(this);
         this.deleteJourney = this.deleteJourney.bind(this);
         this.getJourneys = this.getJourneys.bind(this);
         this.startLoading = this.startLoading.bind(this);
@@ -34,18 +36,10 @@ export default class CarSharing extends React.Component <Props, State> {
 
         this.state = {
             journeys: [
-                // {
-                //     id: 'r',
-                //     driverFirstName: 'Mathieu',
-                //     driverName: 'Deumié',
-                //     driverPhoneNumber: '0102030405',
-                //     driverEmail: 'mathieu@deumie.org',
-                //     fromCity: 'Paris city',
-                //     toCity: 'Ceupouan',
-                //     freeSeats: 1,
-                //     comment: ''
-                // }
+                // new Journey(),
+                // new Journey()
             ],
+            goSubscribe: false,
             goEditJourney: false,
             goNewJourney: false,
             loading: true,
@@ -58,14 +52,19 @@ export default class CarSharing extends React.Component <Props, State> {
         this.getJourneys();
     }
 
-    editJourney(event: SyntheticEvent<HTMLButtonElement>, journeyId: string): void {
+    subscribe(event: SyntheticEvent<HTMLButtonElement>): void {
         event.preventDefault();
-        this.setState({journeyId, goEditJourney: true, goNewJourney: false});
+        this.setState({goSubscribe: true, goEditJourney: false, goNewJourney: true});
     }
 
     newJourney(event: SyntheticEvent<HTMLButtonElement>): void {
         event.preventDefault();
-        this.setState({goEditJourney: false, goNewJourney: true});
+        this.setState({goSubscribe: false, goEditJourney: false, goNewJourney: true});
+    }
+
+    editJourney(event: SyntheticEvent<HTMLButtonElement>, journeyId: string): void {
+        event.preventDefault();
+        this.setState({journeyId, goSubscribe: false, goEditJourney: true, goNewJourney: false});
     }
 
     deleteJourney(event: SyntheticEvent<HTMLButtonElement>, journeyId: string): void {
@@ -97,6 +96,7 @@ export default class CarSharing extends React.Component <Props, State> {
                         driverName: journey.driverName,
                         driverPhoneNumber: journey.driverPhoneNumber,
                         driverEmail: journey.driverEmail,
+                        date: journey.date,
                         fromCity: journey.fromCity,
                         toCity: journey.toCity,
                         freeSeats: journey.freeSeats,
@@ -109,6 +109,7 @@ export default class CarSharing extends React.Component <Props, State> {
                 this.stopLoading();
             })
             .catch(e => {
+                // TODO : affichage si erreur ??
                 console.warn(e);
                 this.stopLoading();
             });
@@ -123,6 +124,9 @@ export default class CarSharing extends React.Component <Props, State> {
     }
 
     render() {
+        if (this.state.goSubscribe) {
+            return (<Redirect to={'/covoiturages/subscribe'}/>);
+        }
         if (this.state.goEditJourney) {
             return (<Redirect to={'/covoiturages/edit/' + this.state.journeyId}/>);
         }
@@ -132,7 +136,7 @@ export default class CarSharing extends React.Component <Props, State> {
         if (this.state.loading) {
             return (
                 <div className="loader" style={this.loaderStyle}>
-                    <div className="line-scale">
+                    <div className="line-scale line-scale-orange">
                         <div/>
                         <div/>
                         <div/>
@@ -147,6 +151,27 @@ export default class CarSharing extends React.Component <Props, State> {
                 <Row>
                     <Col sm="12">
                         <Card body={true} className="mt-3">
+                            <Row className="justify-content-center justify-content-sm-end">
+                                <button
+                                    type="button"
+                                    className="btn btn-info mr-2"
+                                    onClick={(e) => {
+                                        this.newJourney(e);
+                                    }}
+                                >
+                                    Proposer un trajet
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-info"
+                                    onClick={(e) => {
+                                        this.subscribe(e);
+                                    }}
+                                >
+                                    S'abonner
+                                </button>
+                            </Row>
+                            <hr/>
                             <Row>
                                 <Col sm="12">
                                     {
@@ -159,18 +184,6 @@ export default class CarSharing extends React.Component <Props, State> {
                                             />
                                     }
                                 </Col>
-                            </Row>
-                            <hr/>
-                            <Row className="justify-content-center">
-                                <button
-                                    type="button"
-                                    className="btn btn-info"
-                                    onClick={(e) => {
-                                        this.newJourney(e);
-                                    }}
-                                >
-                                    Ajouter
-                                </button>
                             </Row>
                         </Card>
                     </Col>

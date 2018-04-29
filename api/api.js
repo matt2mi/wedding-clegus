@@ -20,8 +20,65 @@ admin.initializeApp({
 });
 const db = admin.database();
 
-
 const mailjet = require('node-mailjet').connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
+const getNewJourneyHtmlPart = (journey) => {
+    return '<h3>Nouveau covoit\' proposé par ' + journey.driverFirstName + '</h3>' +
+        '<p>' + journey.driverFirstName + ' propose ' + journey.freeSeats +
+        ' places pour aller de ' + journey.fromCity + ' à ' + journey.toCity + ' le ' + journey.date + '.</p>' +
+
+        '<p>Coordonnées :<br/>' + journey.driverFirstName + ' ' + journey.driverName +
+        '<br/>Téléphone : ' + journey.driverPhoneNumber +
+        '<br/>Email : ' + journey.driverEmail + '</p>' +
+
+        '<p>Commentaire du conducteur :<br/>' + journey.comment + '</p>' +
+
+        '<p>Made by Matou with <3 ;)</p>';
+};
+const sendNewJourneyMailToOwners = (journey) => {
+    return mailjet
+        .post('send')
+        .request({
+            "FromEmail": "mariageclegus@gmail.com",
+            "FromName": "Mariage Clegus",
+            "Subject": "Nouveau covoit' proposé par " + journey.driverFirstName,
+            "Html-part": getNewJourneyHtmlPart(journey),
+            "Recipients": [{"Email": "2m1tema@gmail.com"}]
+        });
+};
+
+const getNewJourneyConfirmationHtmlPart = (journey) => {
+    return '<h3>' + journey.driverFirstName + ',<h3/>' +
+
+        '<p>Merci pour votre proposition de covoiturage qui a bien été enregistrée.</p>' +
+
+        '<p>Recapitulatif du trajet :<br/>' +
+        'Telephone : ' + journey.driverPhoneNumber + '<br/>' +
+        'Email : ' + journey.driverEmail + '<br/>' +
+        'Date : ' + journey.date + '<br/>' +
+        'Trajet : ' + journey.fromCity + ' > ' + journey.toCity + '<br/>' +
+        'Sieges libres : ' + journey.freeSeats + '<br/>' +
+        'Commentaire :<br/>' + journey.comment + '</p>' +
+
+        '<p>Si tu le souhaites, tu peux à tout moment retrouver ici ton annonce :<br/>' +
+        'https://mariageclegus.herokuapp.com/#/covoiturages/edit/' + journey.id + '<br/>' +
+        'Utile aussi pour mettre à jour le nombre de sièges libres ;)<br/>' +
+
+        '<p>À très vite !</p>' +
+
+        '<p>Clémence et Augustin.</p>';
+};
+const sendNewJourneyConfirmationMail = (journey) => {
+    return mailjet
+        .post('send')
+        .request({
+            "FromEmail": "mariageclegus@gmail.com",
+            "FromName": "Mariage Clegus",
+            "Subject": "Trajet " + journey.fromCity + " - " + journey.toCity + " enregistré !",
+            "Html-part": getNewJourneyConfirmationHtmlPart(journey),
+            "Recipients": [{"Email": journey.driverEmail}]
+        });
+};
+
 const getNewPresenceHtmlPart = presence => {
     let htmlMsg = '<h3>Et hop, ' + presence.who + ' en plus !</h3><p>';
 
@@ -59,7 +116,7 @@ const getNewPresenceHtmlPart = presence => {
 
     return htmlMsg;
 };
-const sendNewPresenceMail = (presence) => {
+const sendNewPresenceMailToOwners = (presence) => {
     return mailjet
         .post('send')
         .request({
@@ -70,32 +127,45 @@ const sendNewPresenceMail = (presence) => {
             "Recipients": [{"Email": "2m1tema@gmail.com"}]
         });
 };
-const getNewJourneyHtmlPart = (journey) => {
-    return "<h3>Nouveau covoit' proposé par " + journey.driverFirstName + "</h3>" +
-        "<p>" + journey.driverFirstName + " propose " + journey.freeSeats +
-        " places pour aller de " + journey.fromCity + " à " + journey.toCity + ".</p>" +
 
-        "<p>Coordonnées :<br/>" + journey.driverFirstName + " " + journey.driverName +
-        "<br/>Téléphone : " + journey.driverPhoneNumber +
-        "<br/>Email : " + journey.driverEmail + "</p>" +
+const getPresenceConfirmationHtmlPart = (presence) => {
+    return '<h3>' + presence.who + ',<h3/>' +
 
-        "<p>Commentaire du conducteur :<br/>" + journey.comment + "</p>" +
+    '<p>Merci pour votre réponse, votre participation à bien été enregistrée.</p>' +
 
-        "<p>Made by Matou with <3 ;)</p>"
+    '<p>Recapitulatif :<br/>' +
+    'Nom : ' + presence.who + '<br/>' +
+    'Telephone : ' + presence.phoneNumber + '<br/>' +
+    'Email : ' + presence.email + '<br/>' +
+    'Nombre de personnes : ' + presence.nbPersons + '<br/>' +
+    'Nombre de parts méchoui: ' + presence.nbPorkPersons + '<br/>' +
+    'Nombre de parts vegans: ' + presence.nbVeganPersons + '<br/>' +
+    'Présence pour : <br/>' +
+    presence.whenSaturdayMorning ? '- le samedi matin<br/>' : '' +
+    presence.whenSaturdayLunch ? '- le samedi midi<br/>' : '' +
+    presence.whenSaturdayDiner ? '- le samedi soir<br/>' : '' +
+    presence.whenSundayLunch ? '- le dimanche midi<br/>Bouffe du dimanche: ' + presence.commentSundayLunchInfo + '<br/>' : '' +
+        'Autre commentaire: ' + presence.comment + '</p>' +
+
+        '<p>À très vite !</p>' +
+
+        '<p>Clémence et Augustin.</p>';
 };
-const sendNewJourneyMail = (journey) => {
+const sendPresenceConfirmationMail = (presence) => {
     return mailjet
         .post('send')
         .request({
             "FromEmail": "mariageclegus@gmail.com",
             "FromName": "Mariage Clegus",
-            "Subject": "Nouveau covoit' proposé par " + journey.driverFirstName,
-            "Html-part": getNewJourneyHtmlPart(journey),
-            "Recipients": [{"Email": "2m1tema@gmail.com"}]
+            "Subject": "Participation au mariage enregistrée !",
+            "Html-part": getPresenceConfirmationHtmlPart(presence),
+            "Recipients": [{"Email": presence.email}]
         });
 };
 
 module.exports = function (app, indexFilePath) {
+    // TODO : logs à revoir
+
     app.get('/api/journeys', (req, res) => {
         db.ref("journeys").once("value", function (snapshot) {
             const dbJourneys = snapshot.val();
@@ -131,15 +201,15 @@ module.exports = function (app, indexFilePath) {
                 driverName: journey.driverName,
                 driverPhoneNumber: journey.driverPhoneNumber,
                 driverEmail: journey.driverEmail,
+                date: journey.date,
                 fromCity: journey.fromCity,
                 toCity: journey.toCity,
                 freeSeats: journey.freeSeats,
                 comment: journey.comment
             };
-            console.log(result);
 
             res.json(result);
-            console.log('journey sent', result);
+            console.log('journey get', result);
         });
     });
 
@@ -150,6 +220,7 @@ module.exports = function (app, indexFilePath) {
                 driverName: req.body.driverName,
                 driverPhoneNumber: req.body.driverPhoneNumber,
                 driverEmail: req.body.driverEmail,
+                date: req.body.date,
                 fromCity: req.body.fromCity,
                 toCity: req.body.toCity,
                 freeSeats: req.body.freeSeats,
@@ -157,26 +228,29 @@ module.exports = function (app, indexFilePath) {
             }, (error) => {
                 if (error) {
                     res.json({saved: false, message: error});
-                    console.log('error creating journey ', error);
+                    console.error('error creating journey ', error);
                 } else {
-                    sendNewJourneyMail(req.body)
+                    sendNewJourneyMailToOwners(req.body)
                         .then(() => {
-                            // TODO : if(req.body.email !== '') sendConfirmationMail();
-                            res.json({saved: true, message: 'Mail new covoit\' envoyé !'});
                             console.log('journey created', req.body);
                         })
                         .catch(error => {
-                            console.log('error new journey not created', error);
+                            console.error('error new journey not created', error);
                         });
+                    if (req.body.driverEmail !== '') {
+                        sendNewJourneyConfirmationMail(req.body)
+                            .then(() => {
+                                console.log('journey confirmation sent', req.body);
+                            })
+                            .catch(error => {
+                                console.error('error new confirmation journey not sent:', error);
+                            });
+                    }
+                    res.status(200).json({
+                        saved: true,
+                        message: 'Trajet sauvegardé. Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
+                    });
                 }
-            });
-    });
-
-    app.delete('/api/journey', (req, res) => {
-        db.ref("journeys/" + req.body.id)
-            .remove(() => {
-                res.status(200).json({});
-                console.log('journey deleted');
             });
     });
 
@@ -187,14 +261,71 @@ module.exports = function (app, indexFilePath) {
                 driverName: req.body.driverName,
                 driverPhoneNumber: req.body.driverPhoneNumber,
                 driverEmail: req.body.driverEmail,
+                date: req.body.date,
                 fromCity: req.body.fromCity,
                 toCity: req.body.toCity,
                 freeSeats: req.body.freeSeats,
                 comment: req.body.comment
-            }, () => {
-                res.status(200).json({});
-                console.log('journey updated');
+            }, (error) => {
+                if (error) {
+                    res.json({
+                        saved: false,
+                        message: 'La modification n\'a pas été enregistrée, veuillez réessayer plus tard.'
+                    });
+                    console.error('error updating journey ', error);
+                } else {
+                    if (req.body.driverEmail !== '') {
+                        sendNewJourneyConfirmationMail(req.body)
+                            .then(() => {
+                                console.log('journey confirmation sent', req.body);
+                            })
+                            .catch(error => {
+                                console.error('error new confirmation journey not sent:', error);
+                            });
+                    }
+                    res.status(200).json({
+                        saved: true,
+                        message: 'Modification enregistrée. Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
+                    });
+                    console.log('journey updated');
+                }
             });
+    });
+
+    app.delete('/api/journey', (req, res) => {
+        db.ref("journeys/" + req.body.id)
+            .remove((error) => {
+                if (error) {
+                    res.json({
+                        saved: false,
+                        message: 'La suppression n\'a pas été enregistrée, veuillez réessayer plus tard.'
+                    });
+                    console.error('error deleting journey ', error);
+                } else {
+                    res.status(200).json({});
+                    console.log('journey deleted');
+                }
+            });
+    });
+
+    app.post('/api/carSharingSubscribe', (req, res) => {
+        // TODO : unsubscribe dans mails + ajouter liste et envoyer mails auto pour new covoit
+        db.ref("presences")
+            .push(
+                {email: req.body.email},
+                (error) => {
+                    if (error) {
+                        res.json({saved: false, message: error});
+                        console.error('error subscribing', error);
+                    } else {
+                        res.json({saved: true, message: 'Abonnement enregistré pour ' + req.body.email + ' !'});
+                        console.log('new subscription saved for', req.body.email);
+                    }
+                });
+    });
+
+    // TODO
+    app.post('/api/carSharingUnsubscribe', (req, res) => {
     });
 
     app.get('/api/presences', (req, res) => {
@@ -246,17 +377,28 @@ module.exports = function (app, indexFilePath) {
             }, (error) => {
                 if (error) {
                     res.json({saved: false, message: error});
-                    console.log('error creating presence ', error);
+                    console.error('error creating presence ', error);
                 } else {
-                    sendNewPresenceMail(req.body)
+                    sendNewPresenceMailToOwners(req.body)
                         .then(() => {
-                            // TODO : if(req.body.email !== '') sendConfirmationMail();
-                            res.json({saved: true, message: 'Mail new presence envoyé !'});
                             console.log('new presence answer created for', req.body.who);
                         })
                         .catch(error => {
-                            console.log('error new presence not created', error);
+                            console.error('error new presence not created', error);
                         });
+                    if (req.body.email !== '') {
+                        sendPresenceConfirmationMail(req.body)
+                            .then(() => {
+                                console.log('Mail new presence confirmation sent to', req.body.email);
+                            })
+                            .catch(error => {
+                                console.error('Mail new presence confirmation not sent:', error);
+                            });
+                    }
+                    res.json({
+                        saved: true,
+                        message: 'Merci pour votre réponse, votre participation a bien été enregistrée. Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
+                    });
                 }
             });
     });

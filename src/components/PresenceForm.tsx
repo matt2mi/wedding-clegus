@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Alert, Button, Collapse, Form, Input, Label } from 'reactstrap';
+import { Alert, Collapse, Form, Input, Label } from 'reactstrap';
 import Card from 'reactstrap/lib/Card';
 import CardTitle from 'reactstrap/lib/CardTitle';
 import Col from 'reactstrap/lib/Col';
@@ -25,12 +25,10 @@ interface State {
     readonly displayForm: boolean;
     readonly notificationVisible: boolean;
     readonly notificationMessage: string;
+    readonly notificationColor: string;
 }
 
 export default class PresenceForm extends React.Component<Props, State> {
-    loaderStyle = {
-        marginTop: window.innerHeight / 2 + 'px'
-    };
     sundayFoodMsg = `Ecrivez ici ce que vous comptez amener 
 (ex : une tarte, un cake, une salade ou un fromage…)`;
 
@@ -43,6 +41,7 @@ export default class PresenceForm extends React.Component<Props, State> {
         this.toggleNotification = this.toggleNotification.bind(this);
         this.startLoading = this.startLoading.bind(this);
         this.stopLoading = this.stopLoading.bind(this);
+        this.cleanForm = this.cleanForm.bind(this);
 
         this.state = {
             loading: false,
@@ -60,7 +59,8 @@ export default class PresenceForm extends React.Component<Props, State> {
             comment: '',
             displayForm: true,
             notificationVisible: false,
-            notificationMessage: ''
+            notificationMessage: '',
+            notificationColor: ''
         };
     }
 
@@ -110,45 +110,61 @@ export default class PresenceForm extends React.Component<Props, State> {
         })
             .then(result => result.json())
             .then((result: { saved: boolean, message: string }) => {
-                this.toggleNotification(result);
+                this.toggleNotification(result, 'info');
                 this.stopLoading();
             })
             .catch(e => {
                 console.warn(e);
+                this.toggleNotification(
+                    {saved: false, message: 'Problème de sauvegarde, réessayez plus tard.'},
+                    'error'
+                );
                 this.stopLoading();
             });
     }
 
-    toggleNotification(result: { saved: boolean, message: string }): void {
+    toggleNotification({saved, message}: { saved: boolean, message: string }, color: string): void {
         this.setState({
-            displayForm: !result.saved,
+            displayForm: !saved,
             notificationVisible: true,
-            notificationMessage: result.message
+            notificationMessage: message,
+            notificationColor: color,
+        });
+    }
+
+    cleanForm() {
+        this.setState({
+            loading: false,
+            who: '',
+            phoneNumber: '',
+            email: '',
+            nbPersons: 0,
+            nbPorkPersons: 0,
+            nbVeganPersons: 0,
+            whenSaturdayMorning: false,
+            whenSaturdayLunch: false,
+            whenSaturdayDiner: false,
+            whenSundayLunch: false,
+            commentSundayLunchInfo: '',
+            comment: '',
+            displayForm: true,
+            notificationVisible: false,
+            notificationMessage: '',
+            notificationColor: ''
         });
     }
 
     render() {
-        if (this.state.loading) {
-            return (
-                <div className="loader" style={this.loaderStyle}>
-                    <div className="line-scale">
-                        <div/>
-                        <div/>
-                        <div/>
-                        <div/>
-                        <div/>
-                    </div>
-                </div>
-            );
-        }
         return (
             <div className="base-div-content">
                 <Row>
                     <Col>
                         <Card body={true} className="mt-3">
                             <CardTitle className="text-left title">Formulaire de présence</CardTitle>
-                            <hr/>
+
                             {
+
+                                // TODO : vérification champs vides
                                 this.state.displayForm ?
                                     <Form>
                                         <Row className="justify-content-center mt-2 subtitle">
@@ -383,20 +399,50 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                 </Row>
                                             </Col>
                                         </Row>
-                                        <Row className="justify-content-center mt-2">
-                                            <Col sm="12">
-                                                <Button color="primary" onClick={this.createAnswer}>
-                                                    Envoyer la réponse
-                                                </Button>
-                                            </Col>
-                                        </Row>
                                     </Form> :
                                     null
                             }
 
-                            <Alert color="info" isOpen={this.state.notificationVisible}>
+                            <hr/>
+
+                            <Alert color={this.state.notificationColor} isOpen={this.state.notificationVisible}>
                                 {this.state.notificationMessage}
                             </Alert>
+
+                            {
+                                !this.state.notificationVisible ?
+                                    <Row className="justify-content-center mt-2">
+                                        <Col sm="12">
+                                            <button
+                                                type="button"
+                                                className="btn cancel-button"
+                                                onClick={this.cleanForm}
+                                            >
+                                                Effacer les réponses
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="btn btn-info ml-3"
+                                                onClick={this.createAnswer}
+                                            >
+                                                {
+                                                    this.state.loading ?
+                                                        <div className="loader">
+                                                            <div className="line-scale line-scale-white">
+                                                                <div/>
+                                                                <div/>
+                                                                <div/>
+                                                                <div/>
+                                                                <div/>
+                                                            </div>
+                                                        </div> :
+                                                        'Envoyer la réponse'
+                                                }
+                                            </button>
+                                        </Col>
+                                    </Row> :
+                                    null
+                            }
                         </Card>
                     </Col>
                 </Row>

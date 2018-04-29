@@ -8,13 +8,13 @@ import Contacts from './components/Contacts';
 import HotelsNearby from './components/HotelsNearby';
 import Invitation from './components/Invitation';
 import PresenceForm from './components/PresenceForm';
-import JourneyDetails from './components/JourneyDetails';
 import Main from './components/Main';
 import NavHeader from './components/NavHeader';
 import PresenceList from './components/PresenceList';
 import SundayFood from './components/SundayFood';
 import JourneyEdit from './components/JourneyEdit';
 import Information from './components/Information';
+import Subscribe from 'src/components/Subscribe';
 
 class App extends React.Component {
     render() {
@@ -27,9 +27,9 @@ class App extends React.Component {
                         <Route path="/infos" component={Information}/>
                         <Route path="/presence" component={PresenceForm}/>
                         <Route path="/covoiturages" exact={true} component={CarSharing}/>
+                        <Route path="/covoiturages/subscribe" component={Subscribe}/>
                         <Route path="/covoiturages/edit/:id" component={JourneyEdit}/>
                         <Route path="/covoiturages/new" component={JourneyEdit}/>
-                        <Route path="/covoiturages/detail/:id" component={JourneyDetails}/>
                         <Route path="/gites" component={HotelsNearby}/>
                         <Route path="/buffet" component={SundayFood}/>
                         <Route path="/faire-part" component={Invitation}/>

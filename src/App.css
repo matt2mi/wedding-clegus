@@ -20,16 +20,15 @@ button {
     font-size: 1.2rem !important;
 }
 
+.icon-button {
+    width: 50px;
+}
 .cancel-button {
     background-color: transparent !important;
     border-color: transparent !important;
     color: #f9a138;
     font-weight: 100 !important;
     font-size: 1.2rem !important;
-}
-
-label {
-    height: 22px !important;
 }
 
 table th {
@@ -87,8 +86,16 @@ textarea {
     color: #906430 !important;
 }
 
-.line-scale div {
+.line-scale {
+    height: 40px !important;
+}
+
+.line-scale-orange div {
     background-color: #f9a138 !important;
+}
+
+.line-scale-white div {
+    background-color: white !important;
 }
 
 .input-row {

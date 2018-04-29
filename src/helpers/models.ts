@@ -4,11 +4,11 @@ export class Journey {
     driverName: string;
     driverPhoneNumber: string;
     driverEmail: string;
+    date: string;
     fromCity: string;
     toCity: string;
     freeSeats: number;
     comment: string;
-    displayDetails?: boolean;
 
     constructor(id: string = 'id',
                 comment: string = 'commentcomment\ncommentcomment\ncommentcomment',
@@ -16,6 +16,7 @@ export class Journey {
                 driverName: string = 'demi',
                 driverPhoneNumber: string = '0601020304',
                 driverEmail: string = 'driverEmail@driverEmail.fr',
+                date: string = '01/02/03',
                 fromCity: string = 'from',
                 toCity: string = 'to') {
         return {
@@ -24,6 +25,7 @@ export class Journey {
             driverName,
             driverPhoneNumber,
             driverEmail,
+            date,
             fromCity,
             toCity,
             freeSeats: 0,
