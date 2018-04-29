@@ -13,7 +13,7 @@
   "keywords": [],
   "author": "",
   "scripts": {
-    "start": "time npm i && node server.js",
+    "start": "npm i && node server.js",
     "start:client": "react-scripts-ts start",
     "start:server": "nodemon server.js",
     "build": "react-scripts-ts build",
