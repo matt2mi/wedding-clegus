@@ -110,14 +110,14 @@ export default class PresenceForm extends React.Component<Props, State> {
         })
             .then(result => result.json())
             .then((result: { saved: boolean, message: string }) => {
-                this.toggleNotification(result, 'info');
+                this.toggleNotification(result, 'success');
                 this.stopLoading();
             })
             .catch(e => {
                 console.warn(e);
                 this.toggleNotification(
                     {saved: false, message: 'Problème de sauvegarde, réessayez plus tard.'},
-                    'error'
+                    'danger'
                 );
                 this.stopLoading();
             });

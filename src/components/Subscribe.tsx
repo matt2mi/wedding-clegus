@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { withRouter } from 'react-router';
+import {withRouter} from 'react-router';
 import Card from 'reactstrap/lib/Card';
-import { Alert, Col, Form, Input, Row } from 'reactstrap';
+import {Alert, Col, Form, Input, Row} from 'reactstrap';
 
 interface Props {
 }
@@ -15,7 +15,7 @@ interface State {
     readonly notificationColor: string;
 }
 
-export default class JourneyDetails extends React.Component<Props, State> {
+export default class Subscribe extends React.Component<Props, State> {
     goBackButton: React.ComponentClass;
 
     constructor(props: Props) {
@@ -84,13 +84,13 @@ export default class JourneyDetails extends React.Component<Props, State> {
         })
             .then(result => result.json())
             .then((result: { saved: boolean, message: string }) => {
-                this.toggleNotification(result, 'info');
+                this.toggleNotification(result, result.saved ? 'success' : 'danger');
                 this.stopLoading();
             })
             .catch(e => {
                 this.toggleNotification(
                     {saved: false, message: 'Problème de sauvegarde, réessayez plus tard.'},
-                    'error'
+                    'danger'
                 );
                 console.warn(e);
                 this.stopLoading();

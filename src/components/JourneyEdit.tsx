@@ -427,12 +427,12 @@ export default class JourneyDetails extends React.Component<Props, State> {
         })
             .then(result => result.json())
             .then(({saved, message}) => {
-                this.toggleNotification({saved, message}, 'info');
+                this.toggleNotification({saved, message}, 'success');
                 cb();
                 this.stopLoading();
             })
             .catch(({saved, message}) => {
-                this.toggleNotification({saved, message}, 'error');
+                this.toggleNotification({saved, message}, 'danger');
                 console.warn('Error:', message);
                 this.stopLoading();
             });
