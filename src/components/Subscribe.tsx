@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {withRouter} from 'react-router';
+import { withRouter } from 'react-router';
 import Card from 'reactstrap/lib/Card';
-import {Alert, Col, Form, Input, Row} from 'reactstrap';
+import { Alert, Col, Form, Input, Row } from 'reactstrap';
 
 interface Props {
 }

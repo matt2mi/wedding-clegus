@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {SyntheticEvent} from 'react';
-import {Redirect} from 'react-router';
-import {Col, Row} from 'reactstrap';
-import {Journey} from '../helpers/models';
+import { SyntheticEvent } from 'react';
+import { Redirect } from 'react-router';
+import { Col, Row } from 'reactstrap';
+import { Journey } from '../helpers/models';
 import CarSharingCustomTab from './CarSharingCustomTab';
 import Card from 'reactstrap/lib/Card';
 
