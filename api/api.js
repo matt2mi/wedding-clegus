@@ -1,5 +1,6 @@
 require('dotenv').config();
 const path = require('path');
+const emailValidator = require("email-validator");
 
 // firebase connection - https://firebase.google.com/docs/admin/setup
 const admin = require("firebase-admin");
@@ -21,6 +22,8 @@ admin.initializeApp({
 const db = admin.database();
 
 const mailjet = require('node-mailjet').connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
+
+// TODO : vérif champ rempli dans template de mail
 const getNewJourneyHtmlPart = (journey) => {
     return '<h3>Nouveau covoit\' proposé par ' + journey.driverFirstName + '</h3>' +
         '<p>' + journey.driverFirstName + ' propose ' + journey.freeSeats +
@@ -131,20 +134,22 @@ const sendNewPresenceMailToOwners = (presence) => {
 const getPresenceConfirmationHtmlPart = (presence) => {
     return '<h3>' + presence.who + ',<h3/>' +
 
-    '<p>Merci pour votre réponse, votre participation à bien été enregistrée.</p>' +
+        '<p>Merci pour votre réponse, votre participation a bien été enregistrée.</p>' +
 
-    '<p>Recapitulatif :<br/>' +
-    'Nom : ' + presence.who + '<br/>' +
-    'Telephone : ' + presence.phoneNumber + '<br/>' +
-    'Email : ' + presence.email + '<br/>' +
-    'Nombre de personnes : ' + presence.nbPersons + '<br/>' +
-    'Nombre de parts méchoui: ' + presence.nbPorkPersons + '<br/>' +
-    'Nombre de parts vegans: ' + presence.nbVeganPersons + '<br/>' +
-    'Présence pour : <br/>' +
-    presence.whenSaturdayMorning ? '- le samedi matin<br/>' : '' +
-    presence.whenSaturdayLunch ? '- le samedi midi<br/>' : '' +
-    presence.whenSaturdayDiner ? '- le samedi soir<br/>' : '' +
-    presence.whenSundayLunch ? '- le dimanche midi<br/>Bouffe du dimanche: ' + presence.commentSundayLunchInfo + '<br/>' : '' +
+        '<p>Recapitulatif :<br/>' +
+        'Nom : ' + presence.who + '<br/>' +
+        'Telephone : ' + presence.phoneNumber + '<br/>' +
+        'Email : ' + presence.email + '<br/>' +
+        'Nombre de personnes : ' + presence.nbPersons + '<br/>' +
+        'Nombre de parts méchoui: ' + presence.nbPorkPersons + '<br/>' +
+        'Nombre de parts vegans: ' + presence.nbVeganPersons + '<br/>' +
+        'Présence pour : <br/>' +
+
+        (presence.whenSaturdayMorning ? '- le samedi matin<br/>' : '') +
+        (presence.whenSaturdayLunch ? '- le samedi midi<br/>' : '') +
+        (presence.whenSaturdayDiner ? '- le samedi soir<br/>' : '') +
+        (presence.whenSundayLunch ? '- le dimanche midi<br/>Bouffe du dimanche: ' + presence.commentSundayLunchInfo + '<br/>' : '') +
+
         'Autre commentaire: ' + presence.comment + '</p>' +
 
         '<p>À très vite !</p>' +
@@ -163,21 +168,35 @@ const sendPresenceConfirmationMail = (presence) => {
         });
 };
 
-const isValidMailAddress = (mailAddress) => {
-    if (typeof mailAddress !== 'string') return false;
-    const atSplit = mailAddress.split('@');
-    if (atSplit.length !== 2) return false;
-    const dotSplit = atSplit[1].split('.');
-    if (dotSplit.length < 2) return false;
-    return (dotSplit[dotSplit.length - 1] !== 'com' &&
-        dotSplit[dotSplit.length - 1] !== 'fr' &&
-        dotSplit[dotSplit.length - 1] !== 'net' &&
-        dotSplit[dotSplit.length - 1] !== 'org');
+const getSubscriptionConfirmationHtmlPart = (email) => {
+    return '<h3>Inscription au news de covoiturages<h3/>' +
+
+        '<p>Votre adresse email a bien été ajoutée à la liste. Vous serez prévenu par mail dès qu\'un nouveau ' +
+        'covoiturage sera ajouté.</p>' +
+
+        '<p>Pour vous désinscrire, cliquez ici :<br/>' +
+        '<a href=\"https://mariageclegus.herokuapp.com/#/covoiturages/desinscription/' + email + '\">se désinscrire</a></p>' +
+
+        '<p>À très vite !</p>' +
+
+        '<p>Clémence et Augustin.</p>';
+};
+const sendSubscriptionConfirmationMail = (email) => {
+    return mailjet
+        .post('send')
+        .request({
+            "FromEmail": "mariageclegus@gmail.com",
+            "FromName": "Mariage Clegus",
+            "Subject": "Inscription aux covoiturages enregistrée !",
+            "Html-part": getSubscriptionConfirmationHtmlPart(email),
+            "Recipients": [{"Email": email}]
+        });
 };
 
 module.exports = function (app, indexFilePath) {
     // TODO : ajouter logs pblm firebase
     // TODO : use return msg in front
+    // TODO : send new covoit subscribers
 
     app.get('/api/journeys', (req, res) => {
         db.ref("journeys").once("value", function (snapshot) {
@@ -334,29 +353,61 @@ module.exports = function (app, indexFilePath) {
     });
 
     app.post('/api/carSharingSubscribe', (req, res) => {
-        if (isValidMailAddress(req.body.email)) {
-            // TODO : unsubscribe dans mails + ajouter liste et envoyer mails auto pour new covoit
-            db.ref("presences")
+        if (emailValidator.validate(req.body.email)) {
+            // TODO : envoyer mails auto pour new covoit
+            db.ref("subscriptions")
                 .push(
-                    {email: req.body.email},
+                    {email: req.body.email, activated: true},
                     (error) => {
                         if (error) {
-                            res.json({saved: false, message: error});
+                            res.json({
+                                saved: false,
+                                message: 'L\'abonnement n\'a pas fonctionné, réessayez plus tard.'
+                            });
                             console.error(
                                 `POST - /api/carSharingSubscribe - error subscribing ${req.body.email}, error:`,
                                 error);
                         } else {
-                            res.json({saved: true, message: 'Abonnement enregistré pour ' + req.body.email + ' !'});
+                            sendSubscriptionConfirmationMail(req.body.email)
+                                .then(() =>
+                                    console.log('POST - /api/carSharingSubscribe - subscription confirmation mail sent'))
+                                .catch(error =>
+                                    console.error(
+                                        'POST - /api/carSharingSubscribe - error sending subscription confirmation mail',
+                                        error));
+                            res.json({saved: true, message: `Abonnement enregistré pour ${req.body.email} !`});
                             console.log(`POST - /api/carSharingSubscribe - new subscription saved for ${req.body.email}`);
                         }
                     });
         } else {
             console.error(`POST - /api/carSharingSubscribe - error wrong mail address: ${req.body.email}`);
+            res.json({saved: false, message: `Désolé, ${req.body.email} n'est pas une adresse email valide.`});
         }
     });
 
-    // TODO
-    app.post('/api/carSharingUnsubscribe', (req, res) => {
+    app.get('/api/carSharingUnsubscribe/:email', (req, res) => {
+        db.ref("subscriptions").once("value", function (snapshot) {
+            const dbJourneys = snapshot.val();
+            if (dbJourneys) {
+                Object
+                    .keys(dbJourneys)
+                    .filter(key => dbJourneys[key].email === req.params.email)
+                    .forEach(id => db.ref("subscriptions/" + id)
+                        .set({email: req.params.email, activated: false}));
+
+                res.json({
+                    saved: true,
+                    message: `${req.params.email} est bien désinscrit, vous ne recevrez plus de messages concernant les nouvelles propositions de covoiturages.`
+                });
+                console.log(`GET - /api/carSharingUnsubscribe/${req.params.email} - unsubscribe ok`);
+            } else {
+                res.json({
+                    saved: true,
+                    message: `${req.params.email} n'était pas inscrit.`
+                });
+                console.error(`GET - /api/carSharingUnsubscribe/${req.params.email} - unsubscribe NOT ok`);
+            }
+        });
     });
 
     app.get('/api/presences', (req, res) => {
@@ -415,7 +466,7 @@ module.exports = function (app, indexFilePath) {
                         .catch(error => console.error(
                             'POST - /api/presence - error sending presence mail to owners, error:',
                             error));
-                    if (isValidMailAddress(req.body.email)) {
+                    if (emailValidator.validate(req.body.email)) {
                         sendPresenceConfirmationMail(req.body)
                             .then(() =>
                                 console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`))

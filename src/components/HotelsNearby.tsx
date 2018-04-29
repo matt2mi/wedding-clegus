@@ -198,7 +198,7 @@ export default class HotelsNearby extends React.Component<Props, State> {
                 <Row>
                     <Col sm="12">
                         <Card body={true} className="mt-3">
-                            <CardTitle className="">Gîtes</CardTitle>
+                            <div className="title">Gîtes</div>
                             <CardText>Les gîtes à proximité de Saint-Saturnin du Limet.</CardText>
                             <Row>
                                 {
