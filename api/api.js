@@ -4,6 +4,7 @@ const emailValidator = require("email-validator");
 
 const admin = require("firebase-admin");
 // get credentials from params > service accounts
+// TODO  BDD_PV_KEY ??
 admin.initializeApp({
     credential: admin.credential.cert({
         "type": "service_account",
@@ -23,6 +24,7 @@ const db = admin.database();
 
 const mailjet = require('node-mailjet').connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
 
+// TODO : flag activated covoit aussi ??
 // TODO : bdd prod for heroku
 // TODO : vérif champ rempli dans template de mail
 // TODO : use return msg in front
@@ -55,7 +57,7 @@ const sendNewJourneyMailToOwners = (journey) => {
 };
 
 const getNewJourneyConfirmationHtmlPart = (journey) => {
-    return '<h3>' + journey.driverFirstName + ',<h3/>' +
+    return '<h3>' + journey.driverFirstName + ',</h3>' +
 
         '<p>Merci pour votre proposition de covoiturage qui a bien été enregistrée.</p>' +
 
@@ -137,7 +139,7 @@ const sendNewPresenceMailToOwners = (presence) => {
 };
 
 const getPresenceConfirmationHtmlPart = (presence) => {
-    return '<h3>' + presence.who + ',<h3/>' +
+    return '<h3>' + presence.who + ',</h3>' +
 
         '<p>Merci pour votre réponse, votre participation a bien été enregistrée.</p>' +
 
@@ -212,6 +214,7 @@ module.exports = function (app, indexFilePath) {
                         driverName: dbJourneys[key].driverName,
                         driverPhoneNumber: dbJourneys[key].driverPhoneNumber,
                         driverEmail: dbJourneys[key].driverEmail,
+                        date: dbJourneys[key].date,
                         fromCity: dbJourneys[key].fromCity,
                         toCity: dbJourneys[key].toCity,
                         freeSeats: dbJourneys[key].freeSeats,
@@ -248,53 +251,55 @@ module.exports = function (app, indexFilePath) {
     });
 
     app.post('/api/journey', (req, res) => {
-        db.ref("journeys")
-            .push({
-                driverFirstName: req.body.driverFirstName,
-                driverName: req.body.driverName,
-                driverPhoneNumber: req.body.driverPhoneNumber,
-                driverEmail: req.body.driverEmail,
-                date: req.body.date,
-                fromCity: req.body.fromCity,
-                toCity: req.body.toCity,
-                freeSeats: req.body.freeSeats,
-                comment: req.body.comment
-            }, (error) => {
-                if (error) {
-                    res.json({
-                        saved: false,
-                        message: 'Désolé, votre trajet n\'a pas été enregistré, réessayez plus tard.'
+        const newObject = db.ref("journeys").push();
+        const promise = newObject.set({
+            driverFirstName: req.body.driverFirstName,
+            driverName: req.body.driverName,
+            driverPhoneNumber: req.body.driverPhoneNumber,
+            driverEmail: req.body.driverEmail,
+            date: req.body.date,
+            fromCity: req.body.fromCity,
+            toCity: req.body.toCity,
+            freeSeats: req.body.freeSeats,
+            comment: req.body.comment
+        });
+
+        promise
+            .then(() => {
+                sendNewJourneyMailToOwners({...req.body, id: newObject.key})
+                    .then(() => {
+                        console.log('POST - /api/journey - mail sent to owners');
+                    })
+                    .catch(error => {
+                        console.error('POST - /api/journey - error sending mail to owners', error);
                     });
-                    console.error('error creating journey:', error);
-                } else {
-                    sendNewJourneyMailToOwners(req.body)
+                if (emailValidator.validate(req.body.driverEmail)) {
+                    sendNewJourneyConfirmationMail({...req.body, id: newObject.key})
                         .then(() => {
-                            console.log('POST - /api/journey - mail sent to owners');
+                            console.log(`POST - /api/journey - confirmation mail sent to: ${req.body.driverEmail}`);
                         })
-                        .catch(error => {
-                            console.error('POST - /api/journey - error sending mail to owners', error);
-                        });
-                    if (isValidMailAddress(req.body.driverEmail)) {
-                        sendNewJourneyConfirmationMail(req.body)
-                            .then(() => {
-                                console.log(`POST - /api/journey - confirmation mail sent to: ${req.body.driverEmail}`);
-                            })
-                            .catch(error =>
-                                console.error(
-                                    `POST - /api/journey - error sending confirmation mail to: ${req.body.driverEmail}, error:`,
-                                    error));
-                    } else {
-                        console.error(`POST - /api/journey - error wrong mail address: ${req.body.driverEmail}`);
-                    }
-                    res.status(200).json({
-                        saved: true,
-                        message: 'Trajet sauvegardé. Si vous avez renseigné une adresse email, vous recevrez bientôt ' +
-                        'un mail de confirmation.'
-                    });
-                    console.log(
-                        `POST - /api/journey - journey created for ${req.body.driverFirstName} ${req.body.driverName}`
-                    );
+                        .catch(error =>
+                            console.error(
+                                `POST - /api/journey - error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                                error));
+                } else {
+                    console.error(`POST - /api/journey - error wrong mail address: ${req.body.driverEmail}`);
                 }
+                res.status(200).json({
+                    saved: true,
+                    message: 'Trajet sauvegardé. Si vous avez renseigné une adresse email, vous recevrez bientôt ' +
+                    'un mail de confirmation.'
+                });
+                console.log(
+                    `POST - /api/journey - journey created for ${req.body.driverFirstName} ${req.body.driverName}`
+                );
+            })
+            .catch((error) => {
+                res.json({
+                    saved: false,
+                    message: 'Désolé, votre trajet n\'a pas été enregistré, réessayez plus tard.'
+                });
+                console.error('error creating journey:', error);
             });
     });
 
@@ -386,6 +391,7 @@ module.exports = function (app, indexFilePath) {
         }
     });
 
+    // TODO unsub
     // app.get('/api/carSharingUnsubscribe/:email', (req, res) => {
     //     db.ref("subscriptions").once("value", function (snapshot) {
     //         const dbJourneys = snapshot.val();

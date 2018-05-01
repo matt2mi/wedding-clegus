@@ -4,7 +4,7 @@ import { Journey } from '../helpers/models';
 import { Card, Col, Row, Tooltip } from 'reactstrap';
 
 interface Props {
-    journeys: Journey[];
+    journey: Journey;
     editJourney: (e: SyntheticEvent<HTMLButtonElement>, id: string) => void;
     deleteJourney: (e: SyntheticEvent<HTMLButtonElement>, id: string) => void;
 }
@@ -13,7 +13,6 @@ interface State {
     readonly tooltipEditOpen: boolean;
     readonly tooltipDeleteOpen: boolean;
     readonly goToDetail: string;
-    readonly journeys: Journey[];
 }
 
 export default class CarSharingCustomTab extends React.Component <Props, State> {
@@ -27,7 +26,6 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
             tooltipEditOpen: false,
             tooltipDeleteOpen: false,
             goToDetail: '',
-            journeys: props.journeys.map((journey: Journey) => ({...journey, displayDetails: false}))
         };
     }
 
@@ -44,87 +42,85 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
     }
 
     render() {
-        return this.state.journeys.map((journey: Journey) => {
-            return (
-                <Row key={journey.id}>
-                    <Card className="p-2 mb-2 col-12">
-                        <Row className="justify-content-center">
-                            <Col sm="4">
-                                <Row className="text-sm-left">
-                                    <div className="col-12">
-                                        {journey.driverFirstName + ' ' + journey.driverName}
-                                    </div>
-                                    <div className="col-12">
-                                        {journey.driverPhoneNumber}
-                                    </div>
-                                    <div className="col-12">
-                                        {journey.driverEmail}
-                                    </div>
-                                </Row>
-                            </Col>
-                            <Col sm="6">
-                                <Row>
-                                    <Col>
-                                        {journey.freeSeats +
-                                        (journey.freeSeats > 1 ? ' places de ' : ' place de ') +
-                                        journey.fromCity + ' à ' +
-                                        journey.toCity + ' le ' + journey.date}
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>{journey.comment}</Col>
-                                </Row>
-                            </Col>
-                            <Col sm="2">
-                                <Row className="justify-content-center text-sm-right">
-                                    <div className="col-3 col-sm-12 mb-2">
-                                        <button
-                                            id="BtnEdit"
-                                            type="button"
-                                            className="btn btn-info icon-button"
-                                            onClick={(e) => {
-                                                this.props.editJourney(e, journey.id);
-                                            }}
-                                        >
-                                            <i className="far fa-edit" aria-hidden="true"/>
-                                        </button>
-                                        <Tooltip
-                                            placement="right"
-                                            isOpen={this.state.tooltipEditOpen}
-                                            target="BtnEdit"
-                                            toggle={this.toggleEdit}
-                                            delay={{show: 500, hide: 0}}
-                                        >
-                                            Modifier
-                                        </Tooltip>
-                                    </div>
-                                    <div className="col-3 col-sm-12">
-                                        <button
-                                            id="BtnDelete"
-                                            type="button"
-                                            className="btn btn-info icon-button"
-                                            onClick={(e) => {
-                                                this.props.deleteJourney(e, journey.id);
-                                            }}
-                                        >
-                                            <i className="fas fa-trash-alt" aria-hidden="true"/>
-                                        </button>
-                                        <Tooltip
-                                            placement="right"
-                                            isOpen={this.state.tooltipDeleteOpen}
-                                            target="BtnDelete"
-                                            toggle={this.toggleDelete}
-                                            delay={{show: 500, hide: 0}}
-                                        >
-                                            Supprimer
-                                        </Tooltip>
-                                    </div>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Card>
-                </Row>
-            );
-        });
+        return (
+            <Row key={this.props.journey.id}>
+                <Card className="p-2 mb-2 col-12">
+                    <Row className="justify-content-center">
+                        <Col sm="4">
+                            <Row className="text-sm-left">
+                                <div className="col-12">
+                                    {this.props.journey.driverFirstName + ' ' + this.props.journey.driverName}
+                                </div>
+                                <div className="col-12">
+                                    {this.props.journey.driverPhoneNumber}
+                                </div>
+                                <div className="col-12">
+                                    {this.props.journey.driverEmail}
+                                </div>
+                            </Row>
+                        </Col>
+                        <Col sm="6">
+                            <Row>
+                                <Col>
+                                    {this.props.journey.freeSeats +
+                                    (this.props.journey.freeSeats > 1 ? ' places de ' : ' place de ') +
+                                    this.props.journey.fromCity + ' à ' +
+                                    this.props.journey.toCity + ' le ' + this.props.journey.date}
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>{this.props.journey.comment}</Col>
+                            </Row>
+                        </Col>
+                        <Col sm="2">
+                            <Row className="justify-content-center text-sm-right">
+                                <div className="col-3 col-sm-12 mb-2">
+                                    <button
+                                        id="BtnEdit"
+                                        type="button"
+                                        className="btn btn-info icon-button"
+                                        onClick={(e) => {
+                                            this.props.editJourney(e, this.props.journey.id);
+                                        }}
+                                    >
+                                        <i className="far fa-edit" aria-hidden="true"/>
+                                    </button>
+                                    <Tooltip
+                                        placement="right"
+                                        isOpen={this.state.tooltipEditOpen}
+                                        target="BtnEdit"
+                                        toggle={this.toggleEdit}
+                                        delay={{show: 500, hide: 0}}
+                                    >
+                                        Modifier
+                                    </Tooltip>
+                                </div>
+                                <div className="col-3 col-sm-12">
+                                    <button
+                                        id="BtnDelete"
+                                        type="button"
+                                        className="btn btn-info icon-button"
+                                        onClick={(e) => {
+                                            this.props.deleteJourney(e, this.props.journey.id);
+                                        }}
+                                    >
+                                        <i className="fas fa-trash-alt" aria-hidden="true"/>
+                                    </button>
+                                    <Tooltip
+                                        placement="right"
+                                        isOpen={this.state.tooltipDeleteOpen}
+                                        target="BtnDelete"
+                                        toggle={this.toggleDelete}
+                                        delay={{show: 500, hide: 0}}
+                                    >
+                                        Supprimer
+                                    </Tooltip>
+                                </div>
+                            </Row>
+                        </Col>
+                    </Row>
+                </Card>
+            </Row>
+        );
     }
 }

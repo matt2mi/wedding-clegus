@@ -176,12 +176,13 @@ export default class CarSharing extends React.Component <Props, State> {
                                 <Col sm="12">
                                     {
                                         this.state.journeys.length < 1 ?
-                                            <div>Pas de trajet proposé...</div> :
-                                            <CarSharingCustomTab
-                                                journeys={this.state.journeys}
-                                                editJourney={this.editJourney}
-                                                deleteJourney={this.deleteJourney}
-                                            />
+                                            <div>Pas encore de trajet proposé...</div> :
+                                            this.state.journeys.map((journey: Journey) => (
+                                                <CarSharingCustomTab
+                                                    journey={journey}
+                                                    editJourney={this.editJourney}
+                                                    deleteJourney={this.deleteJourney}
+                                                />))
                                     }
                                 </Col>
                             </Row>
