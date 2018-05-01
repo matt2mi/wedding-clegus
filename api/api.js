@@ -208,6 +208,7 @@ module.exports = function (app, indexFilePath) {
             if (dbJourneys) {
                 const result = Object
                     .keys(dbJourneys)
+                    .filter(key => dbJourneys[key].activated)
                     .map(key => ({
                         id: key,
                         driverFirstName: dbJourneys[key].driverFirstName,
@@ -218,8 +219,7 @@ module.exports = function (app, indexFilePath) {
                         fromCity: dbJourneys[key].fromCity,
                         toCity: dbJourneys[key].toCity,
                         freeSeats: dbJourneys[key].freeSeats,
-                        comment: dbJourneys[key].comment,
-                        activated: true
+                        comment: dbJourneys[key].comment
                     }));
                 res.json(result);
                 console.log('GET - /api/journeys - get all journeys');
@@ -262,7 +262,8 @@ module.exports = function (app, indexFilePath) {
             fromCity: req.body.fromCity,
             toCity: req.body.toCity,
             freeSeats: req.body.freeSeats,
-            comment: req.body.comment
+            comment: req.body.comment,
+            activated: true
         });
 
         promise
@@ -315,7 +316,8 @@ module.exports = function (app, indexFilePath) {
                 fromCity: req.body.fromCity,
                 toCity: req.body.toCity,
                 freeSeats: req.body.freeSeats,
-                comment: req.body.comment
+                comment: req.body.comment,
+                activated: true
             }, (error) => {
                 if (error) {
                     res.json({
@@ -344,19 +346,20 @@ module.exports = function (app, indexFilePath) {
     });
 
     app.delete('/api/journey', (req, res) => {
+        console.log('body suppr', req.body);
         db.ref("journeys/" + req.body.id)
-            .remove((error) => {
-                if (error) {
-                    res.json({
-                        saved: false,
-                        message: 'La suppression n\'a pas été enregistrée, veuillez réessayer plus tard.'
-                    });
-                    console.error(`DELETE - /api/journey - error deleting journey ${req.body.id}, error:`, error);
-                } else {
-                    // TODO : sendConfirmationMail ?
-                    res.status(200).json({});
-                    console.log(`DELETE - /api/journey - journey ${req.body.id} deleted`);
-                }
+            .update({activated: false})
+            .then(() => {
+                // TODO : sendConfirmationMail ?
+                res.status(200).json({});
+                console.log(`DELETE - /api/journey - journey ${req.body.id} deleted`);
+            })
+            .catch((error) => {
+                res.json({
+                    saved: false,
+                    message: 'La suppression n\'a pas été enregistrée, veuillez réessayer plus tard.'
+                });
+                console.error(`DELETE - /api/journey - error deleting journey ${req.body.id}, error:`, error)
             });
     });
 
