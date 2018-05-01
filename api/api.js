@@ -24,12 +24,17 @@ const db = admin.database();
 
 const mailjet = require('node-mailjet').connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
 
-// TODO : flag activated covoit + subscribe ??
+
+const SUBSCRIPTIONS_PATH = 'subscriptions';
+const JOURNEYS_PATH = 'journeys';
+const PRESENCES_PATH = 'presences';
+
+// TODO : send new covoit subscribers
 // TODO : bdd prod for heroku
 // TODO : vérif champ rempli dans template de mail
 // TODO : use return msg in front
-// TODO : send new covoit subscribers
 // TODO : ajouter logs pblm firebase
+// TODO : refacto une seule fct sendMail(subject, htmlPart, recipients)
 
 const getNewJourneyHtmlPart = (journey) => {
     return '<h3>Nouveau covoit\' proposé par ' + journey.driverFirstName + '</h3>' +
@@ -200,10 +205,54 @@ const sendSubscriptionConfirmationMail = (email, key) => {
         });
 };
 
+// TODO : unsubscribe dans chaque mail => comportement diff dans comp et api
+const getNewJourneySubscribersHtmlPart = (journey) => {
+    return '<h3>Nouveau covoiturage</h3>' +
+
+        '<p>Un nouveau covoiturage a été ajouté pour venir à notre mariage.</p>' +
+
+        '<p>Recapitulatif du trajet :<br/>' +
+        'Date : ' + journey.date + '<br/>' +
+        'Trajet : ' + journey.fromCity + ' > ' + journey.toCity + '<br/>' +
+        'Sieges libres : ' + journey.freeSeats + '<br/>' +
+        'Telephone : ' + journey.driverPhoneNumber + '<br/>' +
+        'Email : ' + journey.driverEmail + '<br/>' +
+        'Commentaire :<br/>' +
+        journey.comment + '</p>' +
+
+        '<p>À très vite !</p>' +
+
+        '<p>Clémence et Augustin.</p>';
+};
+const sendNewJourneyMailToSubscribers = (journey) => {
+    return db.ref(SUBSCRIPTIONS_PATH).once("value", function (snapshot) {
+        const dbSubscribers = snapshot.val();
+        if (dbSubscribers) {
+            const subscribers = Object
+                .keys(dbSubscribers)
+                .filter(key => dbSubscribers[key].activated)
+                .map(key => ({"Email": dbSubscribers[key].email}));
+            console.log('subscribers', subscribers);
+            return mailjet
+                .post('send')
+                .request({
+                    "FromEmail": "mariageclegus@gmail.com",
+                    "FromName": "Mariage Clegus",
+                    "Subject": "Un nouveau covoiturage a été ajouté !",
+                    "Html-part": getNewJourneySubscribersHtmlPart(journey),
+                    "Recipients": subscribers
+                });
+        } else {
+            return new Promise.reject(null);
+        }
+    });
+};
+
 module.exports = function (app, indexFilePath) {
 
     app.get('/api/journeys', (req, res) => {
-        db.ref("journeys").once("value", function (snapshot) {
+        const LOG_STR = 'GET - /api/journeys - ';
+        db.ref(JOURNEYS_PATH).once("value", function (snapshot) {
             const dbJourneys = snapshot.val();
             if (dbJourneys) {
                 const result = Object
@@ -222,17 +271,17 @@ module.exports = function (app, indexFilePath) {
                         comment: dbJourneys[key].comment
                     }));
                 res.json(result);
-                console.log('GET - /api/journeys - get all journeys');
+                console.log(LOG_STR + 'get all journeys');
             } else {
                 res.json({});
-                console.log('GET - /api/journeys - no existing journey yet');
+                console.log(LOG_STR + 'no existing journey yet');
             }
         });
     });
 
     // TODO : ref("journeys/" + req.params.id ??
     app.get('/api/journey/:id', (req, res) => {
-        db.ref("journeys").once("value", function (snapshot) {
+        db.ref(JOURNEYS_PATH).once("value", function (snapshot) {
             const journey = snapshot.val()[req.params.id];
             const result = {
                 id: req.params.id,
@@ -253,7 +302,8 @@ module.exports = function (app, indexFilePath) {
     });
 
     app.post('/api/journey', (req, res) => {
-        const newObject = db.ref("journeys").push();
+        const LOG_STR = 'POST - /api/journey -';
+        const newObject = db.ref(JOURNEYS_PATH).push();
         const promise = newObject.set({
             driverFirstName: req.body.driverFirstName,
             driverName: req.body.driverName,
@@ -271,22 +321,30 @@ module.exports = function (app, indexFilePath) {
             .then(() => {
                 sendNewJourneyMailToOwners({...req.body, id: newObject.key})
                     .then(() => {
-                        console.log('POST - /api/journey - mail sent to owners');
+                        console.log(LOG_STR + ' mail sent to owners');
                     })
                     .catch(error => {
-                        console.error('POST - /api/journey - error sending mail to owners', error);
+                        console.error(LOG_STR + ' error sending mail to owners', error);
+                    });
+                sendNewJourneyMailToSubscribers(req.body)
+                    .then(() => {
+                        console.log(LOG_STR + ' mail sent to subscribers');
+                    })
+                    .catch(error => {
+                        console.error(LOG_STR + ' error sending mail to subscribers', error);
                     });
                 if (emailValidator.validate(req.body.driverEmail)) {
                     sendNewJourneyConfirmationMail({...req.body, id: newObject.key})
                         .then(() => {
-                            console.log(`POST - /api/journey - confirmation mail sent to: ${req.body.driverEmail}`);
+                            console.log(`${LOG_STR} confirmation mail sent to: ${req.body.driverEmail}`);
                         })
-                        .catch(error =>
+                        .catch(error => {
                             console.error(
-                                `POST - /api/journey - error sending confirmation mail to: ${req.body.driverEmail}, error:`,
-                                error));
+                                `${LOG_STR} error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                                error);
+                        });
                 } else {
-                    console.error(`POST - /api/journey - error wrong mail address: ${req.body.driverEmail}`);
+                    console.error(`${LOG_STR}  error wrong mail address: ${req.body.driverEmail}`);
                 }
                 res.status(200).json({
                     saved: true,
@@ -294,7 +352,7 @@ module.exports = function (app, indexFilePath) {
                     'un mail de confirmation.'
                 });
                 console.log(
-                    `POST - /api/journey - journey created for ${req.body.driverFirstName} ${req.body.driverName}`
+                    `${LOG_STR}  journey created for ${req.body.driverFirstName} ${req.body.driverName}`
                 );
             })
             .catch((error) => {
@@ -302,11 +360,12 @@ module.exports = function (app, indexFilePath) {
                     saved: false,
                     message: 'Désolé, votre trajet n\'a pas été enregistré, réessayez plus tard.'
                 });
-                console.error('error creating journey:', error);
+                console.error(LOG_STR + ' error creating journey:', error);
             });
     });
 
     app.put('/api/journey', (req, res) => {
+        const LOG_STR = 'PUT - /api/journey - ';
         db.ref("journeys/" + req.body.id)
             .set({
                 driverFirstName: req.body.driverFirstName,
@@ -325,59 +384,61 @@ module.exports = function (app, indexFilePath) {
                         saved: false,
                         message: 'La modification n\'a pas été enregistrée, veuillez réessayer plus tard.'
                     });
-                    console.error('PUT - /api/journey - error updating journey:', error);
+                    console.error(LOG_STR + 'error updating journey:', error);
                 } else {
                     if (req.body.driverEmail !== '') {
                         sendNewJourneyConfirmationMail(req.body)
                             .then(() => {
-                                console.log(`PUT - /api/journey - journey confirmation sent ${req.body.driverEmail}`);
+                                console.log(`${LOG_STR}journey confirmation sent ${req.body.driverEmail}`);
                             })
                             .catch(error =>
                                 console.error(
-                                    `PUT - /api/journey - error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                                    `${LOG_STR}error sending confirmation mail to: ${req.body.driverEmail}, error:`,
                                     error));
                     }
                     res.status(200).json({
                         saved: true,
                         message: 'Modification enregistrée. Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
                     });
-                    console.log(`PUT - /api/journey - journey ${req.body.id} updated`);
+                    console.log(`${LOG_STR}journey ${req.body.id} updated`);
                 }
             });
     });
 
     app.delete('/api/journey', (req, res) => {
+        const LOG_STR = 'DELETE - /api/journey - ';
         db.ref("journeys/" + req.body.id)
             .update({activated: false})
             .then(() => {
                 // TODO : sendConfirmationMail ?
                 res.status(200).json({});
-                console.log(`DELETE - /api/journey - journey ${req.body.id} deleted`);
+                console.log(`${LOG_STR}journey ${req.body.id} deleted`);
             })
             .catch((error) => {
                 res.json({
                     saved: false,
                     message: 'La suppression n\'a pas été enregistrée, veuillez réessayer plus tard.'
                 });
-                console.error(`DELETE - /api/journey - error deleting journey ${req.body.id}, error:`, error)
+                console.error(`${LOG_STR}error deleting journey ${req.body.id}, error:`, error)
             });
     });
 
     app.post('/api/carSharingSubscribe', (req, res) => {
+        const LOG_STR = 'POST - /api/carSharingSubscribe - ';
         if (emailValidator.validate(req.body.email)) {
-            const newObject = db.ref("subscriptions").push();
+            const newObject = db.ref(SUBSCRIPTIONS_PATH).push();
             const promise = newObject.set({email: req.body.email, activated: true});
             promise
                 .then(() => {
                     sendSubscriptionConfirmationMail(req.body.email, newObject.key)
                         .then(() =>
-                            console.log('POST - /api/carSharingSubscribe - subscription confirmation mail sent'))
+                            console.log('subscription confirmation mail sent'))
                         .catch(error =>
                             console.error(
-                                'POST - /api/carSharingSubscribe - error sending subscription confirmation mail',
+                                LOG_STR + 'error sending subscription confirmation mail',
                                 error));
                     res.json({saved: true, message: `Abonnement enregistré pour ${req.body.email} !`});
-                    console.log(`POST - /api/carSharingSubscribe - new subscription saved for ${req.body.email}`);
+                    console.log(`${LOG_STR}new subscription saved for ${req.body.email}`);
                 })
                 .catch((error) => {
                     res.json({
@@ -385,16 +446,17 @@ module.exports = function (app, indexFilePath) {
                         message: 'L\'abonnement n\'a pas fonctionné, réessayez plus tard.'
                     });
                     console.error(
-                        `POST - /api/carSharingSubscribe - error subscribing ${req.body.email}, error:`,
+                        `${LOG_STR}error subscribing ${req.body.email}, error:`,
                         error);
                 });
         } else {
-            console.error(`POST - /api/carSharingSubscribe - error wrong mail address: ${req.body.email}`);
             res.json({saved: false, message: `Désolé, ${req.body.email} n'est pas une adresse email valide.`});
+            console.error(`${LOG_STR}error wrong mail address: ${req.body.email}`);
         }
     });
 
     app.get('/api/carSharingUnsubscribe/:key', (req, res) => {
+        const LOG_STR = `GET - /api/carSharingUnsubscribe/${req.params.key} - `;
         const ref = db.ref("subscriptions/" + req.params.key);
         ref.update({activated: false})
             .then(() => ref.once('value'))
@@ -404,19 +466,20 @@ module.exports = function (app, indexFilePath) {
                     saved: true,
                     message: `${snapshot.val().email} est bien désinscrit, vous ne recevrez plus de messages concernant les nouvelles propositions de covoiturages.`
                 });
-                console.log(`GET - /api/carSharingUnsubscribe/${req.params.key} - unsubscribe ok for ${snapshot.val().email}`);
+                console.log(`${LOG_STR}unsubscribe ok for ${snapshot.val().email}`);
             })
             .catch((error) => {
                 res.json({
                     saved: false,
                     message: `La désinscription n'a pas fonctionnée, vous pouvez réessayer plus tard.`
                 });
-                console.error(`GET - /api/carSharingUnsubscribe/${req.params.key} - unsubscribe NOT ok, error: ${error}`);
+                console.error(`${LOG_STR}unsubscribe NOT ok, error: ${error}`);
             });
     });
 
     app.get('/api/presences', (req, res) => {
-        db.ref("presences").once("value", function (snapshot) {
+        const LOG_STR = 'GET - /api/presences - ';
+        db.ref(PRESENCES_PATH).once("value", function (snapshot) {
             const dbPresences = snapshot.val();
 
             if (dbPresences) {
@@ -438,16 +501,17 @@ module.exports = function (app, indexFilePath) {
                         comment: dbPresences[key].comment
                     }));
                 res.json(result);
-                console.log(`GET - /api/presences - ${result.length} presences sent`);
+                console.log(`${LOG_STR}${result.length} presences sent`);
             } else {
                 res.json({});
-                console.log('GET - /api/presences - no existing presences yet.');
+                console.log(LOG_STR + 'no existing presences yet.');
             }
         });
     });
 
     app.post('/api/presence', (req, res) => {
-        db.ref("presences")
+        const LOG_STR = 'POST - /api/presence - ';
+        db.ref(PRESENCES_PATH)
             .push({
                 who: req.body.who,
                 phoneNumber: req.body.phoneNumber,
@@ -464,12 +528,12 @@ module.exports = function (app, indexFilePath) {
             }, (error) => {
                 if (error) {
                     res.json({saved: false, message: error});
-                    console.error('POST - /api/presence - error creating presence ', error);
+                    console.error(LOG_STR + 'error creating presence ', error);
                 } else {
                     sendNewPresenceMailToOwners(req.body)
                         .then(() => console.log(`POST - /api/presence - new presence mail sent to owners`))
                         .catch(error => console.error(
-                            'POST - /api/presence - error sending presence mail to owners, error:',
+                            LOG_STR + 'error sending presence mail to owners, error:',
                             error));
                     if (emailValidator.validate(req.body.email)) {
                         sendPresenceConfirmationMail(req.body)
@@ -487,7 +551,7 @@ module.exports = function (app, indexFilePath) {
                         message: 'Merci pour votre réponse, votre participation a bien été enregistrée.' +
                         ' Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
                     });
-                    console.log(`POST - /api/presence - new presence answer created for ${req.body.who}`);
+                    console.log(`${LOG_STR}new presence answer created for ${req.body.who}`);
                 }
             });
     });
