@@ -175,27 +175,27 @@ const sendPresenceConfirmationMail = (presence) => {
         });
 };
 
-const getSubscriptionConfirmationHtmlPart = (email) => {
+const getSubscriptionConfirmationHtmlPart = (email, key) => {
     return '<h3>Inscription au news de covoiturages</h3>' +
 
         '<p>Votre adresse email a bien été ajoutée à la liste. Vous serez prévenu par mail dès qu\'un nouveau ' +
         'covoiturage sera ajouté.</p>' +
 
-        // '<p>Pour vous désinscrire, cliquez ici :<br/>' +
-        // '<a href=\"https://mariageclegus.herokuapp.com/#/covoiturages/desinscription/' + email + '\">se désinscrire</a></p>' +
+        '<p>Pour vous désinscrire, cliquez ici :<br/>' +
+        '<a href=\"https://mariageclegus.herokuapp.com/#/covoiturages/desinscription/' + key + '\">se désinscrire</a></p>' +
 
         '<p>À très vite !</p>' +
 
         '<p>Clémence et Augustin.</p>';
 };
-const sendSubscriptionConfirmationMail = (email) => {
+const sendSubscriptionConfirmationMail = (email, key) => {
     return mailjet
         .post('send')
         .request({
             "FromEmail": "mariageclegus@gmail.com",
             "FromName": "Mariage Clegus",
             "Subject": "Inscription aux covoiturages enregistrée !",
-            "Html-part": getSubscriptionConfirmationHtmlPart(email),
+            "Html-part": getSubscriptionConfirmationHtmlPart(email, key),
             "Recipients": [{"Email": email}]
         });
 };
@@ -365,30 +365,29 @@ module.exports = function (app, indexFilePath) {
 
     app.post('/api/carSharingSubscribe', (req, res) => {
         if (emailValidator.validate(req.body.email)) {
-            db.ref("subscriptions")
-                .push(
-                    {email: req.body.email, activated: true},
-                    (error) => {
-                        if (error) {
-                            res.json({
-                                saved: false,
-                                message: 'L\'abonnement n\'a pas fonctionné, réessayez plus tard.'
-                            });
+            const newObject = db.ref("subscriptions").push();
+            const promise = newObject.set({email: req.body.email, activated: true});
+            promise
+                .then(() => {
+                    sendSubscriptionConfirmationMail(req.body.email, newObject.key)
+                        .then(() =>
+                            console.log('POST - /api/carSharingSubscribe - subscription confirmation mail sent'))
+                        .catch(error =>
                             console.error(
-                                `POST - /api/carSharingSubscribe - error subscribing ${req.body.email}, error:`,
-                                error);
-                        } else {
-                            sendSubscriptionConfirmationMail(req.body.email)
-                                .then(() =>
-                                    console.log('POST - /api/carSharingSubscribe - subscription confirmation mail sent'))
-                                .catch(error =>
-                                    console.error(
-                                        'POST - /api/carSharingSubscribe - error sending subscription confirmation mail',
-                                        error));
-                            res.json({saved: true, message: `Abonnement enregistré pour ${req.body.email} !`});
-                            console.log(`POST - /api/carSharingSubscribe - new subscription saved for ${req.body.email}`);
-                        }
+                                'POST - /api/carSharingSubscribe - error sending subscription confirmation mail',
+                                error));
+                    res.json({saved: true, message: `Abonnement enregistré pour ${req.body.email} !`});
+                    console.log(`POST - /api/carSharingSubscribe - new subscription saved for ${req.body.email}`);
+                })
+                .catch((error) => {
+                    res.json({
+                        saved: false,
+                        message: 'L\'abonnement n\'a pas fonctionné, réessayez plus tard.'
                     });
+                    console.error(
+                        `POST - /api/carSharingSubscribe - error subscribing ${req.body.email}, error:`,
+                        error);
+                });
         } else {
             console.error(`POST - /api/carSharingSubscribe - error wrong mail address: ${req.body.email}`);
             res.json({saved: false, message: `Désolé, ${req.body.email} n'est pas une adresse email valide.`});
