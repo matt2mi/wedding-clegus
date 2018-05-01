@@ -24,7 +24,7 @@ const db = admin.database();
 
 const mailjet = require('node-mailjet').connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
 
-// TODO : flag activated covoit aussi ??
+// TODO : flag activated covoit + subscribe ??
 // TODO : bdd prod for heroku
 // TODO : vérif champ rempli dans template de mail
 // TODO : use return msg in front
@@ -218,7 +218,8 @@ module.exports = function (app, indexFilePath) {
                         fromCity: dbJourneys[key].fromCity,
                         toCity: dbJourneys[key].toCity,
                         freeSeats: dbJourneys[key].freeSeats,
-                        comment: dbJourneys[key].comment
+                        comment: dbJourneys[key].comment,
+                        activated: true
                     }));
                 res.json(result);
                 console.log('GET - /api/journeys - get all journeys');
