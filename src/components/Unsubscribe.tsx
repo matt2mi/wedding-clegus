@@ -43,7 +43,7 @@ export default class Unsubscribe extends React.Component<Props, State> {
                         notificationMessage: 'La désinscription n\'a pas fonctionnée, vous pouvez réessayer plus tard.',
                         notificationColor: 'danger'
                     });
-                    console.error(e);
+                    console.warn(e);
                 });
         }
     }
