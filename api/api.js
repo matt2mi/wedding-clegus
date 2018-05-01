@@ -230,6 +230,7 @@ module.exports = function (app, indexFilePath) {
         });
     });
 
+    // TODO : ref("journeys/" + req.params.id ??
     app.get('/api/journey/:id', (req, res) => {
         db.ref("journeys").once("value", function (snapshot) {
             const journey = snapshot.val()[req.params.id];
@@ -346,7 +347,6 @@ module.exports = function (app, indexFilePath) {
     });
 
     app.delete('/api/journey', (req, res) => {
-        console.log('body suppr', req.body);
         db.ref("journeys/" + req.body.id)
             .update({activated: false})
             .then(() => {
@@ -394,31 +394,26 @@ module.exports = function (app, indexFilePath) {
         }
     });
 
-    // TODO unsub
-    // app.get('/api/carSharingUnsubscribe/:email', (req, res) => {
-    //     db.ref("subscriptions").once("value", function (snapshot) {
-    //         const dbJourneys = snapshot.val();
-    //         if (dbJourneys) {
-    //             Object
-    //                 .keys(dbJourneys)
-    //                 .filter(key => dbJourneys[key].email === req.params.email)
-    //                 .forEach(id => db.ref("subscriptions/" + id)
-    //                     .set({email: req.params.email, activated: false}));
-    //
-    //             res.json({
-    //                 saved: true,
-    //                 message: `${req.params.email} est bien désinscrit, vous ne recevrez plus de messages concernant les nouvelles propositions de covoiturages.`
-    //             });
-    //             console.log(`GET - /api/carSharingUnsubscribe/${req.params.email} - unsubscribe ok`);
-    //         } else {
-    //             res.json({
-    //                 saved: true,
-    //                 message: `${req.params.email} n'était pas inscrit.`
-    //             });
-    //             console.error(`GET - /api/carSharingUnsubscribe/${req.params.email} - unsubscribe NOT ok`);
-    //         }
-    //     });
-    // });
+    app.get('/api/carSharingUnsubscribe/:key', (req, res) => {
+        const ref = db.ref("subscriptions/" + req.params.key);
+        ref.update({activated: false})
+            .then(() => ref.once('value'))
+            .then(function (snapshot) {
+                // TODO : sendConfirmationMail ?
+                res.json({
+                    saved: true,
+                    message: `${snapshot.val().email} est bien désinscrit, vous ne recevrez plus de messages concernant les nouvelles propositions de covoiturages.`
+                });
+                console.log(`GET - /api/carSharingUnsubscribe/${req.params.key} - unsubscribe ok for ${snapshot.val().email}`);
+            })
+            .catch((error) => {
+                res.json({
+                    saved: false,
+                    message: `La désinscription n'a pas fonctionnée, vous pouvez réessayer plus tard.`
+                });
+                console.error(`GET - /api/carSharingUnsubscribe/${req.params.key} - unsubscribe NOT ok, error: ${error}`);
+            });
+    });
 
     app.get('/api/presences', (req, res) => {
         db.ref("presences").once("value", function (snapshot) {

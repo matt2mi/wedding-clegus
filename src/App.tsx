@@ -15,8 +15,7 @@ import SundayFood from './components/SundayFood';
 import JourneyEdit from './components/JourneyEdit';
 import Information from './components/Information';
 import Subscribe from 'src/components/Subscribe';
-
-// import Unsubscribe from 'src/components/Unsubscribe';
+import Unsubscribe from 'src/components/Unsubscribe';
 
 class App extends React.Component {
     render() {
@@ -30,7 +29,7 @@ class App extends React.Component {
                         <Route path="/presence" component={PresenceForm}/>
                         <Route path="/covoiturages" exact={true} component={CarSharing}/>
                         <Route path="/covoiturages/inscription" component={Subscribe}/>
-                        {/*<Route path="/covoiturages/desinscription/:email" component={Unsubscribe}/>*/}
+                        <Route path="/covoiturages/desinscription/:key" component={Unsubscribe}/>
                         <Route path="/covoiturages/edit/:id" component={JourneyEdit}/>
                         <Route path="/covoiturages/new" component={JourneyEdit}/>
                         <Route path="/gites" component={HotelsNearby}/>
