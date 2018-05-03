@@ -28,7 +28,7 @@ export default class Information extends React.Component {
                                         <span className="subtitle">Après-midi :</span> Pétanque, palets, mölky,
                                         papotte...
                                         <br/>
-                                        <span className="subtitle">19h :</span> Galettes party et dancefloor !
+                                        <span className="subtitle">Soirée :</span> Galettes party et dancefloor !
                                     </div>
                                     <div className="d-sm-none">
                                         <hr/>
@@ -42,7 +42,7 @@ export default class Information extends React.Component {
                                         sera sur place !)
                                         <br/>
                                         <span className="subtitle">13h :</span> Buffet participatif ! Plus d'infos dans
-                                        la rubrique « <a href="#/buffet">Buffet participatif du dimanche</a> »
+                                        la rubrique « <a href={'#/buffet'}>Buffet participatif du dimanche</a> »
                                     </div>
                                 </Col>
                             </Row>
@@ -57,7 +57,7 @@ export default class Information extends React.Component {
                                     <div>
                                         Possibilité de camper sur place (espace camping)
                                         <br/>
-                                        Ou de louer un gîte, dans la rubrique « <a href="#/gites">Gîtes</a> »
+                                        Ou de louer un gîte, dans la rubrique « <a href={'#/gites'}>Gîtes</a> »
                                         <br/>
                                         <span className="title">
                                             N’oubliez pas vos jeux : palets, mölky, pétanque, jeu de tarot…

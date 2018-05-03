@@ -36,18 +36,18 @@ export default class Main extends React.Component {
                                     Vous avez ici toutes les informations dont vous aurez besoin pour le weekend.
                                     <br/>
                                     <br/>
-                                    Vous pourrez <a href="#/covoiturages">chercher des covoitureurs</a>, savoir où se
-                                    trouve la salle, découvrir <a href="#/infos">le déroulement</a> du weekend, ainsi
-                                    que bien sûr, <a href="#/contacts">nos coordonnées</a> et celles de nos témoins
+                                    Vous pourrez <a href={'#/covoiturages'}>chercher des covoitureurs</a>, savoir où se
+                                    trouve la salle, découvrir <a href={'#/infos'}>le déroulement</a> du weekend, ainsi
+                                    que, bien sûr, <a href={'#/contacts'}>nos coordonnées</a> et celles de nos témoins
                                     si nécessaire !
                                     <br/>
                                     <br/>
-                                    Vous pourrez même <a href="#/faire-part">téléchargez notre faire-part</a> si ça vous
+                                    Vous pourrez même <a href={'#/faire-part'}>téléchargez notre faire-part</a> si ça vous
                                     dit !
                                     <br/>
                                     <br/>
                                     <span className="title">
-                                        =>  Et n'oubliez pas de confirmer <a href="#/presence">votre présence ici !</a>
+                                        =>  Et n'oubliez pas de confirmer <a href={'#/presence'}>votre présence ici !</a>
                                         {' <='}
                                     </span>
                                 </div>

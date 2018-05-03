@@ -343,7 +343,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                     className="pointer"
                                                     onClick={this.onClickCheckboxLine}
                                                 >
-                                                    Samedi 19h Galettes party
+                                                    Samedi soir Galettes party
                                                 </span>
                                             </Col>
                                         </Row>

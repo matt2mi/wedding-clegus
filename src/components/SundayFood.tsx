@@ -17,20 +17,19 @@ export default class SundayFood extends React.Component {
                                 </div>
                             </Row>
                             <Row className="justify-content-around mt-3">
-                                <div className="col-6 text-left">
+                                <div className="col-10 col-sm-8 col-md-4 order-1 order-md-2">
+                                    <img width="100%" className="img-fluid mb-3" src={require('../img/picnic.jpg')}/>
+                                </div>
+                                <div className="col-12 col-md-8 text-left order-2 order-md-1">
                                     <span className="subtitle">Vous amenez</span> de la nourriture à partager, salée ou
                                     sucrée (une tarte, un cake, une
                                     salade, un fromage, des cookies…).<br/>
                                     En arrivant à la salle le samedi midi, vous déposez vos
-                                    mets <span className="subtitle">dans la remorque frigo</span> prévue pour ça<br/>
+                                    mets <span className="subtitle">dans la remorque frigo</span> prévue pour ça.<br/>
                                     On met tout en commun sur <span className="subtitle">une grande table</span> le
-                                    dimanche.<br/>
-                                    Chacun.e se sert, <span className="subtitle">à la bonne franquette</span>
+                                    dimanche et chacun.e se sert, <span className="subtitle">à la bonne franquette</span>
                                     {' '}et <span className="subtitle">on s'occuppe</span> de la boisson, du pain et du
                                     café !
-                                </div>
-                                <div className="col-4">
-                                    <img width="100%" className="img-fluid" src={require('../img/picnic.jpg')}/>
                                 </div>
                             </Row>
                         </Card>

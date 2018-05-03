@@ -29,7 +29,6 @@ const SUBSCRIPTIONS_PATH = 'subscriptions';
 const JOURNEYS_PATH = 'journeys';
 const PRESENCES_PATH = 'presences';
 
-// TODO : send new covoit subscribers
 // TODO : bdd prod for heroku
 // TODO : vérif champ rempli dans template de mail
 // TODO : use return msg in front
