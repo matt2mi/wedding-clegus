@@ -10,6 +10,7 @@ interface State {
     readonly presences: PresenceResponse[];
     readonly nbParticipants: number;
     readonly nbVeganParticipants: number;
+    readonly nbPorkParticipants: number;
     readonly nbSaturdayMorningParticipants: number;
     readonly nbSaturdayLunchParticipants: number;
     readonly nbSaturdayDinerParticipants: number;
@@ -24,6 +25,7 @@ export default class PresenceList extends React.Component <Props, State> {
             presences: [],
             nbParticipants: 0,
             nbVeganParticipants: 0,
+            nbPorkParticipants: 0,
             nbSaturdayMorningParticipants: 0,
             nbSaturdayLunchParticipants: 0,
             nbSaturdayDinerParticipants: 0,
@@ -42,6 +44,7 @@ export default class PresenceList extends React.Component <Props, State> {
                 if (presences instanceof Array) {
                     let nbParticipants = 0,
                         nbVeganParticipants = 0,
+                        nbPorkParticipants = 0,
                         nbSaturdayMorningParticipants = 0,
                         nbSaturdayLunchParticipants = 0,
                         nbSaturdayDinerParticipants = 0,
@@ -51,11 +54,21 @@ export default class PresenceList extends React.Component <Props, State> {
                             nbParticipants : nbParticipants + Number.parseInt(presence.nbPersons);
                         nbVeganParticipants = isNaN(Number.parseInt(presence.nbVeganPersons)) ?
                             nbVeganParticipants : nbVeganParticipants + Number.parseInt(presence.nbVeganPersons);
+                        nbPorkParticipants = isNaN(Number.parseInt(presence.nbPorkPersons)) ?
+                            nbPorkParticipants : nbPorkParticipants + Number.parseInt(presence.nbPorkPersons);
 
-                        nbSaturdayMorningParticipants += presence.whenSaturdayMorning ? 1 : 0;
-                        nbSaturdayLunchParticipants += presence.whenSaturdayLunch ? 1 : 0;
-                        nbSaturdayDinerParticipants += presence.whenSaturdayDiner ? 1 : 0;
-                        nbSundayLunchParticipants += presence.whenSundayLunch ? 1 : 0;
+                        if (presence.whenSaturdayMorning) {
+                            nbSaturdayMorningParticipants += Number.parseInt(presence.nbPersons);
+                        }
+                        if (presence.whenSaturdayLunch) {
+                            nbSaturdayLunchParticipants += Number.parseInt(presence.nbPersons);
+                        }
+                        if (presence.whenSaturdayDiner) {
+                            nbSaturdayDinerParticipants += Number.parseInt(presence.nbPersons);
+                        }
+                        if (presence.whenSundayLunch) {
+                            nbSundayLunchParticipants += Number.parseInt(presence.nbPersons);
+                        }
 
                         return {
                             id: presence.id,
@@ -77,6 +90,7 @@ export default class PresenceList extends React.Component <Props, State> {
                         presences: truePresences,
                         nbParticipants,
                         nbVeganParticipants,
+                        nbPorkParticipants,
                         nbSaturdayMorningParticipants,
                         nbSaturdayLunchParticipants,
                         nbSaturdayDinerParticipants,
@@ -95,7 +109,8 @@ export default class PresenceList extends React.Component <Props, State> {
                 <Row>
                     <Col>
                         <p>Total : {this.state.nbParticipants} participants,
-                            dont {this.state.nbVeganParticipants} sont végétariens.</p>
+                            dont {this.state.nbVeganParticipants} sont végétariens
+                            et {this.state.nbPorkParticipants} mangent du porc.</p>
                     </Col>
                 </Row>
                 <Row>
