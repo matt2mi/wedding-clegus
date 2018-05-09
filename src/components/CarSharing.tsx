@@ -179,6 +179,7 @@ export default class CarSharing extends React.Component <Props, State> {
                                             <div>Pas encore de trajet proposé...</div> :
                                             this.state.journeys.map((journey: Journey) => (
                                                 <CarSharingCustomTab
+                                                    key={journey.id}
                                                     journey={journey}
                                                     editJourney={this.editJourney}
                                                     deleteJourney={this.deleteJourney}

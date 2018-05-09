@@ -29,8 +29,8 @@ const SUBSCRIPTIONS_PATH = 'subscriptions';
 const JOURNEYS_PATH = 'journeys';
 const PRESENCES_PATH = 'presences';
 
-// TODO : bdd prod for heroku
 // TODO : vérif champ rempli dans template de mail
+// TODO : bdd prod for heroku
 // TODO : use return msg in front
 // TODO : ajouter logs pblm firebase
 // TODO : refacto une seule fct sendMail(subject, htmlPart, recipients)

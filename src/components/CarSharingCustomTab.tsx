@@ -63,9 +63,9 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
                             <Row>
                                 <Col>
                                     {this.props.journey.freeSeats +
-                                    (this.props.journey.freeSeats > 1 ? ' places de ' : ' place de ') +
-                                    this.props.journey.fromCity + ' à ' +
-                                    this.props.journey.toCity + ' le ' + this.props.journey.date}
+                                    (this.props.journey.freeSeats > 1 ? ' places de ' : ' place de ')}
+                                    <span className="bold">{this.props.journey.fromCity}</span> à <span className="bold">
+                                    {this.props.journey.toCity}</span> le {this.props.journey.date}
                                 </Col>
                             </Row>
                             <Row>

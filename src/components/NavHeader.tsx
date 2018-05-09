@@ -38,7 +38,7 @@ export default class App extends React.Component<Props, State> {
                         <Nav navbar={true}>
                             <NavItem className="d-lg-none">
                                 <NavLink href="#/" onClick={this.toggle} className="navbar-item">
-                                    Acceuil
+                                    Accueil
                                 </NavLink>
                             </NavItem>
                             <NavItem>
