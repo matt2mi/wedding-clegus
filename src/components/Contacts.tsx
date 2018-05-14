@@ -23,7 +23,7 @@ export default class Contacts extends React.Component {
                             <div className="title">Contacts</div>
                             <hr/>
                             <Row className="justify-content-center">
-                                <Col sm={6}>
+                                <Col sm={12} md={9} lg={6} className="mb-3">
                                     <img
                                         className="img-fluid"
                                         src={this.cleGusSrc}
@@ -31,7 +31,7 @@ export default class Contacts extends React.Component {
                                     />
                                 </Col>
 
-                                <Col sm={4}>
+                                <Col sm={12} lg={4}>
                                     <div className="subtitle">Clémence et Augustin</div>
                                     <div>
                                         17 boulevard de la Prairie au Duc
