@@ -12,8 +12,7 @@ export default class Contacts extends React.Component {
         {src: require('../img/maxime-small.png'), name: 'Maxime'},
         {src: require('../img/quentin-small.png'), name: 'Quentin'},
     ];
-    private cleSrc = require('../img/cle-evjf-cartoon.png');
-    private gusSrc = require('../img/gus-evg-small.png');
+    private cleGusSrc = require('../img/new-cle-gus-contact.png');
 
     render() {
         return (
@@ -23,16 +22,16 @@ export default class Contacts extends React.Component {
                         <Card body={true} className="mt-3">
                             <div className="title">Contacts</div>
                             <hr/>
-                            <Row className="justify-content-around">
-                                <Col sm={3}>
+                            <Row className="justify-content-center">
+                                <Col sm={6}>
                                     <img
                                         className="img-fluid"
-                                        src={this.cleSrc}
-                                        alt="mimi"
+                                        src={this.cleGusSrc}
+                                        alt="cleGusSrc"
                                     />
                                 </Col>
 
-                                <Col sm={3}>
+                                <Col sm={4}>
                                     <div className="subtitle">Clémence et Augustin</div>
                                     <div>
                                         17 boulevard de la Prairie au Duc
@@ -47,14 +46,6 @@ export default class Contacts extends React.Component {
                                     <div>
                                         Gus : 06 58 98 27 59 - augustin.bannier@hotmail.fr
                                     </div>
-                                </Col>
-
-                                <Col sm={3}>
-                                    <img
-                                        className="img-fluid"
-                                        src={this.gusSrc}
-                                        alt="mimi"
-                                    />
                                 </Col>
                             </Row>
                             <hr/>
@@ -71,8 +62,8 @@ export default class Contacts extends React.Component {
                                     <br/>
                                     <Row className="justify-content-around">
                                         {
-                                            this.witnesses.map(witness => (
-                                                <Col xs={4} sm={2} className="mb-2 mb-sm-0">
+                                            this.witnesses.map((witness, id) => (
+                                                <Col xs={4} sm={2} className="mb-2 mb-sm-0" key={id}>
                                                     <img
                                                         className="img-fluid"
                                                         src={witness.src}

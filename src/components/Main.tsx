@@ -36,7 +36,7 @@ export default class Main extends React.Component {
                                     Vous avez ici toutes les informations dont vous aurez besoin pour le weekend.
                                     <br/>
                                     <br/>
-                                    Vous pourrez <a href={'#/covoiturages'}>chercher des covoitureurs</a>, savoir où se
+                                    Vous pourrez <a href={'#/covoiturages'}>chercher des covoitureur.euse.s</a>, savoir où se
                                     trouve la salle, découvrir <a href={'#/infos'}>le déroulement</a> du weekend, ainsi
                                     que, bien sûr, <a href={'#/contacts'}>nos coordonnées</a> et celles de nos témoins
                                     si nécessaire !

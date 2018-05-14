@@ -138,7 +138,11 @@ const sendNewPresenceMailToOwners = (presence) => {
             "FromName": "Mariage Clegus",
             "Subject": presence.who + " en plus au mariage !",
             "Html-part": getNewPresenceHtmlPart(presence),
-            "Recipients": [{"Email": "2m1tema@gmail.com"}]
+            "Recipients": [
+                {"Email": "2m1tema@gmail.com"},
+                {"Email": "clemenceesnault@laposte.net"},
+                {"Email": "augustin.bannier@hotmail.fr"}
+            ]
         });
 };
 

@@ -246,7 +246,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                             <Col sm="6" xs="12">
                                                 <Row className="justify-content-sm-end">
                                                     <Label className="mt-2 pr-3" for="nbPorkPersons">
-                                                        Part.s de méchoui (porc)
+                                                        Part(s) de méchoui (porc)
                                                     </Label>
                                                 </Row>
                                             </Col>
@@ -267,7 +267,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                             <Col sm="6" xs="12">
                                                 <Row className="justify-content-sm-end">
                                                     <Label className="mt-2 pr-3" for="nbVeganPersons">
-                                                        Part.s végétarien.ne.s
+                                                        Part(s) végétarienne(s)
                                                     </Label>
                                                 </Row>
                                             </Col>
