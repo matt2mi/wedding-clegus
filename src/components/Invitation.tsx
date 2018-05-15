@@ -1,11 +1,13 @@
 import * as React from 'react';
-import Button from 'reactstrap/lib/Button';
 import CardText from 'reactstrap/lib/CardText';
 import Card from 'reactstrap/lib/Card';
 import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
 
 export default class Invitation extends React.Component {
+    invitation1 = require('../img/faire-part-1.png');
+    invitation2 = require('../img/faire-part-2.png');
+
     render() {
         return (
             <div className="base-div-content">
@@ -14,7 +16,22 @@ export default class Invitation extends React.Component {
                         <Card body={true} className="mt-3">
                             <div className="title">Faire Part</div>
                             <CardText>
-                                <Button color="info">Télécharger</Button>
+                                <Row className="justify-content-center">
+                                    <Col sm="12" className="mt-3">
+                                        <img
+                                            className="img-fluid"
+                                            src={this.invitation1}
+                                            alt="welcome"
+                                        />
+                                    </Col>
+                                    <Col sm="12" className="mt-3">
+                                        <img
+                                            className="img-fluid"
+                                            src={this.invitation2}
+                                            alt="welcome"
+                                        />
+                                    </Col>
+                                </Row>
                             </CardText>
                         </Card>
                     </Col>
