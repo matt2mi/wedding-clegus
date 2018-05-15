@@ -190,7 +190,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                             <Col sm="6" xs="12">
                                                 <Row className="justify-content-sm-start">
                                                     <Input
-                                                        type="text"
+                                                        type="number"
                                                         name="phoneNumber"
                                                         id="phoneNumber"
                                                         placeholder="Téléphone"
