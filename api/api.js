@@ -4,18 +4,17 @@ const emailValidator = require("email-validator");
 
 const admin = require("firebase-admin");
 // get credentials from params > service accounts
-// TODO  BDD_PV_KEY ??
 admin.initializeApp({
     credential: admin.credential.cert({
-        "type": "service_account",
+        "type": process.env.TYPE,
         "project_id": process.env.PJ_ID,
         "private_key_id": process.env.PV_KEY_ID,
-        "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCtKMPfXjviddNS\ntE6xIW6DIGAJpmiUMMl0hT6uILOw7kaJJljx/tUM5TvRcBw07XhUZVdf8nuENQVA\nH5WC+3RLfjMhxTTiijq0CK6IAE+9XGNVmm12SfrpICJO+TvSVDelHz6VPik/NyMA\nY9iZ8EAX6W0YOunY+b9mkJsPfPa714stqQx2Ku0Lhu9/J2tsNhsruLxmx1jCvmjc\nlXpKsqY4iCPxs/Tysfolsop7v3CXHhyYehuWm/5n+J/kNCKFm9KMR3eP1l5MehHn\ni4ztQLZ6yhwEP1xayB4+5vowanwxRRxVXWoXXYwqRE1ZlFBvRwP79zbQphre5vP2\nojTd30dlAgMBAAECggEABB2msDm/byXRUNMv1qZ+h7feiIQv0qvpMe+T2pQ06TT0\nsMBcV14xBrYxKoyBYyGs3UauYb20AWO4PPqzNVKQRFYa1YfoNqVF+W8GZP2q54uZ\nYdjCls/x2pY0so9ahGiTjQV12ZrJZLMFDjaRWLFc+KSH/w4xbkKbcc7onKDiBXtz\nQF388loHZZdO/+UW/yeSVEjq0y8wwBHpJX5e8J7loQljCPGU0VATHOAOqoqdPrBp\n+33ShV95lqhtzqRURAaM9pCJYyVcoHvyaan1Oes55fzcLB/2pQ/AJhdjw0opa/Gz\n29sNbo3/mf2Zqr3TpEmdJwzg4qXDuwiRicuJQxUIAQKBgQDvTD/rX7uxAhJKs5w4\nyrB9VTzzLpAUFBgWd5EgrCBuxtAsHKW45pqqxhx/NZhQx53iJ72+ZwglCSYdM2PI\niSA6GTO6ejzLvgrOf+Mvanryb7dU1Gg1anZ6P+oOKCme5+k7D3TJpryGo8KCMWUf\nMMi2HGd0vvRpwvpHFttNAXP4AQKBgQC5PsHctSZEmp2sMrF3M9rpVZnNEJuGtDX1\nzhF3klrLCDXCHv1Dv1y29ObZ6jMn+kkF6IfF9hm1xN/T52Su5DtXMBFSj/Nr4TVk\nQS6wmtCkae/e5TU7uT3DFQtTX1McyVFlBdSxwprVSyWySRgptPCxw8h3P87Mytse\nyKzOspZvZQKBgQCjz1+mQbebeV6KMp/LpLziXzpFAmfwxryijKEVa58cFg8lU0sC\n4yGXq9yQHGEzUyK6URgrwh4qNDQaIza4bV5ZRy1JByqdEnAVYihkKhEV6vHmKS1Y\n+5M1JpGTtVygggL/whnhfLlrtaiONUAS9PNA7vrHSXzI9YccqQHgmhEIAQKBgQCb\nUfluOx05DIMDrQWLsxjr5/ArNq+QxG0yCnQu07H45otclms4cK0mYjVlpa766Cpu\nH8gnve9UrxwVKsEKuybeNdlwZm5tl8kSpGyne0dRc9nCBGEcEHeuqGh0oUqoqkvq\n7namDUuRZ47V69+sqJ/gDQ56ni+hGr2bFBuAu9DS2QKBgEOlotujNUqvRXXQ1p9l\nH1h6XwYQJKGkl+/6UTq7MQedN3WViUUPAcsKA09lu1kwow3x5q4L/hfca/e/hA2l\nRf2nI8N7IfVsMwrjAbSIub3lTk7+CL7AWifdCGPJ1Use3cDCm3oi5708OwzL6Nui\nSwvHBuZY3LhtWYnJT45ErojH\n-----END PRIVATE KEY-----\n",
+        "private_key": process.env.PV_KEY,
         "client_email": process.env.CLI_MAIL,
         "client_id": process.env.CLI_ID,
-        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-        "token_uri": "https://accounts.google.com/o/oauth2/token",
-        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "auth_uri": process.env.AUTH_URI,
+        "token_uri": process.env.TOKEN_URI,
+        "auth_provider_x509_cert_url": process.env.CERT_URL,
         "client_x509_cert_url": process.env.CLI_CERT_URL
     }),
     databaseURL: process.env.BDD_URL
@@ -34,6 +33,7 @@ const PRESENCES_PATH = 'presences';
 // TODO : use return msg in front
 // TODO : ajouter logs pblm firebase
 // TODO : refacto une seule fct sendMail(subject, htmlPart, recipients)
+// TODO : send confirmation after deleted covoit
 
 const getNewJourneyHtmlPart = (journey) => {
     return '<h3>Nouveau covoit\' proposé par ' + journey.driverFirstName + '</h3>' +
@@ -322,32 +322,34 @@ module.exports = function (app, indexFilePath) {
 
         promise
             .then(() => {
-                sendNewJourneyMailToOwners({...req.body, id: newObject.key})
-                    .then(() => {
-                        console.log(LOG_STR + ' mail sent to owners');
-                    })
-                    .catch(error => {
-                        console.error(LOG_STR + ' error sending mail to owners', error);
-                    });
-                sendNewJourneyMailToSubscribers(req.body)
-                    .then(() => {
-                        console.log(LOG_STR + ' mail sent to subscribers');
-                    })
-                    .catch(error => {
-                        console.error(LOG_STR + ' error sending mail to subscribers', error);
-                    });
-                if (emailValidator.validate(req.body.driverEmail)) {
-                    sendNewJourneyConfirmationMail({...req.body, id: newObject.key})
+                if (process.env.SEND_MAIL === 'true') {
+                    sendNewJourneyMailToOwners({...req.body, id: newObject.key})
                         .then(() => {
-                            console.log(`${LOG_STR} confirmation mail sent to: ${req.body.driverEmail}`);
+                            console.log(LOG_STR + ' mail sent to owners');
                         })
                         .catch(error => {
-                            console.error(
-                                `${LOG_STR} error sending confirmation mail to: ${req.body.driverEmail}, error:`,
-                                error);
+                            console.error(LOG_STR + ' error sending mail to owners', error);
                         });
-                } else {
-                    console.error(`${LOG_STR}  error wrong mail address: ${req.body.driverEmail}`);
+                    sendNewJourneyMailToSubscribers(req.body)
+                        .then(() => {
+                            console.log(LOG_STR + ' mail sent to subscribers');
+                        })
+                        .catch(error => {
+                            console.error(LOG_STR + ' error sending mail to subscribers', error);
+                        });
+                    if (emailValidator.validate(req.body.driverEmail)) {
+                        sendNewJourneyConfirmationMail({...req.body, id: newObject.key})
+                            .then(() => {
+                                console.log(`${LOG_STR} confirmation mail sent to: ${req.body.driverEmail}`);
+                            })
+                            .catch(error => {
+                                console.error(
+                                    `${LOG_STR} error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                                    error);
+                            });
+                    } else {
+                        console.error(`${LOG_STR}  error wrong mail address: ${req.body.driverEmail}`);
+                    }
                 }
                 res.status(200).json({
                     saved: true,
@@ -390,14 +392,16 @@ module.exports = function (app, indexFilePath) {
                     console.error(LOG_STR + 'error updating journey:', error);
                 } else {
                     if (req.body.driverEmail !== '') {
-                        sendNewJourneyConfirmationMail(req.body)
-                            .then(() => {
-                                console.log(`${LOG_STR}journey confirmation sent ${req.body.driverEmail}`);
-                            })
-                            .catch(error =>
-                                console.error(
-                                    `${LOG_STR}error sending confirmation mail to: ${req.body.driverEmail}, error:`,
-                                    error));
+                        if (process.env.SEND_MAIL === 'true') {
+                            sendNewJourneyConfirmationMail(req.body)
+                                .then(() => {
+                                    console.log(`${LOG_STR}journey confirmation sent ${req.body.driverEmail}`);
+                                })
+                                .catch(error =>
+                                    console.error(
+                                        `${LOG_STR}error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                                        error));
+                        }
                     }
                     res.status(200).json({
                         saved: true,
@@ -433,13 +437,15 @@ module.exports = function (app, indexFilePath) {
             const promise = newObject.set({email: req.body.email, activated: true});
             promise
                 .then(() => {
-                    sendSubscriptionConfirmationMail(req.body.email, newObject.key)
-                        .then(() =>
-                            console.log('subscription confirmation mail sent'))
-                        .catch(error =>
-                            console.error(
-                                LOG_STR + 'error sending subscription confirmation mail',
-                                error));
+                    if (process.env.SEND_MAIL === 'true') {
+                        sendSubscriptionConfirmationMail(req.body.email, newObject.key)
+                            .then(() =>
+                                console.log('subscription confirmation mail sent'))
+                            .catch(error =>
+                                console.error(
+                                    LOG_STR + 'error sending subscription confirmation mail',
+                                    error));
+                    }
                     res.json({saved: true, message: `Abonnement enregistré pour ${req.body.email} !`});
                     console.log(`${LOG_STR}new subscription saved for ${req.body.email}`);
                 })
@@ -533,20 +539,22 @@ module.exports = function (app, indexFilePath) {
                     res.json({saved: false, message: error});
                     console.error(LOG_STR + 'error creating presence ', error);
                 } else {
-                    sendNewPresenceMailToOwners(req.body)
-                        .then(() => console.log(`POST - /api/presence - new presence mail sent to owners`))
-                        .catch(error => console.error(
-                            LOG_STR + 'error sending presence mail to owners, error:',
-                            error));
-                    if (emailValidator.validate(req.body.email)) {
-                        sendPresenceConfirmationMail(req.body)
-                            .then(() =>
-                                console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`))
+                    if (process.env.SEND_MAIL === 'true') {
+                        sendNewPresenceMailToOwners(req.body)
+                            .then(() => console.log(`POST - /api/presence - new presence mail sent to owners`))
                             .catch(error => console.error(
-                                `POST - /api/presence - new presence mail confirmation not sent to ${req.body.email}, error:`,
+                                LOG_STR + 'error sending presence mail to owners, error:',
                                 error));
-                    } else {
-                        console.error(`POST - /api/presence - error wrong mail address: ${req.body.email}`);
+                        if (emailValidator.validate(req.body.email)) {
+                            sendPresenceConfirmationMail(req.body)
+                                .then(() =>
+                                    console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`))
+                                .catch(error => console.error(
+                                    `POST - /api/presence - new presence mail confirmation not sent to ${req.body.email}, error:`,
+                                    error));
+                        } else {
+                            console.error(`POST - /api/presence - error wrong mail address: ${req.body.email}`);
+                        }
                     }
                     // TODO : modif message retour si envoi mail foireux
                     res.json({

@@ -247,7 +247,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
                                                 <Row className="justify-content-sm-start">
                                                     <Input
                                                         type="number"
-                                                        placeholder="0601020304"
+                                                        placeholder="ex: 0601020304"
                                                         className="col-sm-6"
                                                         name="driverPhoneNumber"
                                                         id="driverPhoneNumber"
