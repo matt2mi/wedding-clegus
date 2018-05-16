@@ -168,7 +168,7 @@ export default class CarSharing extends React.Component <Props, State> {
                                         this.subscribe(e);
                                     }}
                                 >
-                                    S'abonner
+                                    Je cherche une voiture
                                 </button>
                             </Row>
                             <hr/>

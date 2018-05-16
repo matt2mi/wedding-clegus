@@ -109,6 +109,10 @@ export default class Subscribe extends React.Component<Props, State> {
                                 this.state.displayFormAndValidateBtn ?
                                     <Form>
                                         <Row className="justify-content-center mt-2">
+                                            Pour être au courant des nouvelles propositions de covoiturage,
+                                            écris ton adresse mail ici et clique sur valider.
+                                        </Row>
+                                        <Row className="justify-content-center mt-2">
                                             <Col sm="10" lg="8">
                                                 <Input
                                                     type="email"
