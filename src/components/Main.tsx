@@ -33,7 +33,8 @@ export default class Main extends React.Component {
                             <Col sm="12">
                                 <div className="mt-lg-5">
                                     <br/>
-                                    Vous avez ici toutes les informations dont vous aurez besoin pour le weekend.
+                                    Vous trouverez ici toutes les informations (on l'espère!) dont vous aurez besoin
+                                    pour le weekend.
                                     <br/>
                                     <br/>
                                     Vous pourrez <a href={'#/covoiturages'}>chercher des covoitureur.euse.s</a>, savoir où se
