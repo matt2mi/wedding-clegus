@@ -19,8 +19,8 @@ export default class Invitation extends React.Component {
                                 <Row className="justify-content-center">
                                     <Col sm="12" className="mt-3">
                                         Et un très grand merci aux Mat(t)hieu pour le design ! Le beau-frère pour le
-                                        faire-part, le pote pour ce site <i className="far fa-smile"
-                                                                            aria-hidden="true"/> !
+                                        faire-part,
+                                        le pote pour ce site <i className="far fa-smile" aria-hidden="true"/> !
                                     </Col>
                                     <Col sm="12" className="mt-3">
                                         <img
