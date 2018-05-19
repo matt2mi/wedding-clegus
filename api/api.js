@@ -1,5 +1,4 @@
 require('dotenv').config();
-const path = require('path');
 const emailValidator = require("email-validator");
 
 const admin = require("firebase-admin");
@@ -254,7 +253,7 @@ const sendNewJourneyMailToSubscribers = (journey) => {
     });
 };
 
-module.exports = function (app, indexFilePath) {
+module.exports = function (app) {
 
     app.get('/api/journeys', (req, res) => {
         const LOG_STR = 'GET - /api/journeys - ';
@@ -574,8 +573,10 @@ module.exports = function (app, indexFilePath) {
         const LOG_STR = 'GET - /api/smartphoneView - ';
         db.ref(STATS_PATH)
             .transaction(function (stats) {
-                if (stats) {
+                if (stats && stats.nbSmartPhoneView) {
                     stats.nbSmartPhoneView++;
+                } else if (stats) {
+                    stats.nbSmartPhoneView = 1;
                 } else {
                     return {nbSmartPhoneView: 1};
                 }
@@ -591,8 +592,26 @@ module.exports = function (app, indexFilePath) {
             });
     });
 
-    // send React's index.html file.
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(indexFilePath));
+    app.get('/api/view', (req, res) => {
+        const LOG_STR = 'GET - /api/view - ';
+        db.ref(STATS_PATH)
+            .transaction(function (stats) {
+                if (stats && stats.nbView) {
+                    stats.nbView++;
+                } else if (stats) {
+                    stats.nbView = 1;
+                } else {
+                    return {nbView: 1};
+                }
+                return stats;
+            }, function (error, committed, snapshot) {
+                if (error) {
+                    console.log(LOG_STR + 'Transaction failed abnormally!', error);
+                    res.status(500).json({error});
+                } else {
+                    console.log(LOG_STR + 'new stats data:', snapshot.val());
+                    res.status(200).json({});
+                }
+            });
     });
 };

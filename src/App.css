@@ -1,7 +1,13 @@
 @media (max-width: 576px) {
-    body {
+    .smartphoneView {
+        display: none;
         background-image: url("/api/smartphoneView");
     }
+}
+
+.view {
+    display: none;
+    background-image: url("/api/view");
 }
 
 @font-face {
