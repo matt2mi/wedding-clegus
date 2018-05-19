@@ -1,6 +1,6 @@
 @media (max-width: 576px) {
     body {
-        background-image: url("http://localhost:5000/api/smartphoneView");
+        background-image: url("/api/smartphoneView");
     }
 }
 
