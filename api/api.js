@@ -27,7 +27,10 @@ const mailjet = require('node-mailjet').connect(process.env.MJ_APIKEY_PUBLIC, pr
 const SUBSCRIPTIONS_PATH = 'subscriptions';
 const JOURNEYS_PATH = 'journeys';
 const PRESENCES_PATH = 'presences';
+const STATS_PATH = 'stats';
 
+// TODO : stats ?
+// TODO : Unsubscribe dans mails - dans front demande de remplir son mail puis check si existe ou pas etc..
 // TODO : vérif champ rempli dans template de mail
 // TODO : bdd prod for heroku
 // TODO : use return msg in front
@@ -563,6 +566,27 @@ module.exports = function (app, indexFilePath) {
                         ' Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
                     });
                     console.log(`${LOG_STR}new presence answer created for ${req.body.who}`);
+                }
+            });
+    });
+
+    app.get('/api/smartphoneView', (req, res) => {
+        const LOG_STR = 'GET - /api/smartphoneView - ';
+        db.ref(STATS_PATH)
+            .transaction(function (stats) {
+                if (stats) {
+                    stats.nbSmartPhoneView++;
+                } else {
+                    return {nbSmartPhoneView: 1};
+                }
+                return stats;
+            }, function (error, committed, snapshot) {
+                if (error) {
+                    console.log(LOG_STR + 'Transaction failed abnormally!', error);
+                    res.status(500).json({error});
+                } else {
+                    console.log(LOG_STR + 'new stats data:', snapshot.val());
+                    res.status(200).json({});
                 }
             });
     });
