@@ -562,8 +562,8 @@ module.exports = function (app, indexFilePath) {
                     // TODO : modif message retour si envoi mail foireux
                     res.json({
                         saved: true,
-                        message: 'Merci pour votre réponse, votre participation a bien été enregistrée.' +
-                        ' Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
+                        message: 'Merci pour votre réponse, votre participation a bien été enregistrée.'
+                        // + ' Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
                     });
                     console.log(`${LOG_STR}new presence answer created for ${req.body.who}`);
                 }
