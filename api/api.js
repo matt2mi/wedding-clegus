@@ -253,6 +253,16 @@ const sendNewJourneyMailToSubscribers = (journey) => {
     });
 };
 
+const statsCallback = (error, committed, snapshot, res, logStr) => {
+    if (error) {
+        console.log(logStr + 'Transaction failed abnormally!', error);
+        res.status(500).json({error});
+    } else {
+        console.log(logStr + 'new stats data');
+        res.status(200).json({});
+    }
+};
+
 module.exports = function (app) {
 
     app.get('/api/journeys', (req, res) => {
@@ -570,48 +580,237 @@ module.exports = function (app) {
     });
 
     app.get('/api/smartphoneView', (req, res) => {
-        const LOG_STR = 'GET - /api/smartphoneView - ';
         db.ref(STATS_PATH)
-            .transaction(function (stats) {
-                if (stats && stats.nbSmartPhoneView) {
-                    stats.nbSmartPhoneView++;
-                } else if (stats) {
-                    stats.nbSmartPhoneView = 1;
-                } else {
-                    return {nbSmartPhoneView: 1};
-                }
-                return stats;
-            }, function (error, committed, snapshot) {
-                if (error) {
-                    console.log(LOG_STR + 'Transaction failed abnormally!', error);
-                    res.status(500).json({error});
-                } else {
-                    console.log(LOG_STR + 'new stats data:', snapshot.val());
-                    res.status(200).json({});
-                }
-            });
+            .transaction(
+                function (stats) {
+                    if (stats && stats.nbSmartPhoneView) {
+                        stats.nbSmartPhoneView++;
+                    } else if (stats) {
+                        stats.nbSmartPhoneView = 1;
+                    } else {
+                        return {nbSmartPhoneView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/smartphoneView - ')
+            );
     });
 
     app.get('/api/view', (req, res) => {
-        const LOG_STR = 'GET - /api/view - ';
         db.ref(STATS_PATH)
-            .transaction(function (stats) {
-                if (stats && stats.nbView) {
-                    stats.nbView++;
-                } else if (stats) {
-                    stats.nbView = 1;
-                } else {
-                    return {nbView: 1};
-                }
-                return stats;
-            }, function (error, committed, snapshot) {
-                if (error) {
-                    console.log(LOG_STR + 'Transaction failed abnormally!', error);
-                    res.status(500).json({error});
-                } else {
-                    console.log(LOG_STR + 'new stats data:', snapshot.val());
-                    res.status(200).json({});
-                }
-            });
+            .transaction(
+                function (stats) {
+                    if (stats && stats.nbView) {
+                        stats.nbView++;
+                    } else if (stats) {
+                        stats.nbView = 1;
+                    } else {
+                        return {nbView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/view - ')
+            );
+    });
+
+
+    app.get('/api/mainView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.mainView) {
+                        stats.mainView++;
+                    } else if (stats) {
+                        stats.mainView = 1;
+                    } else {
+                        return {mainView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/mainView - ')
+            );
+    });
+
+    app.get('/api/infosView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.infosView) {
+                        stats.infosView++;
+                    } else if (stats) {
+                        stats.infosView = 1;
+                    } else {
+                        return {infosView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/infosView - ')
+            );
+    });
+
+    app.get('/api/presenceFormView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.presenceFormView) {
+                        stats.presenceFormView++;
+                    } else if (stats) {
+                        stats.presenceFormView = 1;
+                    } else {
+                        return {presenceFormView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/presenceFormView - ')
+            );
+    });
+
+    app.get('/api/carSharingView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.carSharingView) {
+                        stats.carSharingView++;
+                    } else if (stats) {
+                        stats.carSharingView = 1;
+                    } else {
+                        return {carSharingView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/carSharingView - ')
+            );
+    });
+
+    app.get('/api/subscribeView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.subscribeView) {
+                        stats.subscribeView++;
+                    } else if (stats) {
+                        stats.subscribeView = 1;
+                    } else {
+                        return {subscribeView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/subscribeView - ')
+            );
+    });
+
+    app.get('/api/journeyEditView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.journeyEditView) {
+                        stats.journeyEditView++;
+                    } else if (stats) {
+                        stats.journeyEditView = 1;
+                    } else {
+                        return {journeyEditView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/journeyEditView - ')
+            );
+    });
+
+    app.get('/api/hotelsNearbyView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.hotelsNearbyView) {
+                        stats.hotelsNearbyView++;
+                    } else if (stats) {
+                        stats.hotelsNearbyView = 1;
+                    } else {
+                        return {hotelsNearbyView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/hotelsNearbyView - ')
+            );
+    });
+
+    app.get('/api/sundayFoodView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.sundayFoodView) {
+                        stats.sundayFoodView++;
+                    } else if (stats) {
+                        stats.sundayFoodView = 1;
+                    } else {
+                        return {sundayFoodView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/sundayFoodView - ')
+            );
+    });
+
+    app.get('/api/invitationView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.invitationView) {
+                        stats.invitationView++;
+                    } else if (stats) {
+                        stats.invitationView = 1;
+                    } else {
+                        return {invitationView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/invitationView - ')
+            );
+    });
+
+    app.get('/api/contactsView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.contactsView) {
+                        stats.contactsView++;
+                    } else if (stats) {
+                        stats.contactsView = 1;
+                    } else {
+                        return {contactsView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/contactsView - ')
+            );
+    });
+
+    app.get('/api/presenceListView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.presenceListView) {
+                        stats.presenceListView++;
+                    } else if (stats) {
+                        stats.presenceListView = 1;
+                    } else {
+                        return {presenceListView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/presenceListView - ')
+            );
     });
 };

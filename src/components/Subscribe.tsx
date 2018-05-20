@@ -49,6 +49,10 @@ export default class Subscribe extends React.Component<Props, State> {
         };
     }
 
+    componentWillMount() {
+        fetch('/api/subscribeView');
+    }
+
     startLoading() {
         this.setState({loading: true});
     }

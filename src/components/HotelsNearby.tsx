@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { Card, CardBody, CardImg, CardText, CardTitle, Col, Row, } from 'reactstrap';
 
-interface Props {
-}
-
-interface State {
-}
-
 const defaultSrcHouse = require('../img/default-house-orange.png');
 const items = [
     {
@@ -191,7 +185,12 @@ const items = [
     }
 ];
 
-export default class HotelsNearby extends React.Component<Props, State> {
+export default class HotelsNearby extends React.Component {
+
+    componentWillMount() {
+        fetch('/api/hotelsNearbyView');
+    }
+
     render() {
         return (
             <div className="base-div-content">

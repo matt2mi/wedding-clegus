@@ -47,6 +47,10 @@ export default class CarSharing extends React.Component <Props, State> {
         };
     }
 
+    componentWillMount() {
+        fetch('/api/carSharingView');
+    }
+
     componentDidMount() {
         this.startLoading();
         this.getJourneys();

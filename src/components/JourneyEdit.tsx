@@ -113,6 +113,10 @@ export default class JourneyDetails extends React.Component<Props, State> {
         };
     }
 
+    componentWillMount() {
+        fetch('/api/journeyEditView');
+    }
+
     componentDidMount() {
         if (this.props.match.params.id) {
             fetch('/api/journey/' + this.props.match.params.id)

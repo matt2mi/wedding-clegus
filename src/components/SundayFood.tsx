@@ -4,6 +4,11 @@ import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
 
 export default class SundayFood extends React.Component {
+
+    componentWillMount() {
+        fetch('/api/sundayFoodView');
+    }
+
     render() {
         return (
             <div className="base-div-content">

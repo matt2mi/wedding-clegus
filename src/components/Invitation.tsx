@@ -8,6 +8,10 @@ export default class Invitation extends React.Component {
     invitation1 = require('../img/faire-part-1.png');
     invitation2 = require('../img/faire-part-2.png');
 
+    componentWillMount() {
+        fetch('/api/invitationView');
+    }
+
     render() {
         return (
             <div className="base-div-content">

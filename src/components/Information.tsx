@@ -7,6 +7,10 @@ export default class Information extends React.Component {
     iframeSrc = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10497.842142785452!2d-1.0908203200475128!3d47.80846151587039!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4808c132686195fb%3A0x90d7806142b72cc6!2sLa+Salsa!5e0!3m2!1sfr!2sfr!4v1524419529381';
     campingGif = require('../img/camping.gif');
 
+    componentWillMount() {
+        fetch('/api/infosView');
+    }
+
     render() {
         return (
             <div className="base-div-content">

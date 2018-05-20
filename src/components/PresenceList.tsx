@@ -33,6 +33,10 @@ export default class PresenceList extends React.Component <Props, State> {
         };
     }
 
+    componentWillMount() {
+        fetch('/api/presenceListView');
+    }
+
     componentDidMount() {
         this.getPresences();
     }

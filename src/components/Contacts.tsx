@@ -14,6 +14,10 @@ export default class Contacts extends React.Component {
     ];
     private cleGusSrc = require('../img/new-cle-gus-contact.png');
 
+    componentWillMount() {
+        fetch('/api/contactsView');
+    }
+
     render() {
         return (
             <div className="base-div-content">

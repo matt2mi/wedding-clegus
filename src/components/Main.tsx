@@ -6,6 +6,10 @@ export default class Main extends React.Component {
     seMarient = require('../img/se-marient.png');
     welcome = require('../img/bienvenu.e.s.png');
 
+    componentWillMount() {
+        fetch('/api/mainView');
+    }
+
     render() {
         return (
             <div className="base-div-content mb-4">

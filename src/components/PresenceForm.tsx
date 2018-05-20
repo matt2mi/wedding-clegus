@@ -64,6 +64,10 @@ export default class PresenceForm extends React.Component<Props, State> {
         };
     }
 
+    componentWillMount() {
+        fetch('/api/presenceFormView');
+    }
+
     startLoading() {
         this.setState({loading: true});
     }
