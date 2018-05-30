@@ -58,7 +58,7 @@ export default class CarSharing extends React.Component <Props, State> {
 
     subscribe(event: SyntheticEvent<HTMLButtonElement>): void {
         event.preventDefault();
-        this.setState({goSubscribe: true, goEditJourney: false, goNewJourney: true});
+        this.setState({goSubscribe: true, goEditJourney: false, goNewJourney: false});
     }
 
     newJourney(event: SyntheticEvent<HTMLButtonElement>): void {
@@ -165,15 +165,15 @@ export default class CarSharing extends React.Component <Props, State> {
                                 >
                                     Proposer un trajet
                                 </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-info"
-                                    onClick={(e) => {
-                                        this.subscribe(e);
-                                    }}
-                                >
-                                    Je cherche une voiture
-                                </button>
+                                {/*<button*/}
+                                {/*type="button"*/}
+                                {/*className="btn btn-info"*/}
+                                {/*onClick={(e) => {*/}
+                                {/*this.subscribe(e);*/}
+                                {/*}}*/}
+                                {/*>*/}
+                                {/*Je cherche une voiture*/}
+                                {/*</button>*/}
                             </Row>
                             <hr/>
                             <Row>
