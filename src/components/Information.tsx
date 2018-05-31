@@ -26,7 +26,7 @@ export default class Information extends React.Component {
                                         <span className="subtitle">12h30 :</span> RDV à la salle Salsa (voir dessous)
                                         pour l'apéro d'honneur
                                         <br/>
-                                        <span className="subtitle">13h :</span> Banquet convivial : Méchoui (porc) ou
+                                        <span className="subtitle">14h :</span> Banquet convivial : Méchoui (porc) ou
                                         Tian de légumes (végétarien)
                                         <br/>
                                         <span className="subtitle">Après-midi :</span> Pétanque, palets, mölky,
