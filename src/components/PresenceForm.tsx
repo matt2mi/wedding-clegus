@@ -26,6 +26,7 @@ interface State {
     readonly notificationVisible: boolean;
     readonly notificationMessage: string;
     readonly notificationColor: string;
+    readonly errorNbPersonsMsg: string;
 }
 
 export default class PresenceForm extends React.Component<Props, State> {
@@ -60,7 +61,8 @@ export default class PresenceForm extends React.Component<Props, State> {
             displayForm: true,
             notificationVisible: false,
             notificationMessage: '',
-            notificationColor: ''
+            notificationColor: '',
+            errorNbPersonsMsg: ''
         };
     }
 
@@ -80,7 +82,24 @@ export default class PresenceForm extends React.Component<Props, State> {
     handleChangeForm(event: any) {
         const change = {};
         change[event.target.name] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-        this.setState(change);
+        this.setState(change, () => {
+            if (+this.state.nbVeganPersons + +this.state.nbPorkPersons > +this.state.nbPersons) {
+                const errorMsg = 'La somme de part est supérieure au nombre total de personne';
+                this.setState({errorNbPersonsMsg: errorMsg});
+                this.toggleNotification({
+                    saved: false,
+                    message: errorMsg
+                }, 'danger');
+            } else {
+                this.setState({
+                    errorNbPersonsMsg: '',
+                    displayForm: true,
+                    notificationVisible: false,
+                    notificationMessage: '',
+                    notificationColor: '',
+                });
+            }
+        });
     }
 
     onClickCheckboxLine(event: any) {
@@ -225,6 +244,15 @@ export default class PresenceForm extends React.Component<Props, State> {
                                         <Row className="justify-content-center mt-2 subtitle">
                                             Combien ?
                                         </Row>
+                                        {
+                                            this.state.errorNbPersonsMsg !== '' ?
+                                                <Row className="justify-content-center mt-2 error-text">
+                                                    <i className="fas fa-exclamation-circle mr-2"/>
+                                                    {this.state.errorNbPersonsMsg}
+                                                    <i className="fas fa-exclamation-circle ml-2"/>
+                                                </Row> :
+                                                null
+                                        }
                                         <Row className="justify-content-start mt-2">
                                             <Col sm="6" xs="12">
                                                 <Row className="justify-content-sm-end">
@@ -428,6 +456,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                 type="button"
                                                 className="btn btn-info ml-3"
                                                 onClick={this.createAnswer}
+                                                disabled={this.state.errorNbPersonsMsg !== ''}
                                             >
                                                 {
                                                     this.state.loading ?

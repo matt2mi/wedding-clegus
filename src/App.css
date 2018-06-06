@@ -68,6 +68,10 @@ textarea {
     font-weight: 600 !important;
 }
 
+.error-text {
+    color: red;
+}
+
 .bold {
     font-weight: bold;
     font-size: x-large;
