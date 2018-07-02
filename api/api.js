@@ -1,5 +1,19 @@
+// TODO  : vérifs mails existant (new sub, new présence => modif présence ??)
+// TODO : jest - supertest - https://github.com/Sfeir/sfeir-school-nodejs/tree/project-12-readme/06_project
+// TODO : Unsubscribe dans mails - dans front demande de remplir son mail puis check si existe ou pas etc..
+// TODO : vérif champ rempli dans template de mail
+// TODO : use return msg in front
+// TODO : ajouter logs pblm firebase
+// TODO : refacto une seule fct sendMail(subject, htmlPart, recipients)
+// TODO : send confirmation after deleted covoit
+
 require('dotenv').config();
 const emailValidator = require("email-validator");
+const nodemailer = require('nodemailer');
+const path = require('path');
+
+const clegusPicSignature = path.join(__dirname, 'new-cle-gus-contact.png');
+const cheers = path.join(__dirname, 'cheers-dicaprio.gif');
 
 const admin = require("firebase-admin");
 // get credentials from params > service accounts
@@ -21,22 +35,20 @@ admin.initializeApp({
 });
 const db = admin.database();
 
-const mailjet = require('node-mailjet').connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
+// Nodemailer init
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.MAIL_VALUE,
+        pass: process.env.MAIL_MDP
+    }
+});
 
-
+// db path constants init
 const SUBSCRIPTIONS_PATH = 'subscriptions';
 const JOURNEYS_PATH = 'journeys';
 const PRESENCES_PATH = 'presences';
 const STATS_PATH = 'stats';
-
-// TODO : stats ?
-// TODO : Unsubscribe dans mails - dans front demande de remplir son mail puis check si existe ou pas etc..
-// TODO : vérif champ rempli dans template de mail
-// TODO : bdd prod for heroku
-// TODO : use return msg in front
-// TODO : ajouter logs pblm firebase
-// TODO : refacto une seule fct sendMail(subject, htmlPart, recipients)
-// TODO : send confirmation after deleted covoit
 
 const getNewJourneyHtmlPart = (journey) => {
     return '<h3>Nouveau covoit\' proposé par ' + journey.driverFirstName + '</h3>' +
@@ -51,16 +63,19 @@ const getNewJourneyHtmlPart = (journey) => {
 
         '<p>Made by Matou with <3 ;)</p>';
 };
-const sendNewJourneyMailToOwners = (journey) => {
-    return mailjet
-        .post('send')
-        .request({
-            "FromEmail": "mariageclegus@gmail.com",
-            "FromName": "Mariage Clegus",
-            "Subject": "Nouveau covoit' proposé par " + journey.driverFirstName,
-            "Html-part": getNewJourneyHtmlPart(journey),
-            "Recipients": [{"Email": "2m1tema@gmail.com"}]
-        });
+const sendNewJourneyMailToOwners = (journey, callback) => {
+    transporter.sendMail(
+        {
+            from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
+            to: [
+                '2m1tema@gmail.com',
+                'clemenceesnault@laposte.net',
+                'augustin.bannier@hotmail.fr'
+            ],
+            subject: 'Nouveau covoit\' proposé par ' + journey.driverFirstName,
+            html: getNewJourneyHtmlPart(journey)
+        },
+        callback);
 };
 
 const getNewJourneyConfirmationHtmlPart = (journey) => {
@@ -84,16 +99,15 @@ const getNewJourneyConfirmationHtmlPart = (journey) => {
 
         '<p>Clémence et Augustin.</p>';
 };
-const sendNewJourneyConfirmationMail = (journey) => {
-    return mailjet
-        .post('send')
-        .request({
-            "FromEmail": "mariageclegus@gmail.com",
-            "FromName": "Mariage Clegus",
-            "Subject": "Trajet " + journey.fromCity + " - " + journey.toCity + " enregistré !",
-            "Html-part": getNewJourneyConfirmationHtmlPart(journey),
-            "Recipients": [{"Email": journey.driverEmail}]
-        });
+const sendNewJourneyConfirmationMail = (journey, callback) => {
+    transporter.sendMail(
+        {
+            from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
+            to: journey.driverEmail,
+            subject: 'Trajet ' + journey.fromCity + ' - ' + journey.toCity + ' enregistré !',
+            html: getNewJourneyConfirmationHtmlPart(journey)
+        },
+        callback);
 };
 
 const getNewPresenceHtmlPart = presence => {
@@ -133,20 +147,23 @@ const getNewPresenceHtmlPart = presence => {
 
     return htmlMsg;
 };
-const sendNewPresenceMailToOwners = (presence) => {
-    return mailjet
-        .post('send')
-        .request({
-            "FromEmail": "mariageclegus@gmail.com",
-            "FromName": "Mariage Clegus",
-            "Subject": presence.who + " en plus au mariage !",
-            "Html-part": getNewPresenceHtmlPart(presence),
-            "Recipients": [
-                {"Email": "2m1tema@gmail.com"},
-                {"Email": "clemenceesnault@laposte.net"},
-                {"Email": "augustin.bannier@hotmail.fr"}
-            ]
-        });
+const sendNewPresenceMailToOwners = (presence, callback) => {
+    transporter.sendMail(
+        {
+            from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
+            to: [
+                '2m1tema@gmail.com',
+                'clemenceesnault@laposte.net',
+                'augustin.bannier@hotmail.fr'
+            ],
+            subject: presence.who + ' en plus au mariage !',
+            html: getNewPresenceHtmlPart(presence),
+            attachments: {
+                filename: 'cheers.png',
+                path: cheers
+            }
+        },
+        callback);
 };
 
 const getPresenceConfirmationHtmlPart = (presence) => {
@@ -174,16 +191,19 @@ const getPresenceConfirmationHtmlPart = (presence) => {
 
         '<p>Clémence et Augustin.</p>';
 };
-const sendPresenceConfirmationMail = (presence) => {
-    return mailjet
-        .post('send')
-        .request({
-            "FromEmail": "mariageclegus@gmail.com",
-            "FromName": "Mariage Clegus",
-            "Subject": "Participation au mariage enregistrée !",
-            "Html-part": getPresenceConfirmationHtmlPart(presence),
-            "Recipients": [{"Email": presence.email}]
-        });
+const sendPresenceConfirmationMail = (presence, callback) => {
+    transporter.sendMail(
+        {
+            from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
+            to: presence.email,
+            subject: 'Participation au mariage enregistrée !',
+            html: getPresenceConfirmationHtmlPart(presence),
+            attachments: {
+                filename: 'clegus.png',
+                path: clegusPicSignature
+            }
+        },
+        callback);
 };
 
 const getSubscriptionConfirmationHtmlPart = (email, key) => {
@@ -199,16 +219,15 @@ const getSubscriptionConfirmationHtmlPart = (email, key) => {
 
         '<p>Clémence et Augustin.</p>';
 };
-const sendSubscriptionConfirmationMail = (email, key) => {
-    return mailjet
-        .post('send')
-        .request({
-            "FromEmail": "mariageclegus@gmail.com",
-            "FromName": "Mariage Clegus",
-            "Subject": "Inscription aux covoiturages enregistrée !",
-            "Html-part": getSubscriptionConfirmationHtmlPart(email, key),
-            "Recipients": [{"Email": email}]
-        });
+const sendSubscriptionConfirmationMail = (email, key, callback) => {
+    transporter.sendMail(
+        {
+            from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
+            to: email,
+            subject: 'Inscription aux covoiturages enregistrée !',
+            html: getSubscriptionConfirmationHtmlPart(email, key)
+        },
+        callback);
 };
 
 // TODO : unsubscribe dans chaque mail => comportement diff dans comp et api
@@ -231,27 +250,27 @@ const getNewJourneySubscribersHtmlPart = (journey) => {
         '<p>Clémence et Augustin.</p>';
 };
 const sendNewJourneyMailToSubscribers = (journey) => {
-    return db.ref(SUBSCRIPTIONS_PATH).once("value", function (snapshot) {
-        const dbSubscribers = snapshot.val();
-        if (dbSubscribers) {
-            const subscribers = Object
-                .keys(dbSubscribers)
-                .filter(key => dbSubscribers[key].activated)
-                .map(key => ({"Email": dbSubscribers[key].email}));
-            console.log('subscribers', subscribers);
-            return mailjet
-                .post('send')
-                .request({
-                    "FromEmail": "mariageclegus@gmail.com",
-                    "FromName": "Mariage Clegus",
-                    "Subject": "Un nouveau covoiturage a été ajouté !",
-                    "Html-part": getNewJourneySubscribersHtmlPart(journey),
-                    "Recipients": subscribers
-                });
-        } else {
-            return new Promise.reject(null);
-        }
-    });
+    // return db.ref(SUBSCRIPTIONS_PATH).once("value", function (snapshot) {
+    //     const dbSubscribers = snapshot.val();
+    //     if (dbSubscribers) {
+    //         const subscribers = Object
+    //             .keys(dbSubscribers)
+    //             .filter(key => dbSubscribers[key].activated)
+    //             .map(key => ({"Email": dbSubscribers[key].email}));
+    //         console.log('subscribers', subscribers);
+    //         return mailjet
+    //             .post('send')
+    //             .request({
+    //                 "FromEmail": "mariageclegus@gmail.com",
+    //                 "FromName": "Mariage Clegus",
+    //                 "Subject": "Un nouveau covoiturage a été ajouté !",
+    //                 "Html-part": getNewJourneySubscribersHtmlPart(journey),
+    //                 "Recipients": subscribers
+    //             });
+    //     } else {
+    //         return new Promise.reject(null);
+    //     }
+    // });
 };
 
 const statsCallback = (error, committed, snapshot, res, logStr) => {
@@ -335,42 +354,42 @@ module.exports = function (app) {
 
         promise
             .then(() => {
-                // if (process.env.SEND_MAIL === 'true') {
-                //     sendNewJourneyMailToOwners({...req.body, id: newObject.key})
-                //         .then(() => {
-                //             console.log(LOG_STR + ' mail sent to owners');
-                //         })
-                //         .catch(error => {
-                //             console.error(LOG_STR + ' error sending mail to owners', error);
-                //         });
-                //     sendNewJourneyMailToSubscribers(req.body)
-                //         .then(() => {
-                //             console.log(LOG_STR + ' mail sent to subscribers');
-                //         })
-                //         .catch(error => {
-                //             console.error(LOG_STR + ' error sending mail to subscribers', error);
-                //         });
-                //     if (emailValidator.validate(req.body.driverEmail)) {
-                //         sendNewJourneyConfirmationMail({...req.body, id: newObject.key})
-                //             .then(() => {
-                //                 console.log(`${LOG_STR} confirmation mail sent to: ${req.body.driverEmail}`);
-                //             })
-                //             .catch(error => {
-                //                 console.error(
-                //                     `${LOG_STR} error sending confirmation mail to: ${req.body.driverEmail}, error:`,
-                //                     error);
-                //             });
-                //     } else {
-                //         console.error(`${LOG_STR}  error wrong mail address: ${req.body.driverEmail}`);
-                //     }
-                // }
+                if (process.env.SEND_MAIL === 'true') {
+                    sendNewJourneyMailToOwners({...req.body, id: newObject.key}, function (error) {
+                        if (error) {
+                            console.error(LOG_STR + ' error sending journey mail to owners', error);
+                        } else {
+                            console.log(LOG_STR + ' new journey mail sent to owners');
+                        }
+                    });
+                    // sendNewJourneyMailToSubscribers(req.body)
+                    //     .then(() => {
+                    //         console.log(LOG_STR + ' mail sent to subscribers');
+                    //     })
+                    //     .catch(error => {
+                    //         console.error(LOG_STR + ' error sending mail to subscribers', error);
+                    //     });
+                    if (emailValidator.validate(req.body.driverEmail)) {
+                        sendNewJourneyConfirmationMail({...req.body, id: newObject.key}, function (error) {
+                            if (error) {
+                                console.error(
+                                    `${LOG_STR} error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                                    error);
+                            } else {
+                                console.log(`${LOG_STR} confirmation mail sent to: ${req.body.driverEmail}`);
+                            }
+                        });
+                    } else {
+                        console.error(`${LOG_STR} error wrong mail address: ${req.body.driverEmail}`);
+                    }
+                }
                 res.status(200).json({
                     saved: true,
                     message: 'Trajet sauvegardé. Si vous avez renseigné une adresse email, vous recevrez bientôt ' +
                     'un mail de confirmation.'
                 });
                 console.log(
-                    `${LOG_STR}  journey created for ${req.body.driverFirstName} ${req.body.driverName}`
+                    `${LOG_STR} journey created for ${req.body.driverFirstName} ${req.body.driverName}`
                 );
             })
             .catch((error) => {
@@ -450,15 +469,17 @@ module.exports = function (app) {
             const promise = newObject.set({email: req.body.email, activated: true});
             promise
                 .then(() => {
-                    // if (process.env.SEND_MAIL === 'true') {
-                    //     sendSubscriptionConfirmationMail(req.body.email, newObject.key)
-                    //         .then(() =>
-                    //             console.log('subscription confirmation mail sent'))
-                    //         .catch(error =>
-                    //             console.error(
-                    //                 LOG_STR + 'error sending subscription confirmation mail',
-                    //                 error));
-                    // }
+                    if (process.env.SEND_MAIL === 'true') {
+                        sendSubscriptionConfirmationMail(req.body.email, newObject.key, error => {
+                            if (error) {
+                                console.error(
+                                    LOG_STR + 'error sending subscription confirmation mail',
+                                    error);
+                            } else {
+                                console.log(LOG_STR + 'subscription confirmation mail sent');
+                            }
+                        })
+                    }
                     res.json({saved: true, message: `Abonnement enregistré pour ${req.body.email} !`});
                     console.log(`${LOG_STR}new subscription saved for ${req.body.email}`);
                 })
@@ -552,33 +573,40 @@ module.exports = function (app) {
                     res.json({saved: false, message: error});
                     console.error(LOG_STR + 'error creating presence ', error);
                 } else {
-                    // if (process.env.SEND_MAIL === 'true') {
-                    //     sendNewPresenceMailToOwners(req.body)
-                    //         .then(() => console.log(`POST - /api/presence - new presence mail sent to owners`))
-                    //         .catch(error => console.error(
-                    //             LOG_STR + 'error sending presence mail to owners, error:',
-                    //             error));
-                    //     if (emailValidator.validate(req.body.email)) {
-                    //         sendPresenceConfirmationMail(req.body)
-                    //             .then(() =>
-                    //                 console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`))
-                    //             .catch(error => console.error(
-                    //                 `POST - /api/presence - new presence mail confirmation not sent to ${req.body.email}, error:`,
-                    //                 error));
-                    //     } else {
-                    //         console.error(`POST - /api/presence - error wrong mail address: ${req.body.email}`);
-                    //     }
-                    // }
+                    if (process.env.SEND_MAIL === 'true') {
+                        sendNewPresenceMailToOwners(req.body, function (error, body) {
+                            if (error) {
+                                console.error(LOG_STR + 'error sending presence mail to owners, error:', error);
+                            } else {
+                                console.log('POST - /api/presence - new presence mail sent to owners:', body);
+                            }
+                        });
+                        if (emailValidator.validate(req.body.email)) {
+                            sendPresenceConfirmationMail(req.body, function (error) {
+                                if (error) {
+                                    console.error(
+                                        `POST - /api/presence - new presence mail confirmation not sent to ${req.body.email}, error:`,
+                                        error);
+                                } else {
+                                    console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`);
+                                }
+                            })
+                        } else {
+                            console.error(`POST - /api/presence - error wrong mail address: ${req.body.email}`);
+                        }
+                    }
+
                     // TODO : modif message retour si envoi mail foireux
                     res.json({
                         saved: true,
                         message: 'Merci pour votre réponse, votre participation a bien été enregistrée.'
-                        // + ' Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
+                        + ' Si vous avez renseigné une adresse email valide, vous recevrez bientôt un mail de confirmation.'
                     });
                     console.log(`${LOG_STR}new presence answer created for ${req.body.who}`);
                 }
             });
     });
+
 
     app.get('/api/smartphoneView', (req, res) => {
         db.ref(STATS_PATH)
@@ -615,7 +643,6 @@ module.exports = function (app) {
                     statsCallback(error, committed, snapshot, res, 'GET - /api/view - ')
             );
     });
-
 
     app.get('/api/mainView', (req, res) => {
         db.ref(STATS_PATH)
