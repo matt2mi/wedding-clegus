@@ -355,13 +355,15 @@ module.exports = function (app) {
         promise
             .then(() => {
                 if (process.env.SEND_MAIL === 'true') {
-                    sendNewJourneyMailToOwners({...req.body, id: newObject.key}, function (error) {
-                        if (error) {
-                            console.error(LOG_STR + ' error sending journey mail to owners', error);
-                        } else {
-                            console.log(LOG_STR + ' new journey mail sent to owners');
-                        }
-                    });
+                    // sendNewJourneyMailToOwners({...req.body, id: newObject.key}, function (error) {
+                    //     if (error) {
+                    //         console.error(LOG_STR + ' error sending journey mail to owners', error);
+                    //     } else {
+                    //         console.log(LOG_STR + ' new journey mail sent to owners');
+                    //     }
+                    // });
+
+                    // TODO :
                     // sendNewJourneyMailToSubscribers(req.body)
                     //     .then(() => {
                     //         console.log(LOG_STR + ' mail sent to subscribers');
@@ -370,15 +372,15 @@ module.exports = function (app) {
                     //         console.error(LOG_STR + ' error sending mail to subscribers', error);
                     //     });
                     if (emailValidator.validate(req.body.driverEmail)) {
-                        sendNewJourneyConfirmationMail({...req.body, id: newObject.key}, function (error) {
-                            if (error) {
-                                console.error(
-                                    `${LOG_STR} error sending confirmation mail to: ${req.body.driverEmail}, error:`,
-                                    error);
-                            } else {
-                                console.log(`${LOG_STR} confirmation mail sent to: ${req.body.driverEmail}`);
-                            }
-                        });
+                        // sendNewJourneyConfirmationMail({...req.body, id: newObject.key}, function (error) {
+                        //     if (error) {
+                        //         console.error(
+                        //             `${LOG_STR} error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                        //             error);
+                        //     } else {
+                        //         console.log(`${LOG_STR} confirmation mail sent to: ${req.body.driverEmail}`);
+                        //     }
+                        // });
                     } else {
                         console.error(`${LOG_STR} error wrong mail address: ${req.body.driverEmail}`);
                     }
@@ -470,15 +472,15 @@ module.exports = function (app) {
             promise
                 .then(() => {
                     if (process.env.SEND_MAIL === 'true') {
-                        sendSubscriptionConfirmationMail(req.body.email, newObject.key, error => {
-                            if (error) {
-                                console.error(
-                                    LOG_STR + 'error sending subscription confirmation mail',
-                                    error);
-                            } else {
-                                console.log(LOG_STR + 'subscription confirmation mail sent');
-                            }
-                        })
+                        // sendSubscriptionConfirmationMail(req.body.email, newObject.key, error => {
+                        //     if (error) {
+                        //         console.error(
+                        //             LOG_STR + 'error sending subscription confirmation mail',
+                        //             error);
+                        //     } else {
+                        //         console.log(LOG_STR + 'subscription confirmation mail sent');
+                        //     }
+                        // });
                     }
                     res.json({saved: true, message: `Abonnement enregistré pour ${req.body.email} !`});
                     console.log(`${LOG_STR}new subscription saved for ${req.body.email}`);
@@ -574,23 +576,23 @@ module.exports = function (app) {
                     console.error(LOG_STR + 'error creating presence ', error);
                 } else {
                     if (process.env.SEND_MAIL === 'true') {
-                        sendNewPresenceMailToOwners(req.body, function (error, body) {
-                            if (error) {
-                                console.error(LOG_STR + 'error sending presence mail to owners, error:', error);
-                            } else {
-                                console.log('POST - /api/presence - new presence mail sent to owners:', body);
-                            }
-                        });
+                        // sendNewPresenceMailToOwners(req.body, function (error, body) {
+                        //     if (error) {
+                        //         console.error(LOG_STR + 'error sending presence mail to owners, error:', error);
+                        //     } else {
+                        //         console.log('POST - /api/presence - new presence mail sent to owners:', body);
+                        //     }
+                        // });
                         if (emailValidator.validate(req.body.email)) {
-                            sendPresenceConfirmationMail(req.body, function (error) {
-                                if (error) {
-                                    console.error(
-                                        `POST - /api/presence - new presence mail confirmation not sent to ${req.body.email}, error:`,
-                                        error);
-                                } else {
-                                    console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`);
-                                }
-                            })
+                            // sendPresenceConfirmationMail(req.body, function (error) {
+                            //     if (error) {
+                            //         console.error(
+                            //             `POST - /api/presence - new presence mail confirmation not sent to ${req.body.email}, error:`,
+                            //             error);
+                            //     } else {
+                            //         console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`);
+                            //     }
+                            // });
                         } else {
                             console.error(`POST - /api/presence - error wrong mail address: ${req.body.email}`);
                         }
