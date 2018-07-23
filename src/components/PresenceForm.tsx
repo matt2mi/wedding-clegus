@@ -6,10 +6,13 @@ import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
 
 interface Props {
+    match: { params: { id?: number } };
 }
 
 interface State {
+    readonly updateMode: boolean;
     readonly loading: boolean;
+    readonly id: string;
     readonly who: string;
     readonly phoneNumber: string;
     readonly email: string;
@@ -45,7 +48,9 @@ export default class PresenceForm extends React.Component<Props, State> {
         this.cleanForm = this.cleanForm.bind(this);
 
         this.state = {
+            updateMode: false,
             loading: false,
+            id: '',
             who: '',
             phoneNumber: '',
             email: '',
@@ -66,8 +71,33 @@ export default class PresenceForm extends React.Component<Props, State> {
         };
     }
 
-    componentWillMount() {
-        fetch('/api/presenceFormView');
+    componentDidMount() {
+        if (this.props.match.params.id) {
+            fetch('/api/presences/' + this.props.match.params.id)
+                .then(result => result.json())
+                .then(presence => {
+                    this.setState({
+                        updateMode: true,
+                        id: presence.id,
+                        who: presence.who,
+                        phoneNumber: presence.phoneNumber,
+                        email: presence.email,
+                        nbPersons: presence.nbPersons,
+                        nbPorkPersons: presence.nbPorkPersons,
+                        nbVeganPersons: presence.nbVeganPersons,
+                        whenSaturdayMorning: presence.whenSaturdayMorning,
+                        whenSaturdayLunch: presence.whenSaturdayLunch,
+                        whenSaturdayDiner: presence.whenSaturdayDiner,
+                        whenSundayLunch: presence.whenSundayLunch,
+                        commentSundayLunchInfo: presence.commentSundayLunchInfo,
+                        comment: presence.comment
+                    });
+                })
+                .catch(e => console.warn(e));
+            fetch('/api/presenceFormUpdateView');
+        } else {
+            fetch('/api/presenceFormView');
+        }
     }
 
     startLoading() {
@@ -114,9 +144,10 @@ export default class PresenceForm extends React.Component<Props, State> {
         this.startLoading();
         event.preventDefault();
         fetch('/api/presence', {
-            method: 'post',
+            method: this.state.id !== '' ? 'put' : 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
+                id: this.state.id,
                 who: this.state.who,
                 phoneNumber: this.state.phoneNumber,
                 email: this.state.email,
@@ -269,6 +300,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         id="nbPersons"
                                                         min="0"
                                                         placeholder="0"
+                                                        value={this.state.nbPersons}
                                                         onChange={this.handleChangeForm}
                                                     />
                                                 </Row>
@@ -290,6 +322,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         id="nbPorkPersons"
                                                         min="0"
                                                         placeholder="0"
+                                                        value={this.state.nbPorkPersons}
                                                         onChange={this.handleChangeForm}
                                                     />
                                                 </Row>
@@ -311,6 +344,7 @@ export default class PresenceForm extends React.Component<Props, State> {
                                                         id="nbVeganPersons"
                                                         min="0"
                                                         placeholder="0"
+                                                        value={this.state.nbVeganPersons}
                                                         onChange={this.handleChangeForm}
                                                     />
                                                 </Row>

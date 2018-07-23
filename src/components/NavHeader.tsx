@@ -47,7 +47,7 @@ export default class App extends React.Component<Props, State> {
                                 </NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/presence" onClick={this.toggle} className="navbar-item">
+                                <NavLink href="#/presence/new" onClick={this.toggle} className="navbar-item">
                                     Présence
                                 </NavLink>
                             </NavItem>

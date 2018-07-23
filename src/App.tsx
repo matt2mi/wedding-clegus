@@ -26,7 +26,8 @@ class App extends React.Component {
                     <Switch>
                         <Route path="/" exact={true} component={Main}/>
                         <Route path="/infos" component={Information}/>
-                        <Route path="/presence" component={PresenceForm}/>
+                        <Route path="/presence/new" component={PresenceForm}/>
+                        <Route path="/presence/edit/:id" component={PresenceForm}/>
                         <Route path="/covoiturages" exact={true} component={CarSharing}/>
                         <Route path="/covoiturages/inscription" component={Subscribe}/>
                         <Route path="/covoiturages/desinscription/:key" component={Unsubscribe}/>

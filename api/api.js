@@ -1,4 +1,9 @@
-// TODO  : vérifs mails existant (new sub, new présence => modif présence ??)
+// TODO : update journey confirmation on put
+// TODO : delete journey confirmation
+// TODO : réactiver sub covoit
+// TODO : modif message retour si envoi mail foireux
+// TODO : vérifs mails existant (new sub, new présence => modif présence ??)
+// TODO : cookie bloquer nouvelle presence et proposer modification
 // TODO : jest - supertest - https://github.com/Sfeir/sfeir-school-nodejs/tree/project-12-readme/06_project
 // TODO : Unsubscribe dans mails - dans front demande de remplir son mail puis check si existe ou pas etc..
 // TODO : vérif champ rempli dans template de mail
@@ -249,28 +254,27 @@ const getNewJourneySubscribersHtmlPart = (journey) => {
 
         '<p>Clémence et Augustin.</p>';
 };
-const sendNewJourneyMailToSubscribers = (journey) => {
-    // return db.ref(SUBSCRIPTIONS_PATH).once("value", function (snapshot) {
-    //     const dbSubscribers = snapshot.val();
-    //     if (dbSubscribers) {
-    //         const subscribers = Object
-    //             .keys(dbSubscribers)
-    //             .filter(key => dbSubscribers[key].activated)
-    //             .map(key => ({"Email": dbSubscribers[key].email}));
-    //         console.log('subscribers', subscribers);
-    //         return mailjet
-    //             .post('send')
-    //             .request({
-    //                 "FromEmail": "mariageclegus@gmail.com",
-    //                 "FromName": "Mariage Clegus",
-    //                 "Subject": "Un nouveau covoiturage a été ajouté !",
-    //                 "Html-part": getNewJourneySubscribersHtmlPart(journey),
-    //                 "Recipients": subscribers
-    //             });
-    //     } else {
-    //         return new Promise.reject(null);
-    //     }
-    // });
+const sendNewJourneyMailToSubscribers = (journey, callback) => {
+    return db.ref(SUBSCRIPTIONS_PATH).once("value", function (snapshot) {
+        const dbSubscribers = snapshot.val();
+        if (dbSubscribers) {
+            const subscribers = Object
+                .keys(dbSubscribers)
+                .filter(key => dbSubscribers[key].activated)
+                .map(key => dbSubscribers[key].email);
+            console.log('subscribers', subscribers);
+            transporter.sendMail(
+                {
+                    from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
+                    to: subscribers,
+                    subject: 'Un nouveau covoiturage a été ajouté !',
+                    html: getNewJourneySubscribersHtmlPart(journey)
+                },
+                callback);
+        } else {
+            return new Promise.reject(null);
+        }
+    });
 };
 
 const statsCallback = (error, committed, snapshot, res, logStr) => {
@@ -355,32 +359,32 @@ module.exports = function (app) {
         promise
             .then(() => {
                 if (process.env.SEND_MAIL === 'true') {
-                    // sendNewJourneyMailToOwners({...req.body, id: newObject.key}, function (error) {
-                    //     if (error) {
-                    //         console.error(LOG_STR + ' error sending journey mail to owners', error);
-                    //     } else {
-                    //         console.log(LOG_STR + ' new journey mail sent to owners');
-                    //     }
-                    // });
+                    sendNewJourneyMailToOwners({...req.body, id: newObject.key}, function (error) {
+                        if (error) {
+                            console.error(LOG_STR + ' error sending journey mail to owners', error);
+                        } else {
+                            console.log(LOG_STR + ' new journey mail sent to owners');
+                        }
+                    });
 
                     // TODO :
-                    // sendNewJourneyMailToSubscribers(req.body)
-                    //     .then(() => {
-                    //         console.log(LOG_STR + ' mail sent to subscribers');
-                    //     })
-                    //     .catch(error => {
-                    //         console.error(LOG_STR + ' error sending mail to subscribers', error);
-                    //     });
+                    sendNewJourneyMailToSubscribers(req.body, function (error) {
+                        if (error) {
+                            console.error(LOG_STR + ' error sending mail to subscribers', error);
+                        } else {
+                            console.log(LOG_STR + ' mail sent to subscribers');
+                        }
+                    });
                     if (emailValidator.validate(req.body.driverEmail)) {
-                        // sendNewJourneyConfirmationMail({...req.body, id: newObject.key}, function (error) {
-                        //     if (error) {
-                        //         console.error(
-                        //             `${LOG_STR} error sending confirmation mail to: ${req.body.driverEmail}, error:`,
-                        //             error);
-                        //     } else {
-                        //         console.log(`${LOG_STR} confirmation mail sent to: ${req.body.driverEmail}`);
-                        //     }
-                        // });
+                        sendNewJourneyConfirmationMail({...req.body, id: newObject.key}, function (error) {
+                            if (error) {
+                                console.error(
+                                    `${LOG_STR} error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                                    error);
+                            } else {
+                                console.log(`${LOG_STR} confirmation mail sent to: ${req.body.driverEmail}`);
+                            }
+                        });
                     } else {
                         console.error(`${LOG_STR} error wrong mail address: ${req.body.driverEmail}`);
                     }
@@ -390,15 +394,10 @@ module.exports = function (app) {
                     message: 'Trajet sauvegardé. Si vous avez renseigné une adresse email, vous recevrez bientôt ' +
                     'un mail de confirmation.'
                 });
-                console.log(
-                    `${LOG_STR} journey created for ${req.body.driverFirstName} ${req.body.driverName}`
-                );
+                console.log(`${LOG_STR} journey created for ${req.body.driverFirstName} ${req.body.driverName}`);
             })
             .catch((error) => {
-                res.json({
-                    saved: false,
-                    message: 'Désolé, votre trajet n\'a pas été enregistré, réessayez plus tard.'
-                });
+                res.json({saved: false, message: 'Désolé, votre trajet n\'a pas été enregistré, réessayez plus tard.'});
                 console.error(LOG_STR + ' error creating journey:', error);
             });
     });
@@ -439,7 +438,7 @@ module.exports = function (app) {
                     // }
                     res.status(200).json({
                         saved: true,
-                        message: 'Modification enregistrée. Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
+                        message: 'Modification enregistrée.' // Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
                     });
                     console.log(`${LOG_STR}journey ${req.body.id} updated`);
                 }
@@ -464,6 +463,7 @@ module.exports = function (app) {
             });
     });
 
+
     app.post('/api/carSharingSubscribe', (req, res) => {
         const LOG_STR = 'POST - /api/carSharingSubscribe - ';
         if (emailValidator.validate(req.body.email)) {
@@ -472,15 +472,15 @@ module.exports = function (app) {
             promise
                 .then(() => {
                     if (process.env.SEND_MAIL === 'true') {
-                        // sendSubscriptionConfirmationMail(req.body.email, newObject.key, error => {
-                        //     if (error) {
-                        //         console.error(
-                        //             LOG_STR + 'error sending subscription confirmation mail',
-                        //             error);
-                        //     } else {
-                        //         console.log(LOG_STR + 'subscription confirmation mail sent');
-                        //     }
-                        // });
+                        sendSubscriptionConfirmationMail(req.body.email, newObject.key, error => {
+                            if (error) {
+                                console.error(
+                                    LOG_STR + 'error sending subscription confirmation mail',
+                                    error);
+                            } else {
+                                console.log(LOG_STR + 'subscription confirmation mail sent');
+                            }
+                        });
                     }
                     res.json({saved: true, message: `Abonnement enregistré pour ${req.body.email} !`});
                     console.log(`${LOG_STR}new subscription saved for ${req.body.email}`);
@@ -521,6 +521,7 @@ module.exports = function (app) {
                 console.error(`${LOG_STR}unsubscribe NOT ok, error: ${error}`);
             });
     });
+
 
     app.get('/api/presences', (req, res) => {
         const LOG_STR = 'GET - /api/presences - ';
@@ -576,25 +577,129 @@ module.exports = function (app) {
                     console.error(LOG_STR + 'error creating presence ', error);
                 } else {
                     if (process.env.SEND_MAIL === 'true') {
-                        // sendNewPresenceMailToOwners(req.body, function (error, body) {
-                        //     if (error) {
-                        //         console.error(LOG_STR + 'error sending presence mail to owners, error:', error);
-                        //     } else {
-                        //         console.log('POST - /api/presence - new presence mail sent to owners:', body);
-                        //     }
-                        // });
+                        sendNewPresenceMailToOwners(req.body, function (error, body) {
+                            if (error) {
+                                console.error(LOG_STR + 'error sending presence mail to owners, error:', error);
+                            } else {
+                                console.log('POST - /api/presence - new presence mail sent to owners:', body);
+                            }
+                        });
                         if (emailValidator.validate(req.body.email)) {
-                            // sendPresenceConfirmationMail(req.body, function (error) {
-                            //     if (error) {
-                            //         console.error(
-                            //             `POST - /api/presence - new presence mail confirmation not sent to ${req.body.email}, error:`,
-                            //             error);
-                            //     } else {
-                            //         console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`);
-                            //     }
-                            // });
+                            sendPresenceConfirmationMail(req.body, function (error) {
+                                if (error) {
+                                    console.error(
+                                        `POST - /api/presence - new presence mail confirmation not sent to ${req.body.email}, error:`,
+                                        error);
+                                } else {
+                                    console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`);
+                                }
+                            });
                         } else {
                             console.error(`POST - /api/presence - error wrong mail address: ${req.body.email}`);
+                        }
+                    }
+
+                    res.json({
+                        saved: true,
+                        message: 'Merci pour votre réponse, votre participation a bien été enregistrée.'
+                        + ' Si vous avez renseigné une adresse email valide, vous recevrez bientôt un mail de confirmation.'
+                    });
+                    console.log(`${LOG_STR}new presence answer created for ${req.body.who}`);
+                }
+            });
+    });
+
+
+    // remind mail part
+    app.get('/api/remindMail', (req, res) => {
+        const LOG_STR = 'GET - /api/remindMail -';
+        console.log('LOG_STR', LOG_STR);
+        // require('./sundayFoodConfirmation')(db, (error, nbMailsSent) => {
+        //     if (error) {
+        //         res.status(500).json({saved: false});
+        //         console.error(`${LOG_STR} ERROR - remind mails not sent: ${error}`);
+        //     } else {
+        //         res.status(200).json({saved: true});
+        //         console.log(`${LOG_STR} ${nbMailsSent} remind mails sent`);
+        //     }
+        // });
+    });
+
+    app.get('/api/presences/:id', (req, res) => {
+        const LOG_STR = 'GET - /api/presences/' + req.params.id + ' - ';
+        db.ref(PRESENCES_PATH).once("value", function (snapshot) {
+            const dbPresences = snapshot.val();
+
+            if (dbPresences) {
+                const result = Object
+                    .keys(dbPresences)
+                    .map(key => ({
+                        id: key,
+                        who: dbPresences[key].who,
+                        phoneNumber: dbPresences[key].phoneNumber,
+                        email: dbPresences[key].email,
+                        nbPersons: dbPresences[key].nbPersons,
+                        nbPorkPersons: dbPresences[key].nbPorkPersons,
+                        nbVeganPersons: dbPresences[key].nbVeganPersons,
+                        whenSaturdayMorning: dbPresences[key].whenSaturdayMorning,
+                        whenSaturdayLunch: dbPresences[key].whenSaturdayLunch,
+                        whenSaturdayDiner: dbPresences[key].whenSaturdayDiner,
+                        whenSundayLunch: dbPresences[key].whenSundayLunch,
+                        commentSundayLunchInfo: dbPresences[key].commentSundayLunchInfo,
+                        comment: dbPresences[key].comment
+                    }))
+                    .filter(presence => req.params.id === presence.id)[0];
+
+                res.json(result);
+                console.log(`${LOG_STR} presence sent: ${result.toString()}`);
+            } else {
+                res.json({});
+                console.log(LOG_STR + 'no existing presences yet.');
+            }
+        });
+    });
+
+    app.put('/api/presence', (req, res) => {
+        const LOG_STR = 'PUT - /api/presence - ';
+        db.ref(PRESENCES_PATH + '/' + req.body.id)
+            .set({
+                who: req.body.who,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+                nbPersons: req.body.nbPersons,
+                nbPorkPersons: req.body.nbPorkPersons,
+                nbVeganPersons: req.body.nbVeganPersons,
+                whenSaturdayMorning: req.body.whenSaturdayMorning,
+                whenSaturdayLunch: req.body.whenSaturdayLunch,
+                whenSaturdayDiner: req.body.whenSaturdayDiner,
+                whenSundayLunch: req.body.whenSundayLunch,
+                commentSundayLunchInfo: req.body.commentSundayLunchInfo,
+                comment: req.body.comment
+            }, (error) => {
+                if (error) {
+                    res.json({saved: false, message: error});
+                    console.error(LOG_STR + 'error updating presence ', error);
+                } else {
+                    if (process.env.SEND_MAIL === 'true') {
+                        sendNewPresenceMailToOwners(req.body, function (error, body) {
+                            if (error) {
+                                console.error(LOG_STR + 'error sending presence mail to owners, error:', error);
+                            } else {
+                                console.log(LOG_STR + 'new presence mail sent to owners:', body);
+                            }
+                        });
+                        if (emailValidator.validate(req.body.email)) {
+                            sendPresenceConfirmationMail(req.body, function (error) {
+                                if (error) {
+                                    console.error(
+                                        `${LOG_STR}new presence mail confirmation not sent to ${req.body.email}, error:`,
+                                        error);
+                                } else {
+                                    console.log(`${LOG_STR}new presence mail confirmation sent to ${req.body.email}`);
+                                }
+                            });
+                        } else {
+                            console.error(`${LOG_STR}error wrong mail address: ${req.body.email}`);
                         }
                     }
 
@@ -697,6 +802,24 @@ module.exports = function (app) {
                 },
                 (error, committed, snapshot) =>
                     statsCallback(error, committed, snapshot, res, 'GET - /api/presenceFormView - ')
+            );
+    });
+
+    app.get('/api/presenceFormUpdateView', (req, res) => {
+        db.ref(STATS_PATH)
+            .transaction(
+                function (stats) {
+                    if (stats && stats.presenceFormUpdateView) {
+                        stats.presenceFormUpdateView++;
+                    } else if (stats) {
+                        stats.presenceFormUpdateView = 1;
+                    } else {
+                        return {presenceFormUpdateView: 1};
+                    }
+                    return stats;
+                },
+                (error, committed, snapshot) =>
+                    statsCallback(error, committed, snapshot, res, 'GET - /api/presenceFormUpdateView - ')
             );
     });
 
