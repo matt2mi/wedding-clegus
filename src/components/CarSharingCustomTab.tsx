@@ -92,7 +92,7 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
                                         toggle={this.toggleEdit}
                                         delay={{show: 500, hide: 0}}
                                     >
-                                        Modifier
+                                        Modifier{/*TODO : loader*/}
                                     </Tooltip>
                                 </div>
                                 <div className="col-3 col-sm-12">
@@ -113,7 +113,7 @@ export default class CarSharingCustomTab extends React.Component <Props, State> 
                                         toggle={this.toggleDelete}
                                         delay={{show: 500, hide: 0}}
                                     >
-                                        Supprimer
+                                        Supprimer{/*TODO : loader*/}
                                     </Tooltip>
                                 </div>
                             </Row>

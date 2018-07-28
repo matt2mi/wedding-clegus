@@ -1,16 +1,17 @@
+// TODO : TODOS front
+// TODO : vérifi bad caractères sur pv key sur heroku
+// TODO : loader sur boutons supprimer/modifier covoit
+// TODO : Unsubscribe dans mails - dans front demande de remplir son mail puis check si existe ou pas etc..
 // TODO : update journey confirmation on put
-// TODO : delete journey confirmation
+// TODO : send confirmation after deleted covoit
 // TODO : réactiver sub covoit
-// TODO : modif message retour si envoi mail foireux
 // TODO : vérifs mails existant (new sub, new présence => modif présence ??)
 // TODO : cookie bloquer nouvelle presence et proposer modification
 // TODO : jest - supertest - https://github.com/Sfeir/sfeir-school-nodejs/tree/project-12-readme/06_project
-// TODO : Unsubscribe dans mails - dans front demande de remplir son mail puis check si existe ou pas etc..
 // TODO : vérif champ rempli dans template de mail
 // TODO : use return msg in front
 // TODO : ajouter logs pblm firebase
 // TODO : refacto une seule fct sendMail(subject, htmlPart, recipients)
-// TODO : send confirmation after deleted covoit
 
 require('dotenv').config();
 const emailValidator = require("email-validator");
@@ -19,6 +20,12 @@ const path = require('path');
 
 const clegusPicSignature = path.join(__dirname, 'new-cle-gus-contact.png');
 const cheers = path.join(__dirname, 'cheers-dicaprio.gif');
+
+console.log('------------------------- process pv key');
+console.log(process.env.PV_KEY_ID);
+console.log('------------------------- brut');
+console.log('-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCtKMPfXjviddNS\ntE6xIW6DIGAJpmiUMMl0hT6uILOw7kaJJljx/tUM5TvRcBw07XhUZVdf8nuENQVA\nH5WC+3RLfjMhxTTiijq0CK6IAE+9XGNVmm12SfrpICJO+TvSVDelHz6VPik/NyMA\nY9iZ8EAX6W0YOunY+b9mkJsPfPa714stqQx2Ku0Lhu9/J2tsNhsruLxmx1jCvmjc\nlXpKsqY4iCPxs/Tysfolsop7v3CXHhyYehuWm/5n+J/kNCKFm9KMR3eP1l5MehHn\ni4ztQLZ6yhwEP1xayB4+5vowanwxRRxVXWoXXYwqRE1ZlFBvRwP79zbQphre5vP2\nojTd30dlAgMBAAECggEABB2msDm/byXRUNMv1qZ+h7feiIQv0qvpMe+T2pQ06TT0\nsMBcV14xBrYxKoyBYyGs3UauYb20AWO4PPqzNVKQRFYa1YfoNqVF+W8GZP2q54uZ\nYdjCls/x2pY0so9ahGiTjQV12ZrJZLMFDjaRWLFc+KSH/w4xbkKbcc7onKDiBXtz\nQF388loHZZdO/+UW/yeSVEjq0y8wwBHpJX5e8J7loQljCPGU0VATHOAOqoqdPrBp\n+33ShV95lqhtzqRURAaM9pCJYyVcoHvyaan1Oes55fzcLB/2pQ/AJhdjw0opa/Gz\n29sNbo3/mf2Zqr3TpEmdJwzg4qXDuwiRicuJQxUIAQKBgQDvTD/rX7uxAhJKs5w4\nyrB9VTzzLpAUFBgWd5EgrCBuxtAsHKW45pqqxhx/NZhQx53iJ72+ZwglCSYdM2PI\niSA6GTO6ejzLvgrOf+Mvanryb7dU1Gg1anZ6P+oOKCme5+k7D3TJpryGo8KCMWUf\nMMi2HGd0vvRpwvpHFttNAXP4AQKBgQC5PsHctSZEmp2sMrF3M9rpVZnNEJuGtDX1\nzhF3klrLCDXCHv1Dv1y29ObZ6jMn+kkF6IfF9hm1xN/T52Su5DtXMBFSj/Nr4TVk\nQS6wmtCkae/e5TU7uT3DFQtTX1McyVFlBdSxwprVSyWySRgptPCxw8h3P87Mytse\nyKzOspZvZQKBgQCjz1+mQbebeV6KMp/LpLziXzpFAmfwxryijKEVa58cFg8lU0sC\n4yGXq9yQHGEzUyK6URgrwh4qNDQaIza4bV5ZRy1JByqdEnAVYihkKhEV6vHmKS1Y\n+5M1JpGTtVygggL/whnhfLlrtaiONUAS9PNA7vrHSXzI9YccqQHgmhEIAQKBgQCb\nUfluOx05DIMDrQWLsxjr5/ArNq+QxG0yCnQu07H45otclms4cK0mYjVlpa766Cpu\nH8gnve9UrxwVKsEKuybeNdlwZm5tl8kSpGyne0dRc9nCBGEcEHeuqGh0oUqoqkvq\n7namDUuRZ47V69+sqJ/gDQ56ni+hGr2bFBuAu9DS2QKBgEOlotujNUqvRXXQ1p9l\nH1h6XwYQJKGkl+/6UTq7MQedN3WViUUPAcsKA09lu1kwow3x5q4L/hfca/e/hA2l\nRf2nI8N7IfVsMwrjAbSIub3lTk7+CL7AWifdCGPJ1Use3cDCm3oi5708OwzL6Nui\nSwvHBuZY3LhtWYnJT45ErojH\n-----END PRIVATE KEY-----\n');
+console.log('------------------------- fin');
 
 const admin = require("firebase-admin");
 // get credentials from params > service accounts
@@ -72,11 +79,7 @@ const sendNewJourneyMailToOwners = (journey, callback) => {
     transporter.sendMail(
         {
             from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
-            to: [
-                '2m1tema@gmail.com',
-                'clemenceesnault@laposte.net',
-                'augustin.bannier@hotmail.fr'
-            ],
+            to: process.env.OWNERS_LIST,
             subject: 'Nouveau covoit\' proposé par ' + journey.driverFirstName,
             html: getNewJourneyHtmlPart(journey)
         },
@@ -156,11 +159,7 @@ const sendNewPresenceMailToOwners = (presence, callback) => {
     transporter.sendMail(
         {
             from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
-            to: [
-                '2m1tema@gmail.com',
-                'clemenceesnault@laposte.net',
-                'augustin.bannier@hotmail.fr'
-            ],
+            to: process.env.OWNERS_LIST,
             subject: presence.who + ' en plus au mariage !',
             html: getNewPresenceHtmlPart(presence),
             attachments: {
@@ -287,6 +286,8 @@ const statsCallback = (error, committed, snapshot, res, logStr) => {
     }
 };
 
+const validMailMessage = ' Vous recevrez bientôt un mail de confirmation.';
+
 module.exports = function (app) {
 
     app.get('/api/journeys', (req, res) => {
@@ -358,6 +359,7 @@ module.exports = function (app) {
 
         promise
             .then(() => {
+                let message = 'Trajet sauvegardé.';
                 if (process.env.SEND_MAIL === 'true') {
                     sendNewJourneyMailToOwners({...req.body, id: newObject.key}, function (error) {
                         if (error) {
@@ -367,7 +369,6 @@ module.exports = function (app) {
                         }
                     });
 
-                    // TODO :
                     sendNewJourneyMailToSubscribers(req.body, function (error) {
                         if (error) {
                             console.error(LOG_STR + ' error sending mail to subscribers', error);
@@ -383,6 +384,7 @@ module.exports = function (app) {
                                     error);
                             } else {
                                 console.log(`${LOG_STR} confirmation mail sent to: ${req.body.driverEmail}`);
+                                message += validMailMessage;
                             }
                         });
                     } else {
@@ -391,8 +393,7 @@ module.exports = function (app) {
                 }
                 res.status(200).json({
                     saved: true,
-                    message: 'Trajet sauvegardé. Si vous avez renseigné une adresse email, vous recevrez bientôt ' +
-                    'un mail de confirmation.'
+                    message
                 });
                 console.log(`${LOG_STR} journey created for ${req.body.driverFirstName} ${req.body.driverName}`);
             })
@@ -424,21 +425,22 @@ module.exports = function (app) {
                     });
                     console.error(LOG_STR + 'error updating journey:', error);
                 } else {
-                    // if (req.body.driverEmail !== '') {
-                    //     if (process.env.SEND_MAIL === 'true') {
-                    //         sendNewJourneyConfirmationMail(req.body)
-                    //             .then(() => {
-                    //                 console.log(`${LOG_STR}journey confirmation sent ${req.body.driverEmail}`);
-                    //             })
-                    //             .catch(error =>
-                    //                 console.error(
-                    //                     `${LOG_STR}error sending confirmation mail to: ${req.body.driverEmail}, error:`,
-                    //                     error));
-                    //     }
-                    // }
+                    let message = 'Modification enregistrée.';
+                    if (process.env.SEND_MAIL === 'true' && emailValidator.validate(req.body.driverEmail)) {
+                        sendNewJourneyConfirmationMail(req.body, function (error) {
+                            if (error) {
+                                console.error(
+                                    `${LOG_STR} error sending confirmation mail to: ${req.body.driverEmail}, error:`,
+                                    error);
+                            } else {
+                                console.log(`${LOG_STR}journey confirmation sent ${req.body.driverEmail}`);
+                                message += validMailMessage;
+                            }
+                        });
+                    }
                     res.status(200).json({
                         saved: true,
-                        message: 'Modification enregistrée.' // Si vous avez renseigné une adresse email, vous recevrez bientôt un mail de confirmation.'
+                        message
                     });
                     console.log(`${LOG_STR}journey ${req.body.id} updated`);
                 }
@@ -450,7 +452,6 @@ module.exports = function (app) {
         db.ref("journeys/" + req.body.id)
             .update({activated: false})
             .then(() => {
-                // TODO : sendConfirmationMail ?
                 res.status(200).json({});
                 console.log(`${LOG_STR}journey ${req.body.id} deleted`);
             })
@@ -506,7 +507,6 @@ module.exports = function (app) {
         ref.update({activated: false})
             .then(() => ref.once('value'))
             .then(function (snapshot) {
-                // TODO : sendConfirmationMail ?
                 res.json({
                     saved: true,
                     message: `${snapshot.val().email} est bien désinscrit, vous ne recevrez plus de messages concernant les nouvelles propositions de covoiturages.`
@@ -576,6 +576,7 @@ module.exports = function (app) {
                     res.json({saved: false, message: error});
                     console.error(LOG_STR + 'error creating presence ', error);
                 } else {
+                    let message = 'Merci pour votre réponse, votre participation a bien été enregistrée.';
                     if (process.env.SEND_MAIL === 'true') {
                         sendNewPresenceMailToOwners(req.body, function (error, body) {
                             if (error) {
@@ -591,6 +592,7 @@ module.exports = function (app) {
                                         `POST - /api/presence - new presence mail confirmation not sent to ${req.body.email}, error:`,
                                         error);
                                 } else {
+                                    message += validMailMessage;
                                     console.log(`POST - /api/presence - new presence mail confirmation sent to ${req.body.email}`);
                                 }
                             });
@@ -601,8 +603,7 @@ module.exports = function (app) {
 
                     res.json({
                         saved: true,
-                        message: 'Merci pour votre réponse, votre participation a bien été enregistrée.'
-                        + ' Si vous avez renseigné une adresse email valide, vous recevrez bientôt un mail de confirmation.'
+                        message
                     });
                     console.log(`${LOG_STR}new presence answer created for ${req.body.who}`);
                 }
@@ -680,6 +681,7 @@ module.exports = function (app) {
                     res.json({saved: false, message: error});
                     console.error(LOG_STR + 'error updating presence ', error);
                 } else {
+                    let message = 'Merci pour votre réponse, votre participation a bien été mise à jour.';
                     if (process.env.SEND_MAIL === 'true') {
                         sendNewPresenceMailToOwners(req.body, function (error, body) {
                             if (error) {
@@ -695,6 +697,7 @@ module.exports = function (app) {
                                         `${LOG_STR}new presence mail confirmation not sent to ${req.body.email}, error:`,
                                         error);
                                 } else {
+                                    message += validMailMessage;
                                     console.log(`${LOG_STR}new presence mail confirmation sent to ${req.body.email}`);
                                 }
                             });
@@ -703,11 +706,9 @@ module.exports = function (app) {
                         }
                     }
 
-                    // TODO : modif message retour si envoi mail foireux
                     res.json({
                         saved: true,
-                        message: 'Merci pour votre réponse, votre participation a bien été enregistrée.'
-                        + ' Si vous avez renseigné une adresse email valide, vous recevrez bientôt un mail de confirmation.'
+                        message
                     });
                     console.log(`${LOG_STR}new presence answer created for ${req.body.who}`);
                 }
