@@ -1,10 +1,5 @@
-// TODO : TODOS front
-// TODO : vérifi bad caractères sur pv key sur heroku
-// TODO : loader sur boutons supprimer/modifier covoit
-// TODO : Unsubscribe dans mails - dans front demande de remplir son mail puis check si existe ou pas etc..
 // TODO : update journey confirmation on put
 // TODO : send confirmation after deleted covoit
-// TODO : réactiver sub covoit
 // TODO : vérifs mails existant (new sub, new présence => modif présence ??)
 // TODO : cookie bloquer nouvelle presence et proposer modification
 // TODO : jest - supertest - https://github.com/Sfeir/sfeir-school-nodejs/tree/project-12-readme/06_project
@@ -12,6 +7,8 @@
 // TODO : use return msg in front
 // TODO : ajouter logs pblm firebase
 // TODO : refacto une seule fct sendMail(subject, htmlPart, recipients)
+// TODO : réactiver sub covoit
+// TODO : Unsubscribe dans mails - dans front demande de remplir son mail puis check si existe ou pas etc..
 
 require('dotenv').config();
 const emailValidator = require("email-validator");
@@ -203,31 +200,6 @@ const sendPresenceConfirmationMail = (presence, callback) => {
         callback);
 };
 
-const getSubscriptionConfirmationHtmlPart = (email, key) => {
-    return '<h3>Inscription au news de covoiturages</h3>' +
-
-        '<p>Votre adresse email a bien été ajoutée à la liste. Vous serez prévenu par mail dès qu\'un nouveau ' +
-        'covoiturage sera ajouté.</p>' +
-
-        '<p>Pour vous désinscrire, cliquez ici :<br/>' +
-        '<a href=\"https://mariageclegus.herokuapp.com/#/covoiturages/desinscription/' + key + '\">se désinscrire</a></p>' +
-
-        '<p>À très vite !</p>' +
-
-        '<p>Clémence et Augustin.</p>';
-};
-const sendSubscriptionConfirmationMail = (email, key, callback) => {
-    transporter.sendMail(
-        {
-            from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
-            to: email,
-            subject: 'Inscription aux covoiturages enregistrée !',
-            html: getSubscriptionConfirmationHtmlPart(email, key)
-        },
-        callback);
-};
-
-// TODO : unsubscribe dans chaque mail => comportement diff dans comp et api
 const getNewJourneySubscribersHtmlPart = (journey) => {
     return '<h3>Nouveau covoiturage</h3>' +
 
@@ -454,64 +426,6 @@ module.exports = function (app) {
                     message: 'La suppression n\'a pas été enregistrée, veuillez réessayer plus tard.'
                 });
                 console.error(`${LOG_STR}error deleting journey ${req.body.id}, error:`, error)
-            });
-    });
-
-
-    app.post('/api/carSharingSubscribe', (req, res) => {
-        const LOG_STR = 'POST - /api/carSharingSubscribe - ';
-        if (emailValidator.validate(req.body.email)) {
-            const newObject = db.ref(SUBSCRIPTIONS_PATH).push();
-            const promise = newObject.set({email: req.body.email, activated: true});
-            promise
-                .then(() => {
-                    if (process.env.SEND_MAIL === 'true') {
-                        sendSubscriptionConfirmationMail(req.body.email, newObject.key, error => {
-                            if (error) {
-                                console.error(
-                                    LOG_STR + 'error sending subscription confirmation mail',
-                                    error);
-                            } else {
-                                console.log(LOG_STR + 'subscription confirmation mail sent');
-                            }
-                        });
-                    }
-                    res.json({saved: true, message: `Abonnement enregistré pour ${req.body.email} !`});
-                    console.log(`${LOG_STR}new subscription saved for ${req.body.email}`);
-                })
-                .catch((error) => {
-                    res.json({
-                        saved: false,
-                        message: 'L\'abonnement n\'a pas fonctionné, réessayez plus tard.'
-                    });
-                    console.error(
-                        `${LOG_STR}error subscribing ${req.body.email}, error:`,
-                        error);
-                });
-        } else {
-            res.json({saved: false, message: `Désolé, ${req.body.email} n'est pas une adresse email valide.`});
-            console.error(`${LOG_STR}error wrong mail address: ${req.body.email}`);
-        }
-    });
-
-    app.get('/api/carSharingUnsubscribe/:key', (req, res) => {
-        const LOG_STR = `GET - /api/carSharingUnsubscribe/${req.params.key} - `;
-        const ref = db.ref("subscriptions/" + req.params.key);
-        ref.update({activated: false})
-            .then(() => ref.once('value'))
-            .then(function (snapshot) {
-                res.json({
-                    saved: true,
-                    message: `${snapshot.val().email} est bien désinscrit, vous ne recevrez plus de messages concernant les nouvelles propositions de covoiturages.`
-                });
-                console.log(`${LOG_STR}unsubscribe ok for ${snapshot.val().email}`);
-            })
-            .catch((error) => {
-                res.json({
-                    saved: false,
-                    message: `La désinscription n'a pas fonctionnée, vous pouvez réessayer plus tard.`
-                });
-                console.error(`${LOG_STR}unsubscribe NOT ok, error: ${error}`);
             });
     });
 
