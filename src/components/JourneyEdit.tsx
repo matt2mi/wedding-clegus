@@ -26,6 +26,7 @@ interface State {
     readonly toCity: string;
     readonly freeSeats: number;
     readonly comment: string;
+    readonly isDirtyForm: boolean;
     readonly loading: boolean;
     readonly displayForm: boolean;
     readonly notificationVisible: boolean;
@@ -47,7 +48,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
         this.updateJourney = this.updateJourney.bind(this);
 
         this.CreateButton = withRouter(({history}) => (
-            <button type="button" className="btn btn-info" onClick={(e) => this.createJourney(e, history)}>
+            <button type="button" className="btn btn-info" onClick={(e) => this.createJourney(e, history)} disabled={!this.state.isDirtyForm}>
                 {
                     this.state.loading ?
                         <div className="loader">
@@ -64,7 +65,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
             </button>
         ));
         this.UpdateButton = withRouter(({history}) => (
-            <button type="button" className="btn btn-info" onClick={(e) => this.updateJourney(e, history)}>
+            <button type="button" className="btn btn-info" onClick={(e) => this.updateJourney(e, history)} disabled={!this.state.isDirtyForm}>
                 {
                     this.state.loading ?
                         <div className="loader">
@@ -105,6 +106,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
             toCity: '',
             freeSeats: 0,
             comment: '',
+            isDirtyForm: false,
             loading: false,
             displayForm: true,
             notificationVisible: false,
@@ -142,6 +144,7 @@ export default class JourneyDetails extends React.Component<Props, State> {
 
     /* tslint:disable */
     handleChangeForm(event: any, fieldName: string) {
+        this.setState({isDirtyForm: true});
         event.preventDefault();
         const change = {};
         change[fieldName] = event.target.value;
@@ -184,10 +187,6 @@ export default class JourneyDetails extends React.Component<Props, State> {
             <div className="base-div-content">
                 <Row>
                     <Col sm="12">
-                        {
-                            // TODO : état sauvegardé avec message from serveur pour mail confirmation
-                            // TODO : action retour seulement
-                        }
                         <Card body={true} className="mt-3">
                             <div className="title">Détails du trajet</div>
                             {

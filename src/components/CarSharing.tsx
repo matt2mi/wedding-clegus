@@ -16,6 +16,7 @@ interface State {
     readonly goEditJourney: boolean;
     readonly goNewJourney: boolean;
     readonly loading: boolean;
+    readonly errorGettingJourneys: boolean;
 }
 
 export default class CarSharing extends React.Component <Props, State> {
@@ -43,7 +44,8 @@ export default class CarSharing extends React.Component <Props, State> {
             goEditJourney: false,
             goNewJourney: false,
             loading: true,
-            journeyId: ''
+            journeyId: '',
+            errorGettingJourneys: false
         };
     }
 
@@ -106,14 +108,14 @@ export default class CarSharing extends React.Component <Props, State> {
                         freeSeats: journey.freeSeats,
                         comment: journey.comment
                     }));
-                    this.setState({journeys: trueJourneys});
+                    this.setState({journeys: trueJourneys, errorGettingJourneys: false});
                 } else {
-                    this.setState({journeys: []});
+                    this.setState({journeys: [], errorGettingJourneys: false});
                 }
                 this.stopLoading();
             })
             .catch(e => {
-                // TODO : affichage si erreur ??
+                this.setState({errorGettingJourneys: true});
                 console.warn(e);
                 this.stopLoading();
             });
@@ -179,15 +181,17 @@ export default class CarSharing extends React.Component <Props, State> {
                             <Row>
                                 <Col sm="12">
                                     {
-                                        this.state.journeys.length < 1 ?
-                                            <div>Pas encore de trajet proposé...</div> :
-                                            this.state.journeys.map((journey: Journey) => (
-                                                <CarSharingCustomTab
-                                                    key={journey.id}
-                                                    journey={journey}
-                                                    editJourney={this.editJourney}
-                                                    deleteJourney={this.deleteJourney}
-                                                />))
+                                        this.state.errorGettingJourneys ?
+                                            <div>Erreur lors de l'affichage des covoiturages. Réessayez plus tard.</div> :
+                                            this.state.journeys.length < 1 ?
+                                                <div>Pas encore de trajet proposé...</div> :
+                                                this.state.journeys.map((journey: Journey) => (
+                                                    <CarSharingCustomTab
+                                                        key={journey.id}
+                                                        journey={journey}
+                                                        editJourney={this.editJourney}
+                                                        deleteJourney={this.deleteJourney}
+                                                    />))
                                     }
                                 </Col>
                             </Row>

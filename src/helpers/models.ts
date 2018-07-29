@@ -10,7 +10,7 @@ export class Journey {
     freeSeats: number;
     comment: string;
 
-    constructor(id: string = 'id',
+    constructor(id: string = Math.random() + '',
                 comment: string = 'commentcomment\ncommentcomment\ncommentcomment',
                 driverFirstName: string = 'matt',
                 driverName: string = 'demi',
