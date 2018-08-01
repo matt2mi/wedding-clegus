@@ -1,14 +1,4 @@
-// const emailValidator = require("email-validator");
-const nodemailer = require('nodemailer');
-
-// Nodemailer init
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.MAIL_VALUE,
-        pass: process.env.MAIL_MDP
-    }
-});
+const emailValidator = require("email-validator");
 
 const getRemindMailText = (infos) =>
     '<h3>' + infos.who + ',</h3>' +
@@ -29,25 +19,20 @@ const getRemindMailText = (infos) =>
 
     'Autre commentaire: ' + infos.comment + '</p>' +
 
-    '<p>Pour modifier vos informations, <a href="https://mariageclegus.herokuapp.com/#/presence/edit/' + infos.id + '">cliquez ici</a>. </p>' +
-    '<p>Et si vous souhaitez faire du covoiturage, <a href="http://mariageclegus.herokuapp.com/#/covoiturages">ça se passe ici</a>. </p>' +
+    '<p>Pour modifier vos informations, ' +
+    '<a href="' + process.env.SITE_URL + '/#/presence/edit/' + infos.id + '">cliquez ici</a>.</p>' +
+    '<p>Ou copier-collez ce lien dans votre navigateur: ' + process.env.SITE_URL + '/#/presence/edit/' + infos.id + '</p>' +
+
+    '<p>Et si vous souhaitez faire du covoiturage, ' +
+    '<a href="' + process.env.SITE_URL + '/#/covoiturages">ça se passe ici</a>.</p>' +
+    '<p>Ou copier-collez ce lien dans votre navigateur: ' + process.env.SITE_URL + '/#/covoiturages</p>' +
 
     '<p>À très vite !</p>' +
 
     '<p>Clémence et Augustin.</p>';
 
-const sendNewJourneyMailToOwners = (infos, callback) =>
-    transporter.sendMail(
-        {
-            from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
-            to: infos.email,
-            subject: 'Rappel Mariage Clé & Gus',
-            html: getRemindMailText(infos)
-        },
-        callback);
-
-module.exports = (db, callback) => {
-    console.log('bite');
+module.exports = (db, transporter, callback) => {
+    console.log('go remind !!');
     db.ref('presences').once("value", function (snapshot) {
         const dbPresences = snapshot.val();
 
@@ -59,8 +44,7 @@ module.exports = (db, callback) => {
                     id: key,
                     who: dbPresences[key].who,
                     phoneNumber: dbPresences[key].phoneNumber,
-                    email: '2m1tema@gmail.com',
-                    // email: dbPresences[key].email,
+                    email: dbPresences[key].email,
                     nbPersons: dbPresences[key].nbPersons,
                     nbPorkPersons: dbPresences[key].nbPorkPersons,
                     nbVeganPersons: dbPresences[key].nbVeganPersons,
@@ -71,20 +55,25 @@ module.exports = (db, callback) => {
                     commentSundayLunchInfo: dbPresences[key].commentSundayLunchInfo,
                     comment: dbPresences[key].comment
                 }))
-                .filter(presence => presence.id === '-LI2zaDYowVRCa_RYilN')
-                // .filter(presence => emailValidator.validate(presence.email))
+                .filter(presence => emailValidator.validate(presence.email))
                 .forEach(validEmailPresence => {
                     if (process.env.SEND_MAIL) {
-                        sendNewJourneyMailToOwners(validEmailPresence, function (error, body) {
-                            if (error) {
-                                console.error('ERROR - Remind mail not sent :', error);
-                            } else {
-                                nbMailsSent++;
-                                console.log('SUCCESS - Remind mail sent', body);
-                            }
-                        });
+                        // transporter.sendMail(
+                        //     {
+                        //         from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
+                        //         to: validEmailPresence.email,
+                        //         subject: 'Rappel pour le Mariage de Clé & Gus',
+                        //         html: getRemindMailText(validEmailPresence)
+                        //     },
+                        //     function (error) {
+                        //         if (error) {
+                        //             console.error('ERROR - Remind mail not sent :', error);
+                        //         } else {
+                        //             nbMailsSent++;
+                        //         }
+                        //     });
                     }
-                    callback(null, 1);
+                    callback(null, nbMailsSent);
                 });
         } else {
             callback('no existing presences yet.', 0);

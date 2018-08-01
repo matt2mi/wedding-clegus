@@ -110,6 +110,20 @@ export default class PresenceList extends React.Component <Props, State> {
     render() {
         return (
             <div className="base-div-content">
+                <Row className="justify-content-center">
+                    <Col>
+                        <button
+                            type="button"
+                            className="btn btn-info mr-2"
+                            onClick={(e) => {
+                                // fetch('/api/remindMail');
+                            }}
+                        >
+                            lancer un rappel à tous ces gens
+                        </button>
+                    </Col>
+                </Row>
+
                 <Row>
                     <Col>
                         <p>Total : {this.state.nbParticipants} participants,
