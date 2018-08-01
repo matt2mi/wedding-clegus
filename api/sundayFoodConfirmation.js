@@ -60,7 +60,7 @@ module.exports = (db, transporter, callback) => {
                     if (process.env.SEND_MAIL) {
                         // transporter.sendMail(
                         //     {
-                        //         from: 'Mariage Cle & Gus <mariageclegus@gmail.com>',
+                        //         from: 'Mariage Cle & Gus <' + process.env.MAIL_VALUE + '>',
                         //         to: validEmailPresence.email,
                         //         subject: 'Rappel pour le Mariage de Clé & Gus',
                         //         html: getRemindMailText(validEmailPresence)

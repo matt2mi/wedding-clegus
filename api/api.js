@@ -71,7 +71,7 @@ const getNewJourneyHtmlPart = (journey) => {
 const sendNewJourneyMailToOwners = (journey, callback) => {
     transporter.sendMail(
         {
-            from: 'Mariage Cle & Gus <mariageclegus@deumie.org>',
+            from: 'Mariage Cle & Gus <' + process.env.MAIL_VALUE + '>',
             to: process.env.OWNERS_LIST,
             subject: 'Nouveau covoit\' proposé par ' + journey.driverFirstName,
             html: getNewJourneyHtmlPart(journey)
@@ -103,7 +103,7 @@ const getNewJourneyConfirmationHtmlPart = (journey) => {
 const sendNewJourneyConfirmationMail = (journey, callback) => {
     transporter.sendMail(
         {
-            from: 'Mariage Cle & Gus <mariageclegus@deumie.org>',
+            from: 'Mariage Cle & Gus <' + process.env.MAIL_VALUE + '>',
             to: journey.driverEmail,
             subject: 'Trajet ' + journey.fromCity + ' - ' + journey.toCity + ' enregistré !',
             html: getNewJourneyConfirmationHtmlPart(journey)
@@ -151,7 +151,7 @@ const getNewPresenceHtmlPart = presence => {
 const sendNewPresenceMailToOwners = (presence, isUpdate, callback) => {
     transporter.sendMail(
         {
-            from: 'Mariage Cle & Gus <mariageclegus@deumie.org>',
+            from: 'Mariage Cle & Gus <' + process.env.MAIL_VALUE + '>',
             to: process.env.OWNERS_LIST,
             subject: presence.who + isUpdate ? ' a modifié sa présence' : ' en plus au mariage !',
             html: getNewPresenceHtmlPart(presence),
@@ -191,7 +191,7 @@ const getPresenceConfirmationHtmlPart = (presence) => {
 const sendPresenceConfirmationMail = (presence, callback) => {
     transporter.sendMail(
         {
-            from: 'Mariage Cle & Gus <mariageclegus@deumie.org>',
+            from: 'Mariage Cle & Gus <' + process.env.MAIL_VALUE + '>',
             to: presence.email,
             subject: 'Participation au mariage enregistrée !',
             html: getPresenceConfirmationHtmlPart(presence),
@@ -232,7 +232,7 @@ const sendNewJourneyMailToSubscribers = (journey, callback) => {
             console.log('subscribers', subscribers);
             transporter.sendMail(
                 {
-                    from: 'Mariage Cle & Gus <mariageclegus@deumie.org>',
+                    from: 'Mariage Cle & Gus <' + process.env.MAIL_VALUE + '>',
                     to: subscribers,
                     subject: 'Un nouveau covoiturage a été ajouté !',
                     html: getNewJourneySubscribersHtmlPart(journey)
@@ -263,7 +263,7 @@ const getSubscriptionConfirmationHtmlPart = (email, key) => {
 const sendSubscriptionConfirmationMail = (email, key, callback) => {
     transporter.sendMail(
         {
-            from: 'Mariage Cle & Gus <mariageclegus@deumie.org>',
+            from: 'Mariage Cle & Gus <' + process.env.MAIL_VALUE + '>',
             to: email,
             subject: 'Inscription aux covoiturages enregistrée !',
             html: getSubscriptionConfirmationHtmlPart(email, key)
