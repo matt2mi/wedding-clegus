@@ -12,13 +12,13 @@ const getRemindMailText = (infos) =>
     '</p>' +
     '<p>N’oubliez pas vos palets, boules de pétanque, mölkky et autres jeux de plein air : il fera beau, au moins dans nos cœurs !</p>' +
     '<p>Prévoyez de quoi vous couvrir pour le soir car nous serons surtout en extérieur.</p>' +
-    '<p>Pour les campeur-euse-s, il y a une douche à la salle. Il faudra peut être prendre votre ticket mais vous devriez' +
+    '<p>Pour les campeur-euse-s, il y a une douche à la salle. Il faudra peut-être prendre votre ticket mais vous devriez' +
     ' pouvoir vous toiletter.</p>' +
-    '<p>On vous a ajouté ci-dessous un petit récapitulatif des informations que vous aviez renseignez lors de votre inscription.</p>' +
+    '<p>On vous a ajouté ci-dessous un petit récapitulatif des informations que vous aviez renseignées lors de votre inscription.</p>' +
 
     '<br/>' +
 
-    '<p>On vous embrasse, on a hâte…</p>' +
+    '<p>On vous embrasse, on a hâte !</p>' +
     '<p>PS : pour le plus beau sourire de l’ouest, work in progress…<img src="cid:smile"/></p>' +
 
     '<br/>' +
@@ -102,7 +102,6 @@ module.exports = (db, transporter, callback) => {
                     comment: dbPresences[key].comment
                 }))
                 .filter(presence => emailValidator.validate(presence.email))
-                .filter(presence => process.env.OWNERS_LIST.includes(presence.email))
                 .map((validEmailPresence) => {
                     return new Promise((resolve, reject) => {
                         asyncFunction(validEmailPresence, transporter, resolve, reject);
