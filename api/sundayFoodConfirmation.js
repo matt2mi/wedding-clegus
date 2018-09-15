@@ -20,6 +20,8 @@ const getRemindMailText = (infos) =>
 
     '<p>On vous embrasse, on a hâte !</p>' +
     '<p>PS : pour le plus beau sourire de l’ouest, work in progress…<img src="cid:smile"/></p>' +
+    '<p>PS2 : Et s\'il vous reste des questions, n\'hésitez surtout pas à vous renseigner auprès de nous ou de nos témoins ' +
+    '<a href="' + process.env.SITE_URL + '/#/contacts">ICI</a>.</p>' +
 
     '<br/>' +
 
