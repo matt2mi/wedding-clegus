@@ -282,6 +282,38 @@ const statsCallback = (error, committed, snapshot, res, logStr) => {
 
 const validMailMessage = ' Vous recevrez bientôt un mail de confirmation.';
 
+const testNbGoodMail = (db) => {
+    db.ref('presences').once("value", function (snapshot) {
+        const dbPresences = snapshot.val();
+
+        if (dbPresences) {
+            let presences = Object
+                .keys(dbPresences)
+                .map(key => ({
+                    id: key,
+                    who: dbPresences[key].who,
+                    phoneNumber: dbPresences[key].phoneNumber,
+                    email: dbPresences[key].email,
+                    nbPersons: dbPresences[key].nbPersons,
+                    nbPorkPersons: dbPresences[key].nbPorkPersons,
+                    nbVeganPersons: dbPresences[key].nbVeganPersons,
+                    whenSaturdayMorning: dbPresences[key].whenSaturdayMorning,
+                    whenSaturdayLunch: dbPresences[key].whenSaturdayLunch,
+                    whenSaturdayDiner: dbPresences[key].whenSaturdayDiner,
+                    whenSundayLunch: dbPresences[key].whenSundayLunch,
+                    commentSundayLunchInfo: dbPresences[key].commentSundayLunchInfo,
+                    comment: dbPresences[key].comment
+                }));
+
+            console.log('nb good mail address:',
+                presences.filter(presence => emailValidator.validate(presence.email)).length);
+            console.log('bad mail address:', presences
+                .filter(presence => !emailValidator.validate(presence.email))
+                .map(presence => presence.email));
+        }
+    });
+};
+
 module.exports = function (app) {
 
     app.get('/api/journeys', (req, res) => {
@@ -607,16 +639,16 @@ module.exports = function (app) {
     // remind mail part
     app.get('/api/remindMail', (req, res) => {
         const LOG_STR = 'GET - /api/remindMail -';
-        console.log('LOG_STR', LOG_STR);
-        // require('./sundayFoodConfirmation')(db, transporter, (error, nbMailsSent) => {
-        //     if (error) {
-        //         res.status(500).json({saved: false});
-        //         console.error(`${LOG_STR} ERROR - remind mails not sent: ${error}`);
-        //     } else {
-        //         res.status(200).json({saved: true});
-        //         console.log(`${LOG_STR} ${nbMailsSent} remind mails sent`);
-        //     }
-        // });
+        testNbGoodMail(db);
+        require('./sundayFoodConfirmation')(db, transporter, (error, nbMailsSent) => {
+            if (error) {
+                res.status(500).json({saved: false, message: 'a pô marché, déso :/'});
+                console.error(`${LOG_STR} ERROR - remind mails not sent: ${error}`);
+            } else {
+                res.status(200).json({saved: true, message: `bravo nils, t'as spammé ${nbMailsSent} personnes !`});
+                console.log(`${LOG_STR} ${nbMailsSent} remind mails sent`);
+            }
+        });
     });
 
     app.get('/api/presences/:id', (req, res) => {

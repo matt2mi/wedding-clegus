@@ -2,6 +2,7 @@ import * as React from 'react';
 import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
 import { PresenceResponse } from '../helpers/models';
+import { Alert } from 'reactstrap';
 
 interface Props {
 }
@@ -15,11 +16,21 @@ interface State {
     readonly nbSaturdayLunchParticipants: number;
     readonly nbSaturdayDinerParticipants: number;
     readonly nbSundayLunchParticipants: number;
+    readonly loading: boolean;
+    readonly notificationVisible: boolean;
+    readonly notificationMessage: string;
+    readonly notificationColor: string;
 }
 
 export default class PresenceList extends React.Component <Props, State> {
     constructor(props: Props) {
         super(props);
+
+        this.getPresences = this.getPresences.bind(this);
+        this.startLoading = this.startLoading.bind(this);
+        this.stopLoading = this.stopLoading.bind(this);
+        this.toggleNotification = this.toggleNotification.bind(this);
+        this.sendRemind = this.sendRemind.bind(this);
 
         this.state = {
             presences: [],
@@ -29,7 +40,11 @@ export default class PresenceList extends React.Component <Props, State> {
             nbSaturdayMorningParticipants: 0,
             nbSaturdayLunchParticipants: 0,
             nbSaturdayDinerParticipants: 0,
-            nbSundayLunchParticipants: 0
+            nbSundayLunchParticipants: 0,
+            loading: false,
+            notificationVisible: false,
+            notificationMessage: '',
+            notificationColor: ''
         };
     }
 
@@ -107,20 +122,77 @@ export default class PresenceList extends React.Component <Props, State> {
             .catch(e => console.warn(e));
     }
 
+    startLoading() {
+        this.setState({loading: true});
+    }
+
+    stopLoading() {
+        this.setState({loading: false});
+    }
+
+    toggleNotification({saved, message}: { saved: boolean, message: string }, color: string): void {
+        this.setState({
+            notificationVisible: true,
+            notificationMessage: message,
+            notificationColor: color,
+        });
+    }
+
+    sendRemind(): void {
+        this.setState({
+            notificationVisible: false,
+            notificationMessage: '',
+            notificationColor: '',
+        });
+        this.startLoading();
+        fetch('/api/remindMail')
+            .then(result => result.json())
+            .then((result: { saved: boolean, message: string }) => {
+                this.toggleNotification(result, 'success');
+                this.stopLoading();
+            })
+            .catch(e => {
+                console.warn(e);
+                this.toggleNotification(
+                    {saved: false, message: 'a pô marché, déso :/'},
+                    'danger'
+                );
+                this.stopLoading();
+            });
+    }
+
     render() {
         return (
             <div className="base-div-content">
                 <Row className="justify-content-center">
                     <Col>
-                        <button
-                            type="button"
-                            className="btn btn-info mr-2"
-                            onClick={(e) => {
-                                // fetch('/api/remindMail');
-                            }}
-                        >
-                            lancer un rappel à tous ces gens
-                        </button>
+                        <Alert color={this.state.notificationColor} isOpen={this.state.notificationVisible}>
+                            {this.state.notificationMessage}
+                        </Alert>
+
+                        {
+                            !this.state.notificationVisible ?
+                                <button
+                                    type="button"
+                                    className="btn btn-info mr-2"
+                                    onClick={this.sendRemind}
+                                >
+                                    {
+                                        this.state.loading ?
+                                            <div className="loader">
+                                                <div className="line-scale line-scale-white">
+                                                    <div/>
+                                                    <div/>
+                                                    <div/>
+                                                    <div/>
+                                                    <div/>
+                                                </div>
+                                            </div> :
+                                            'Spam de rappel'
+                                    }
+                                </button> :
+                                null
+                        }
                     </Col>
                 </Row>
 
