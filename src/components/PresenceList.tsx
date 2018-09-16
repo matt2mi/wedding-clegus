@@ -2,7 +2,6 @@ import * as React from 'react';
 import Col from 'reactstrap/lib/Col';
 import Row from 'reactstrap/lib/Row';
 import { PresenceResponse } from '../helpers/models';
-import { Alert } from 'reactstrap';
 
 interface Props {
 }
@@ -164,37 +163,37 @@ export default class PresenceList extends React.Component <Props, State> {
     render() {
         return (
             <div className="base-div-content">
-                <Row className="justify-content-center">
-                    <Col>
-                        <Alert color={this.state.notificationColor} isOpen={this.state.notificationVisible}>
-                            {this.state.notificationMessage}
-                        </Alert>
+                {/*<Row className="justify-content-center">*/}
+                {/*<Col>*/}
+                {/*<Alert color={this.state.notificationColor} isOpen={this.state.notificationVisible}>*/}
+                {/*{this.state.notificationMessage}*/}
+                {/*</Alert>*/}
 
-                        {
-                            !this.state.notificationVisible ?
-                                <button
-                                    type="button"
-                                    className="btn btn-info mr-2"
-                                    onClick={this.sendRemind}
-                                >
-                                    {
-                                        this.state.loading ?
-                                            <div className="loader">
-                                                <div className="line-scale line-scale-white">
-                                                    <div/>
-                                                    <div/>
-                                                    <div/>
-                                                    <div/>
-                                                    <div/>
-                                                </div>
-                                            </div> :
-                                            'Spam de rappel'
-                                    }
-                                </button> :
-                                null
-                        }
-                    </Col>
-                </Row>
+                {/*{*/}
+                {/*!this.state.notificationVisible ?*/}
+                {/*<button*/}
+                {/*type="button"*/}
+                {/*className="btn btn-info mr-2"*/}
+                {/*onClick={this.sendRemind}*/}
+                {/*>*/}
+                {/*{*/}
+                {/*this.state.loading ?*/}
+                {/*<div className="loader">*/}
+                {/*<div className="line-scale line-scale-white">*/}
+                {/*<div/>*/}
+                {/*<div/>*/}
+                {/*<div/>*/}
+                {/*<div/>*/}
+                {/*<div/>*/}
+                {/*</div>*/}
+                {/*</div> :*/}
+                {/*'Spam de rappel'*/}
+                {/*}*/}
+                {/*</button> :*/}
+                {/*null*/}
+                {/*}*/}
+                {/*</Col>*/}
+                {/*</Row>*/}
 
                 <Row>
                     <Col>
