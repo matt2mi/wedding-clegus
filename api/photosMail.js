@@ -43,7 +43,7 @@ const getPhotoMailText = () => {
 };
 
 const asyncPhotoMailFunction = (validEmail, transporter, resolve, reject) => {
-    if (process.env.SEND_MAIL === 'false') {
+    if (process.env.SEND_MAIL === 'true') {
         transporter.sendMail(
             {
                 from: 'Mariage Cle & Gus <' + process.env.MAIL_VALUE + '>',
