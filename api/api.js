@@ -636,6 +636,21 @@ module.exports = function (app) {
             });
     });
 
+    // photo mail part
+    app.get('/api/photosMail', (req, res) => {
+        const LOG_STR = 'GET - /api/photosMail -';
+        testNbGoodMail(db);
+        require('./photosMail')(db, transporter, (error, nbMailsSent) => {
+            if (error) {
+                res.status(500).json({saved: false, message: 'a pô marché, déso :/'});
+                console.error(`${LOG_STR} ERROR - photo mails not sent: ${error}`);
+            } else {
+                res.status(200).json({saved: true, message: `bravo nils, t'as spammé ${nbMailsSent} personnes !`});
+                console.log(`${LOG_STR} ${nbMailsSent} photo mails sent`);
+            }
+        });
+    });
+
     // remind mail part
     app.get('/api/remindMail', (req, res) => {
         const LOG_STR = 'GET - /api/remindMail -';
