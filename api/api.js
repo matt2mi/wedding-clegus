@@ -285,31 +285,12 @@ const validMailMessage = ' Vous recevrez bientôt un mail de confirmation.';
 const testNbGoodMail = (db) => {
     db.ref('presences').once("value", function (snapshot) {
         const dbPresences = snapshot.val();
-
         if (dbPresences) {
-            let presences = Object
+            let mails = Object
                 .keys(dbPresences)
-                .map(key => ({
-                    id: key,
-                    who: dbPresences[key].who,
-                    phoneNumber: dbPresences[key].phoneNumber,
-                    email: dbPresences[key].email,
-                    nbPersons: dbPresences[key].nbPersons,
-                    nbPorkPersons: dbPresences[key].nbPorkPersons,
-                    nbVeganPersons: dbPresences[key].nbVeganPersons,
-                    whenSaturdayMorning: dbPresences[key].whenSaturdayMorning,
-                    whenSaturdayLunch: dbPresences[key].whenSaturdayLunch,
-                    whenSaturdayDiner: dbPresences[key].whenSaturdayDiner,
-                    whenSundayLunch: dbPresences[key].whenSundayLunch,
-                    commentSundayLunchInfo: dbPresences[key].commentSundayLunchInfo,
-                    comment: dbPresences[key].comment
-                }));
-
-            console.log('nb good mail address:',
-                presences.filter(presence => emailValidator.validate(presence.email)).length);
-            console.log('bad mail address:', presences
-                .filter(presence => !emailValidator.validate(presence.email))
-                .map(presence => presence.email));
+                .map(key => dbPresences[key].email);
+            console.log('nb good mail address:', mails.filter(mail => emailValidator.validate(mail)).length);
+            console.log('bad mail address:', mails.filter(mail => !emailValidator.validate(mail)).map(mail => mail));
         }
     });
 };
@@ -645,7 +626,10 @@ module.exports = function (app) {
                 res.status(500).json({saved: false, message: 'a pô marché, déso :/'});
                 console.error(`${LOG_STR} ERROR - photo mails not sent: ${error}`);
             } else {
-                res.status(200).json({saved: true, message: `bravo nils, t'as spammé ${nbMailsSent} personnes !`});
+                res.status(200).json({
+                    saved: true,
+                    message: `bravo nils, t'as spammé ${nbMailsSent} personnes pour les tofs!`
+                });
                 console.log(`${LOG_STR} ${nbMailsSent} photo mails sent`);
             }
         });
@@ -660,7 +644,10 @@ module.exports = function (app) {
                 res.status(500).json({saved: false, message: 'a pô marché, déso :/'});
                 console.error(`${LOG_STR} ERROR - remind mails not sent: ${error}`);
             } else {
-                res.status(200).json({saved: true, message: `bravo nils, t'as spammé ${nbMailsSent} personnes !`});
+                res.status(200).json({
+                    saved: true,
+                    message: `bravo nils, t'as spammé ${nbMailsSent} personnes pour le rappel!`
+                });
                 console.log(`${LOG_STR} ${nbMailsSent} remind mails sent`);
             }
         });

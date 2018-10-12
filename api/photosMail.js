@@ -4,13 +4,14 @@ const Q = require("q");
 const getPhotoMailText = () => {
     return '<h3>Bonjour à tou.te.s,</h3>' +
 
-        '<p>Voila déjà deux semaines que nous nous sommes marié.e.s.</p>' +
+        '<p>Voila déjà trois semaines que nous nous sommes marié.e.s !</p>' +
 
         '<p>A l’occasion de cet hebdoversaire, nous tenions à vous remercier une nouvelle fois pour votre présence,' +
-        ' votre aide, votre soutien et vos douces attentions.</p>' +
+        ' votre aide, votre soutien et toutes vos attentions. Nous avons passé un weekend mémorable, et on espère que' +
+        ' vous vous êtes bien amusés aussi !</p>' +
 
-        '<p>On espère qu’on a su vous montrer notre plus beau sourire. Pour le vérifier, on vous propose de nous' +
-        ' partager vos photos via google photo.</p>' +
+        '<p>La question est maintenant de savoir si nous avons su vous montrer notre plus beau sourire.' +
+        ' Pour le vérifier, on vous propose de nous partager vos photos via google photo.</p>' +
 
         '<p>Comment faire ? Il vous suffit de copier ce lien tel quel (sans www) dans la barre d\'adresse' +
         ' : https://photos.app.goo.gl/EpQRDd5SrJKoey4GA<br />' +
@@ -25,7 +26,7 @@ const getPhotoMailText = () => {
         'Avant de transférer vos photos, n’oubliez pas de faire un tri 😊 .</p>' +
 
         '<p>Si c\'est trop compliqué ou que vous ne souhaitez pas passer par ce biais, vous pouvez nous envoyez vos' +
-        ' photos via Wetransfer. Pour ceux qui ont des vidéos, vous pouvez aussi le faire pas Wetransfer car vous ne' +
+        ' photos via Wetransfer. Pour ceux qui ont des vidéos, vous pouvez aussi le faire par Wetransfer car vous ne' +
         ' pouvez pas les transférer avec googlephoto.</p>' +
 
         '<p>Sinon, rien à voir avec la choucroute mais si certain.e.s n’ont pas récupéré leur plat, ils vous attendent' +
@@ -61,7 +62,7 @@ const asyncPhotoMailFunction = (validEmail, transporter, resolve, reject) => {
                 }
             });
     } else {
-        reject();
+        reject('sendMail = false');
     }
 };
 
@@ -70,11 +71,12 @@ module.exports = (db, transporter, callback) => {
         const dbPresences = snapshot.val();
 
         if (dbPresences) {
-            const requests = Object
+            const mails = Object
                 .keys(dbPresences)
-                .map(key => dbPresences[key].email)
+                .map(key => dbPresences[key].email);
+
+            const requests = mails
                 .filter(email => emailValidator.validate(email))
-                // const requests = process.env.OWNERS_LIST.split(';')
                 .map(validEmail =>
                     new Promise((resolve, reject) => asyncPhotoMailFunction(validEmail, transporter, resolve, reject))
                 );
@@ -90,7 +92,10 @@ module.exports = (db, transporter, callback) => {
 
                     return nbFulfilled;
                 })
-                .catch(a => console.log('catch a', a))
+                .catch(err => {
+                    console.log('allSettled catch', err);
+                    callback(err, null);
+                })
                 .done(nbFulfilled => callback(null, nbFulfilled));
         } else {
             callback('no existing presences yet.', 0);
